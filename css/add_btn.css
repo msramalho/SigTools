@@ -1,0 +1,19 @@
+a#calendarBtn {
+    margin: 0;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: medium;
+    padding: 10px 20px;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    background-color: #2196F3;
+    color: #ecf0f1;
+    transition: background-color .5s;
+    cursor: pointer;
+}
+
+a#calendarBtn:hover {
+    background-color: #1565C0;
+}
