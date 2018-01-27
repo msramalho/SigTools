@@ -47,10 +47,18 @@ function daydiff(first, second) {
     return Math.round((second - first) / (1000 * 60 * 60 * 24));
 }
 
-function jTry(command, defaultValue){
+function jTry(command, defaultValue) {
     try {
         return command();
     } catch (error) {
         return defaultValue;
     }
+}
+
+function getAnchor(title, href, text) {
+    console.log(title, text);
+    console.log(text.includes("undefined"));
+    if (href != undefined && !href.includes("undefined") && !text.includes("undefined")) return `${title} <a href="${href}">${text}</a><br/>`;
+    else if (text != undefined && !text.includes("undefined")) return `${title} ${text}<br/>`;
+    return "";
 }

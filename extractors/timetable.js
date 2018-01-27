@@ -11,6 +11,7 @@ class ClassesTimetable {
             $("table.horario-semanas").before(saveBtn);
             saveBtn.click((e) => {
                 this.timetable = this.timetable.events == undefined ? this.getEvents() : this.timetable;
+                console.log(this.timetable.events);
                 handleEvents(this, this.timetable.from, this.timetable.to, this.timetable.events);
             });
         }
@@ -33,7 +34,9 @@ class ClassesTimetable {
     }
 
     getDescription(event) {
-        return `<h3>${event.name}</h3>Room: <a href="${event.room.url}">${event.room.name}</a><br>Teacher(s): <a href="${event.teacher.url}">${event.teacher.name} (${event.teacher.acronym})</a><br> Class: <a href="${event.class.url}">${event.class.name}</a>`;
+        return `<h3>${event.name}</h3>
+            ${getAnchor("Room:", event.room.url, event.room.name)}
+            ${getAnchor("Teacher(s):", event.teacher.url, `${event.teacher.name} (${event.teacher.acronym})`)}${getAnchor("Class:", event.class.url, event.class.name)}`;
     }
 }
 Object.setPrototypeOf(ClassesTimetable.prototype, BaseExtractor);
@@ -123,39 +126,45 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
     let eventTo = eventFrom.setHoursMinutes(to, 1);
 
     return {
-        name: cell.find("b acronym").attr("title") || "",
-        acronym: cell.find("b a").html() || "",
-        type: cell.find("b").text().match(/\((.+)\)/)[1] || "",
+        name: jTry(() => {
+            return cell.find("b acronym").attr("title");
+        }, "NotFound"),
+        acronym: jTry(() => {
+            return cell.find("b a").html();
+        }, ""),
+        type: jTry(() => {
+            return cell.find("b").text().match(/\((.+)\)/)[1];
+        }, ""),
         from: eventFrom,
         to: eventTo,
         class: {
             name: jTry(() => {
-                    classAnchor.text();
+                    return classAnchor.text();
                 }, ""),
                 url: jTry(() => {
-                    classAnchor[0].href;
+                    return classAnchor[0].href;
                 }, ""),
         },
         location: jTry(() => {
-            roomTd.text(); // duplicate information due to modular approach
+            return roomTd.text(); // duplicate information due to modular approach
         }, ""),
         room: {
             name: jTry(() => {
-                roomTd.text();
+                return roomTd.text();
             }, ""),
             url: jTry(() => {
-                roomTd.find("a")[0].href;
+                return roomTd.find("a")[0].href;
             }, ""),
         },
         teacher: {
             name: jTry(() => {
-                teacherTd.find("acronym").attr("title");
-            }, ""),
+                return teacherTd.find("acronym").attr("title");
+            }, teacherTd.text()),
             acronym: jTry(() => {
-                teacherTd.find("a").text();
-            }, ""),
+                return teacherTd.find("a").text();
+            }, teacherTd.text()),
             url: jTry(() => {
-                teacherTd.find("a")[0].href;
+                return teacherTd.find("a")[0].href;
             }, "")
         },
         download: true
