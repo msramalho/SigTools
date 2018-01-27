@@ -3,29 +3,18 @@
 	"version": "1.0",
 	"description": "Sigarra To Calendar - Automatically add Sigarra Timetables to your Google Calendar Account",
 	"permissions": [
-		"bookmarks", "tabs", "identity", "https://*.up.pt/*"
+		"bookmarks", "tabs", "https://*.up.pt/*"
 	],
-	"oauth2": {
-		"client_id": "335072133429-r8biq4rsg1fgqo8ppnsh6kg1qphgql1n.apps.googleusercontent.com",
-		"scopes": [
-			"https://www.googleapis.com/auth/calendar"
-		]
-	},
-	"key": "AIzaSyA2B83Ome4_S-EXUe5zLTrkaGeZv-Ndft4",
-	"background": {
-		"scripts": ["background.js"]
-	},
 	"browser_action": {
 		"default_title": "SigToCal",
-		"default_icon": "icons/icon.png",
-		"default_popup": "popup.html"
+		"default_icon": "icons/icon.png"
 	},
 	"content_scripts": [{
 		"matches": ["https://*.up.pt/*"],
 		"css": ["css/add_btn.css"],
-		"js": ["jquery.min.js", "table_parser.js", "calendar_interface.js", "in_sigarra.js"],
+		"js": ["scripts/jquery.min.js", "scripts/utils.js", "scripts/ics.deps.min.js", "scripts/ics.min.js", "extractors/base.js", "extractors/timetable.js", "main.js"],
 		"run_at": "document_end"
 	}],
 	"manifest_version": 2,
-	"content_security_policy": "script-src 'self' https://apis.google.com/js/api.js; object-src 'self'"
+	"content_security_policy": "script-src 'self'; object-src 'self'"
 }
