@@ -55,7 +55,7 @@ $.prototype.tableToEvents = function () {
         let counter = 1; //count the number of blocks this class takes
         for (let j = 2; j < day.length; j++) { //ignore the first row with day names, start at two to see previous
             if ((day[j] != day[j - 1] || j == day.length - 1) && day[j - 1].length > 0) { //if this event stops toDay and is not empty or if its the last event of the day and is not empty
-                events.push(getClass(day[j - 1], this[i][0], this[0][j - counter], this[0][j - 1]));
+                events.push(getClass(day[j - 1], i, this[0][j - counter], this[0][j - 1]));
                 counter = 1;
             } else if (day[j] == day[j - 1]) {
                 counter += 1;
@@ -65,9 +65,16 @@ $.prototype.tableToEvents = function () {
     return events;
 };
 
-function getClass(html, day, from, to) {
+/**
+ * Get an object with all the class information (time, teacher, room, ...) from the table cell html
+ * @param {string} html the content of the cell in the timetable
+ * @param {integer} dayOfWeek from 1 to 6 (Monday to Saturday)
+ * @param {string} from eg. 08:30 - 09:00
+ * @param {string} to eg. 10:30 - 11:00
+ */
+function getClass(html, dayOfWeek, from, to) {
     if (html == "") return {};
-    console.log(`${day} - ${from} - ${to}`);
+    console.log(`${dayOfWeek} - ${from} - ${to}`);
 
     let cell = $("<div>" + html + "</div>");
     let classAnchor = cell.find("span.textopequenoc a");
