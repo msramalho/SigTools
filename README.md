@@ -1,2 +1,2 @@
 # SigToCa
-Sigarra To Calendar - Automatically add Sigarra timetables to your Google Calendar Account
+Sigarra To Calendar - Automatically add Sigarra Timetables to your Google Calendar Account
