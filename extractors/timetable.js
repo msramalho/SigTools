@@ -11,7 +11,6 @@ class ClassesTimetable {
             $("table.horario-semanas").before(saveBtn);
             saveBtn.click((e) => {
                 this.timetable = this.timetable.events == undefined ? this.getEvents() : this.timetable;
-                console.log(this.timetable.events);
                 handleEvents(this, this.timetable.from, this.timetable.to, this.timetable.events);
             });
         }

@@ -56,8 +56,6 @@ function jTry(command, defaultValue) {
 }
 
 function getAnchor(title, href, text) {
-    console.log(title, text);
-    console.log(text.includes("undefined"));
     if (href != undefined && !href.includes("undefined") && !text.includes("undefined")) return `${title} <a href="${href}">${text}</a><br/>`;
     else if (text != undefined && !text.includes("undefined")) return `${title} ${text}<br/>`;
     return "";

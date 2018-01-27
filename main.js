@@ -47,7 +47,6 @@ function createModal(extractor, events, repeat) {
     $("head").before(modal);
     modal.find("#sig_downloadIcs").click((e) => {
         updateEvents(modal, events);
-        console.log(events);
 
         //decide wether to add as single or recurring events (based on the start and end dates supplied)
         let cal = ics(); //creat ics instance
