@@ -12,7 +12,7 @@
 	"content_scripts": [{
 		"matches": ["https://*.up.pt/*hor_geral*", "https://*.up.pt/*HOR_GERAL*"],
 		"css": ["css/add_btn.css"],
-		"js": ["scripts/jquery.min.js", "scripts/utils.js", "scripts/ics.deps.min.js", "scripts/ics.min.js", "extractors/base.js", "extractors/timetable.js", "main.js"],
+		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "js/extractors/timetable.js", "main.js"],
 		"run_at": "document_end"
 	}],
 	"manifest_version": 2,
