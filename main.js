@@ -21,24 +21,30 @@ function handleEvents(extractor, events, from, to) {
 function createModal(extractor, events, repeat) {
     let eventsHtml = "";
     for (let i = 0; i < events.length; i++) {
-        eventsHtml += `<li><input type="checkbox" id="event_${i}" style="transform: scale(1.3);" ${events[i].download?"checked":""}><label for="event_${i}">${extractor.getName(events[i])}</label></li>`;
+        eventsHtml += `
+        <li>
+            <input type="checkbox" id="event_${i}" ${events[i].download?"checked":""}>
+            <label for="event_${i}">${extractor.getName(events[i])}</label>
+            <span class="calendarLink"><a title="Add this single event to your Google Calendar in One click!"><img class="calendarIcon" src="${chrome.extension.getURL("icons/gcalendar.png")}"></a></span>
+        </li>`;
     }
 
     let modal =
         `<div id="sig_eventsModal">
-            <div style="position: fixed;width: 500px;height: auto;background-color: #fff;z-index: 1000;display: block;padding: 10px 20px 10px 20px;margin: auto;top: 4%;left: 0;right: 0;border-radius: 5px;box-shadow: 0px 10px 22px 4px rgba(0,0,0,0.56);font-family:monospace;max-height:80%;">
-                <h1 style="text-align:center;">SigToCal</h1>
-                <h2 style="text-align:center;">Select the events you want to download:</h2>
-                <ul id="sig_eventsList" style="font-size: 18px;list-style: none;overflow-y: auto;max-height: 350px;">
+            <div class="sig_modalBody">
+                <h1>SigToCal</h1>
+                <h2>Select the events you want to download:</h2>
+                <ul class="sig_eventsList">
                     ${eventsHtml}
+                    <br>
                 </ul>
                 <hr>
                 <div>
-                    <a id="sig_downloadIcs" style="display: block;text-align: center;text-decoration: none;font-size: 23px;color: #ecf0f1;margin: 0;margin-bottom: 10px;padding: 10px 20px;border-radius: 2px;box-shadow: 0 1px 4px rgba(0, 0, 0, .6);background-color: #2196F3;transition: background-color .5s;cursor: pointer;"
+                    <a id="sig_downloadIcs" class="calendarBtn"
                         title="Save this To your Calendar">📆 Download .ics</a>
                 </div>
             </div>
-            <div id="sig_overlay" style="z-index:900;width:100%;height:100%;position:fixed;top:0;bottom:0;background-color:#e3e3e396;"></div>
+            <div class="sig_overlay"></div>
         </div>`;
     modal = $(modal);
     $("head").before(modal);
@@ -59,9 +65,15 @@ function createModal(extractor, events, repeat) {
         else
             clearModal();
     });
-    modal.find("#sig_overlay").click(() => {
+    modal.find(".sig_overlay").click(() => {
         updateEvents(modal, events);
         clearModal();
+    });
+    modal.find(".sig_eventsList li a").each((index, a) => {
+        $(a).click((e)=>{
+            e.preventDefault();
+            window.open((eventToGCalendar(extractor, events[index])).replace(/\s/g, "%20"), "_blank");
+        });
     });
 
 }
@@ -71,7 +83,7 @@ function clearModal() {
 }
 
 function updateEvents(modal, events) {
-    modal.find("#sig_eventsList li").each((index, li) => {
+    modal.find(".sig_eventsList li").each((index, li) => {
         events[index].download = $(li).find('input[type="checkbox"]').is(":checked")
     });
 }

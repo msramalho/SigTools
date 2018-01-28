@@ -31,8 +31,7 @@ class ExamsTimetable {
     }
 
     getDescription(event) {
-        return `<h3>${this.exams.info} ${event.subject.name} [${event.subject.acronym}]</h3>
-            ${getAnchor("Subject:", event.subject.url, event.subject.name)}`;
+        return `<h3>${this.exams.info} ${event.subject.name} [${event.subject.acronym}]</h3>${getAnchor("Subject:", event.subject.url, event.subject.name)}`;
     }
 
     static getEvent(day, exameTd) {

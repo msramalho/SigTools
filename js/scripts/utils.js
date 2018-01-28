@@ -29,7 +29,8 @@ Date.prototype.setHoursMinutes = function (daysMinutes, index) {
  * @returns new date after operation
  */
 Date.prototype.toGCalendar = function () {
-    return this.toString();
+    return this.toISOString().replace(/(-)|(\:)/g, "").split(".")[0];
+    // return `${this.getFullYear()}${this.getMonth()}${this.getDay()}T${this.getHours()}${this.getMinutes()}00`;
 };
 
 /**
@@ -62,16 +63,9 @@ function daydiff(first, second) {
  * @param {event object} event needs to have (at least) {from, to, location, download}
  */
 function eventToGCalendar(extractor, event) {
-    return encodeURI(
-        `https://calendar.google.com/calendar/r/eventedit?
-        &text=${extractor.getName(event.name)}
-        location=${event.location}
-        &details=${extractor.getDescription(event)}
-        &dates=${event.from.toGCalendar()}/${event.from.toGCalendar()}
-        &sprop=name:${extractor.getName(event.name)}
-        &sprop=website:${"https://github.com/msramalho/SigToCa"}
-        `.replace(/\s/g, "")
-    );
+    return (
+        `https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event)}&location=${event.location}&details=${extractor.getDescription(event)}&dates=${event.from.toGCalendar()}/${event.from.toGCalendar()}&sprop=name:${extractor.getName(event)}&sprop=website:${"https://github.com/msramalho/SigToCa"}`);
+    return res;
 }
 
 /**
@@ -94,7 +88,15 @@ function jTry(command, defaultValue) {
  * @param {*} text the url text description
  */
 function getAnchor(title, href, text) {
-    if (href != undefined && !href.includes("undefined") && !text.includes("undefined")) return `${title} <a href="${href}">${text}</a><br/>`;
+    if (href != undefined && !href.includes("undefined") && !text.includes("undefined")) return `${title} <a href="${encodeURIComponent(href)}">${text}</a><br/>`;
     else if (text != undefined && !text.includes("undefined")) return `${title} ${text}<br/>`;
     return "";
+}
+
+/**
+ * use jQuery auto html encoding to encode text as html encoded
+ * @param {String} value the value to encode
+ */
+function htmlEncode(value) {
+    return $('<div>').text(value).html();
 }

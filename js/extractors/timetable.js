@@ -46,9 +46,7 @@ class ClassesTimetable {
     }
 
     getDescription(event) {
-        return `<h3>${event.name}</h3>
-            ${getAnchor("Room:", event.room.url, event.room.name)}
-            ${getAnchor("Teacher(s):", event.teacher.url, `${event.teacher.name} (${event.teacher.acronym})`)}${getAnchor("Class:", event.class.url, event.class.name)}`;
+        return `<h3>${event.name}</h3>${getAnchor("Room:", event.room.url, event.room.name)}${getAnchor("Teacher(s):", event.teacher.url, `${event.teacher.name} (${event.teacher.acronym})`)}${getAnchor("Class:", event.class.url, event.class.name)}`;
     }
 }
 Object.setPrototypeOf(ClassesTimetable.prototype, BaseExtractor);
