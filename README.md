@@ -1,4 +1,4 @@
-# SigToCa - Sigarra To Calendar
+# SigToCa - Sigarra To Calendar ![](https://github.com/msramalho/SigToCa/blob/master/icons/icon.png)
 Automatically add Sigarra Timetables to your Calendar Apps
 
 ### Install via:
@@ -39,7 +39,9 @@ Here's the general flow of this extension:
 It was developed to be as intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
 
 
-#### Props go to...
+#### A thanks to... 
  - [ics.js](https://github.com/nwcell/ics.js)
  - [FileSaver.js](https://github.com/eligrey/FileSaver.js)
  - [Blob.js](https://github.com/eligrey/Blob.js)
+
+For saving me a lot of time
