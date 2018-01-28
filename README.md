@@ -5,13 +5,14 @@ Automatically add Sigarra Timetables to your Calendar Apps
  - [WebStore]()
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
  - [from .crx](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
- 
+
  ### Works on:
-  - Personal schedule 
+  - Personal schedule
   - Teacher schedule, try ... [Ademar](https://sigarra.up.pt/feup/pt/hor_geral.docentes_view?pv_doc_codigo=231081)
   - Subject schedule, try ... [RCOM](https://sigarra.up.pt/feup/pt/hor_geral.ucurr_view?pv_ocorrencia_id=399898)
+  - Exams page, try ... [MIEIC](https://sigarra.up.pt/feup/pt/exa_geral.mapa_de_exames?p_curso_id=741)
   - Any other schedule (from sigarra, not just feup) that respects the major formats found
- 
+
  ### Exports to
  [iCalendar](https://en.wikipedia.org/wiki/ICalendar) *.ics* format which means most applications handle it pretty well:
   - [Google Calendar](https://support.google.com/calendar/answer/37118?hl=en)
@@ -31,7 +32,7 @@ Here's the general flow of this extension:
  4. Go to your calendar app and upload that file to any calendar and that's it!
 
 **Important**: This extension not only identifies the events in the page but, in the case of recurring events like classes, generates the *.ics* file in accordance to the time range specified in the page!
- 
+
 ### Prints
 
 
@@ -39,7 +40,7 @@ Here's the general flow of this extension:
 It was developed to be as intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
 
 
-#### A thanks to... 
+#### A thanks to...
  - [ics.js](https://github.com/nwcell/ics.js)
  - [FileSaver.js](https://github.com/eligrey/FileSaver.js)
  - [Blob.js](https://github.com/eligrey/Blob.js)

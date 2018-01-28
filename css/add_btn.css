@@ -1,4 +1,4 @@
-a#calendarBtn {
+a.calendarBtn {
     display: block;
     text-align: center;
     text-decoration: none;
@@ -14,6 +14,6 @@ a#calendarBtn {
     cursor: pointer;
 }
 
-a#calendarBtn:hover {
+a.calendarBtn:hover {
     background-color: #1565C0;
 }

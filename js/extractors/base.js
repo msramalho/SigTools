@@ -20,4 +20,9 @@ class BaseExtractor {
     getDescription(event) {
         return "";
     }
+
+    /**
+     * returns an event object that matches the current extractor's format and context
+     */
+    static getEvent(){}
 }

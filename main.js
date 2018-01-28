@@ -7,7 +7,7 @@
  * @param {Date} to for recurring events when do they end [optional]
  * @param {Array} events list of objects that need to have (at least) {from, to, location, download}
  */
-function handleEvents(extractor, from, to, events) {
+function handleEvents(extractor, events, from, to) {
     let repeat = undefined;
     if (from && to && daydiff(from, to) > 6) {
         repeat = {
@@ -52,6 +52,7 @@ function createModal(extractor, events, repeat) {
                 cal.addEvent(extractor.getName(event), extractor.getDescription(event), event.location, event.from.toString(), event.to.toString(), repeat);
         }, extractor);
 
+        console.log(cal.n);
         //donwloas .ics file
         if (!cal.download())
             alert("No event selected for download!");

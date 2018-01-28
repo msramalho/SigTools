@@ -7,19 +7,19 @@ class ClassesTimetable {
 
     attachIfPossible() {
         if (this.table) {
-            let saveBtn = $('<a id="calendarBtn" title="Save this To your Calendar">📆</a>');
+            let saveBtn = $('<a class="calendarBtn" title="Save this To your Calendar">📆</a>');
             let timespan = $("table.horario-semanas");
             if (timespan.length > 0) timespan.before(saveBtn);
             else this.table.before(saveBtn);
             saveBtn.click((e) => {
                 this.timetable = this.timetable.events == undefined ? this.getEvents() : this.timetable;
-                handleEvents(this, this.timetable.from, this.timetable.to, this.timetable.events);
+                handleEvents(this, this.timetable.events, this.timetable.from, this.timetable.to);
             });
         }
     }
 
     getEvents() {
-        let table = this.table.parsetable(false, true);
+        let table = this.table.parseTable(false, true);
         let lifetime = $(".bloco-select a").attr("href");
         let lifetimeFrom, lifetimeTo;
         if (lifetime) {
@@ -53,7 +53,7 @@ class ClassesTimetable {
 }
 Object.setPrototypeOf(ClassesTimetable.prototype, BaseExtractor);
 
-$.prototype.parsetable = function (dupCols, dupRows, textMode) {
+$.prototype.parseTable = function (dupCols, dupRows, textMode) {
     if (dupCols === undefined) dupCols = false;
     if (dupRows === undefined) dupRows = false;
     if (textMode === undefined) textMode = false;
