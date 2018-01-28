@@ -1,8 +1,5 @@
 "use strict";
 
-let ct = new ClassesTimetable();
-ct.attachIfPossible();
-
 /**
  * display list of events to present to the user and the download interface
  * @param {Extractor} extractor a BaseExtractor descendant that handled the events

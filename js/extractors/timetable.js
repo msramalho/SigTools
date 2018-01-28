@@ -7,7 +7,6 @@ class ClassesTimetable {
 
     attachIfPossible() {
         if (this.table) {
-            console.log("found");
             let saveBtn = $('<a id="calendarBtn" title="Save this To your Calendar">📆</a>');
             let timespan = $("table.horario-semanas");
             if (timespan.length > 0) timespan.before(saveBtn);
@@ -183,3 +182,7 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
         download: true
     };
 }
+
+//init on include
+let ct = new ClassesTimetable();
+ct.attachIfPossible();
