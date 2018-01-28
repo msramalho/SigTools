@@ -1,10 +1,11 @@
 {
-	"name": "SigToCal",
+	"manifest_version": 2,
+	"name": "Sigarra To Calendar",
+	"short_name": "SigToCal",
 	"version": "1.0",
+	"default_locale": "en",
 	"description": "Sigarra To Calendar - Automatically add Sigarra Timetables to your Calendar Apps",
-	"permissions": [
-		"https://*.up.pt/*"
-	],
+	"icons": ["icons/icon.png"],
 	"browser_action": {
 		"default_title": "SigToCal",
 		"default_icon": "icons/icon.png"
@@ -15,6 +16,9 @@
 		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "js/extractors/timetable.js", "main.js"],
 		"run_at": "document_end"
 	}],
-	"manifest_version": 2,
-	"content_security_policy": "script-src 'self'; object-src 'self'"
+	"permissions": [
+		"https://*.up.pt/*"
+	],
+	"content_security_policy": "script-src 'self'; object-src 'self'",
+	"homepage_url": "https://github.com/msramalho/SigToCa"
 }
