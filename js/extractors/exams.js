@@ -76,5 +76,5 @@ $.prototype.parseExamTable = function () {
 
 
 //init on include
-let et = new ExamsTimetable();
-et.attachIfPossible();
+let extractorExamsTimetable = new ExamsTimetable();
+extractorExamsTimetable.attachIfPossible();

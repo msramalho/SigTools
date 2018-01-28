@@ -64,7 +64,7 @@ function daydiff(first, second) {
  */
 function eventToGCalendar(extractor, event) {
     return (
-        `https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event)}&location=${event.location}&details=${extractor.getDescription(event)}&dates=${event.from.toGCalendar()}/${event.from.toGCalendar()}&sprop=name:${extractor.getName(event)}&sprop=website:${"https://github.com/msramalho/SigToCa"}`);
+        `https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event)}&location=${event.location}&details=${extractor.getDescription(event)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event)}&sprop=website:${"https://github.com/msramalho/SigToCa"}`);
     return res;
 }
 
@@ -91,12 +91,4 @@ function getAnchor(title, href, text) {
     if (href != undefined && !href.includes("undefined") && !text.includes("undefined")) return `${title} <a href="${encodeURIComponent(href)}">${text}</a><br/>`;
     else if (text != undefined && !text.includes("undefined")) return `${title} ${text}<br/>`;
     return "";
-}
-
-/**
- * use jQuery auto html encoding to encode text as html encoded
- * @param {String} value the value to encode
- */
-function htmlEncode(value) {
-    return $('<div>').text(value).html();
 }

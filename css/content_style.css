@@ -87,6 +87,13 @@ a#sig_downloadIcs {
     width: 20px;
     height: 20px;
 }
-.calendarIcon:hover{
+
+.calendarIconMoodle{
+    display: inline-block;
+    margin: 0;
+    width:24px;
+    height: 24px;
+}
+.calendarIcon:hover, calendarIconMoodle:hover{
     transform: scale(1.4);
 }

@@ -182,5 +182,5 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
 }
 
 //init on include
-let ct = new ClassesTimetable();
-ct.attachIfPossible();
+let extractorClassesTimetable = new ClassesTimetable();
+extractorClassesTimetable.attachIfPossible();
