@@ -6,23 +6,33 @@ Automatically add Sigarra Timetables to your Calendar Apps
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
  - [from .crx](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
 
- ### Works on:
-  - Personal schedule
-  - Teacher schedule, try ... [Ademar](https://sigarra.up.pt/feup/pt/hor_geral.docentes_view?pv_doc_codigo=231081)
-  - Subject schedule, try ... [RCOM](https://sigarra.up.pt/feup/pt/hor_geral.ucurr_view?pv_ocorrencia_id=399898)
-  - Exams page, try ... [MIEIC](https://sigarra.up.pt/feup/pt/exa_geral.mapa_de_exames?p_curso_id=741)
-  - Any other schedule (from sigarra, not just feup) that respects the major formats found
+### Works on:
 
- ### Exports to
- [iCalendar](https://en.wikipedia.org/wiki/ICalendar) *.ics* format which means most applications handle it pretty well:
-  - [Google Calendar](https://support.google.com/calendar/answer/37118?hl=en)
-  - [Apple Calendar](https://support.apple.com/guide/calendar/import-or-export-calendars-icl1023/mac)
-  - IBM Lotus Notes
-  - Yahoo! Calendar
-  - Evolution (software)
-  - eM Client
-  - Lightning extension for Mozilla Thunderbird and SeaMonkey
-  - [partially] by Microsoft Outlook and Novell GroupWise
+#### Timetable Extractor
+ - Personal schedule
+ - Teacher schedule, try ... [Ademar](https://sigarra.up.pt/feup/pt/hor_geral.docentes_view?pv_doc_codigo=231081)
+ - Subject schedule, try ... [RCOM](https://sigarra.up.pt/feup/pt/hor_geral.ucurr_view?pv_ocorrencia_id=399898)
+ - Any other schedule (from sigarra, not just feup) that respects the major formats found
+
+#### Exams Extractor
+ - Exams page, try ... [MIEIC](https://sigarra.up.pt/feup/pt/exa_geral.mapa_de_exames?p_curso_id=741)
+ - Any other exams page (from sigarra, not just feup) that respects the major formats found
+
+#### Moodle Extractor
+ - Hover over a moodle event on the calendar and an option to add to Google Calendar (with One click) becomes available
+ - Moodle already has functionality to export events in the iCal format [here](https://moodle.up.pt/calendar/export.php)
+
+
+### Exports to
+[iCalendar](https://en.wikipedia.org/wiki/ICalendar) *.ics* format which means most applications handle it pretty well:
+ - [Google Calendar](https://support.google.com/calendar/answer/37118?hl=en)
+ - [Apple Calendar](https://support.apple.com/guide/calendar/import-or-export-calendars-icl1023/mac)
+ - IBM Lotus Notes
+ - Yahoo! Calendar
+ - Evolution (software)
+ - eM Client
+ - Lightning extension for Mozilla Thunderbird and SeaMonkey
+ - [partially] by Microsoft Outlook and Novell GroupWise
 
 ## Instructions
 Here's the general flow of this extension:
