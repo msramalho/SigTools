@@ -13,6 +13,11 @@
 		"css": ["css/add_btn.css"],
 		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "main.js", "js/extractors/timetable.js"],
 		"run_at": "document_end"
+	},{
+		"matches": ["https://*.up.pt/*exa_geral*", "https://*.up.pt/*EXA_GERAL*"],
+		"css": ["css/add_btn.css"],
+		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "main.js", "js/extractors/exams.js"],
+		"run_at": "document_end"
 	}],
 	"permissions": [
 		"https://*.up.pt/*"
