@@ -1,8 +1,6 @@
-//https://sigarra.up.pt/feup/pt/exa_geral.mapa_de_exames?p_curso_id=742
 "use strict";
 class MoodleEvent {
     constructor() {
-        // this.table = $("table.dados:not(.mapa)");
         $(".hasevent").each((index, td) => {
             let popupContent = $(`<div>${$(td).attr("data-core_calendar-popupcontent")}</div>`);
             let newPopupContent = "";
@@ -10,7 +8,6 @@ class MoodleEvent {
                 div = $(div);
                 newPopupContent += MoodleEvent.getNewDiv(div, MoodleEvent.getEvent(div));
             });
-            console.log(newPopupContent);
             $(td).attr("data-core_calendar-popupcontent", newPopupContent);
         });
     }
@@ -23,13 +20,6 @@ class MoodleEvent {
     }
 
     static getNewDiv(div, event) {
-
-
-        //passar a ter duas getDescription/getName, uma para o ics e outra para o google calendar, que não tem html e não dá merda e pode ir logo no href
-
-
-
-
         return `
         ${div.find("img")[0].outerHTML}
         <a class="sig_moodleCalendar" href="${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
