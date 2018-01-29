@@ -1,6 +1,8 @@
 
 <p align="center">
- <img src="https://github.com/msramalho/SigToCa/blob/master/icons/icon-512.png" width="128"/>
+ <a href="https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme">
+  <img src="https://github.com/msramalho/SigToCa/blob/master/icons/icon-512.png" width="128"/>
+ </a>
 </p>
 <h1 align="center"> SigToCa - Sigarra To Calendar</h1>
 
