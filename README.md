@@ -1,4 +1,9 @@
-# SigToCa - Sigarra To Calendar ![](https://github.com/msramalho/SigToCa/blob/master/icons/icon.png)
+
+<p align="center">
+ <img src="https://github.com/msramalho/SigToCa/blob/master/icons/icon-512.png" width="128"/>
+</p>
+<h1 align="center"> SigToCa - Sigarra To Calendar</h1>
+
 Automatically add Sigarra Timetables to your Calendar Apps
 
 ### Install via:
