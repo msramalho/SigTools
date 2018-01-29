@@ -4,12 +4,12 @@
 </p>
 <h1 align="center"> SigToCa - Sigarra To Calendar</h1>
 
-Automatically add Sigarra Timetables to your Calendar Apps
+Automatically add Sigarra Timetables to your Calendar Apps (using *.ics* format and one-click Google Calendar Event)
 
 ### Install via:
  - [WebStore](https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme)
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
- - from [.crx]() see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
+ - From [.crx](https://github.com/msramalho/SigToCa/blob/master/extra/SigToCa.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
 
 ### Works on:
 
