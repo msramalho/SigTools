@@ -50,7 +50,7 @@ class ExamsTimetable {
             location: rooms,
             download: false,
             subject: {
-                name: subjectInfo.attr("title"),
+                name: encodeURIComponent(subjectInfo.attr("title")),
                 acronym: subjectInfo.text(),
                 url: subjectInfo[0].href
             }

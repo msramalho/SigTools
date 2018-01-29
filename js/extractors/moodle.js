@@ -14,17 +14,6 @@ class MoodleEvent {
             $(td).attr("data-core_calendar-popupcontent", newPopupContent);
         });
     }
-
-    addScriptForCalendarLinks() {
-        var script = document.createElement('script');
-        script.textContent = `
-        function redirectToCalendar(eventJson) {
-            let event = JSON.parse(decodeURI(eventJson));
-            window.open((eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20"));
-        }`;
-        (document.head || document.documentElement).appendChild(script);
-        script.remove();
-    }
     static getName(event) {
         return `${event.name} (${event.type})`;
     }
@@ -34,9 +23,16 @@ class MoodleEvent {
     }
 
     static getNewDiv(div, event) {
+
+
+        //passar a ter duas getDescription/getName, uma para o ics e outra para o google calendar, que não tem html e não dá merda e pode ir logo no href
+
+
+
+
         return `
         ${div.find("img")[0].outerHTML}
-        <a class="sig_moodleCalendar" onclick="javascript:redirectToCalendar('${encodeURI(JSON.stringify(event))}');" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
+        <a class="sig_moodleCalendar" href="${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
         ${div.find("a")[0].outerHTML}`;
     }
 
@@ -44,7 +40,7 @@ class MoodleEvent {
         let anchor = eventTd.find("a");
         let d = new Date(parseFloat(anchor[0].href.match(/time=(\d+)/)[1]));
         return {
-            name: anchor.text(),
+            name: encodeURIComponent(anchor.text()),
             type: jTry(() => {
                 return eventTd.find("img").attr("title");
             }, ""),
@@ -57,10 +53,5 @@ class MoodleEvent {
 }
 Object.setPrototypeOf(MoodleEvent.prototype, BaseExtractor);
 
-
-function redirectToCalendar(eventJson) {
-    let event = JSON.parse(decodeURI(eventJson));
-    window.open((eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20"));
-}
 //init on include
 let extractorMoodleEvent = new MoodleEvent();

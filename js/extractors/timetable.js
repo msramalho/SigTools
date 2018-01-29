@@ -137,7 +137,7 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
 
     return {
         name: jTry(() => {
-            return cell.find("b acronym").attr("title");
+            return encodeURIComponent(cell.find("b acronym").attr("title"));
         }, "NotFound"),
         acronym: jTry(() => {
             return cell.find("b a").html();
@@ -168,7 +168,7 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
         },
         teacher: {
             name: jTry(() => {
-                return teacherTd.find("acronym").attr("title");
+                return encodeURIComponent(teacherTd.find("acronym").attr("title"));
             }, teacherTd.text()),
             acronym: jTry(() => {
                 return teacherTd.find("a").text();
