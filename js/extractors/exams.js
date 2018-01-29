@@ -31,8 +31,7 @@ class ExamsTimetable {
     }
 
     getDescription(event) {
-        return `<h3>${this.exams.info} ${event.subject.name} [${event.subject.acronym}]</h3>
-            ${getAnchor("Subject:", event.subject.url, event.subject.name)}`;
+        return `<h3>${this.exams.info} ${event.subject.name} [${event.subject.acronym}]</h3>${getAnchor("Subject:", event.subject.url, event.subject.name)}`;
     }
 
     static getEvent(day, exameTd) {
@@ -51,7 +50,7 @@ class ExamsTimetable {
             location: rooms,
             download: false,
             subject: {
-                name: subjectInfo.attr("title"),
+                name: encodeURIComponent(subjectInfo.attr("title")),
                 acronym: subjectInfo.text(),
                 url: subjectInfo[0].href
             }
@@ -77,5 +76,5 @@ $.prototype.parseExamTable = function () {
 
 
 //init on include
-let et = new ExamsTimetable();
-et.attachIfPossible();
+let extractorExamsTimetable = new ExamsTimetable();
+extractorExamsTimetable.attachIfPossible();

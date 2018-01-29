@@ -46,9 +46,7 @@ class ClassesTimetable {
     }
 
     getDescription(event) {
-        return `<h3>${event.name}</h3>
-            ${getAnchor("Room:", event.room.url, event.room.name)}
-            ${getAnchor("Teacher(s):", event.teacher.url, `${event.teacher.name} (${event.teacher.acronym})`)}${getAnchor("Class:", event.class.url, event.class.name)}`;
+        return `<h3>${event.name}</h3>${getAnchor("Room:", event.room.url, event.room.name)}${getAnchor("Teacher(s):", event.teacher.url, `${event.teacher.name} (${event.teacher.acronym})`)}${getAnchor("Class:", event.class.url, event.class.name)}`;
     }
 }
 Object.setPrototypeOf(ClassesTimetable.prototype, BaseExtractor);
@@ -139,7 +137,7 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
 
     return {
         name: jTry(() => {
-            return cell.find("b acronym").attr("title");
+            return encodeURIComponent(cell.find("b acronym").attr("title"));
         }, "NotFound"),
         acronym: jTry(() => {
             return cell.find("b a").html();
@@ -170,7 +168,7 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
         },
         teacher: {
             name: jTry(() => {
-                return teacherTd.find("acronym").attr("title");
+                return encodeURIComponent(teacherTd.find("acronym").attr("title"));
             }, teacherTd.text()),
             acronym: jTry(() => {
                 return teacherTd.find("a").text();
@@ -184,5 +182,5 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
 }
 
 //init on include
-let ct = new ClassesTimetable();
-ct.attachIfPossible();
+let extractorClassesTimetable = new ClassesTimetable();
+extractorClassesTimetable.attachIfPossible();

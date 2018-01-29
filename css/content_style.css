@@ -1,0 +1,99 @@
+a.calendarBtn {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: medium;
+    color: #ecf0f1;
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    background-color: #2196F3;
+    transition: background-color .5s;
+    cursor: pointer;
+}
+
+a.calendarBtn:hover {
+    background-color: #1565C0;
+}
+
+div.sig_modalBody {
+    position: fixed;
+    width: 500px;
+    height: auto;
+    background-color: #fff;
+    z-index: 1000;
+    display: block;
+    padding: 10px 20px 10px 20px;
+    margin: auto;
+    top: 4%;
+    left: 0;
+    right: 0;
+    border-radius: 5px;
+    box-shadow: 0px 10px 22px 4px rgba(0, 0, 0, 0.56);
+    font-family: monospace;
+    max-height: 80%;
+}
+
+div.sig_modalBody h1,
+div.sig_modalBody h2 {
+    text-align: center;
+}
+
+ul.sig_eventsList {
+    font-size: 18px;
+    list-style: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 350px;
+}
+
+el.sig_eventsList input[type="checkbox"] {
+    transform: scale(1.3);
+}
+
+a#sig_downloadIcs {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 23px;
+    color: #ecf0f1;
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    cursor: pointer;
+}
+
+.sig_overlay {
+    z-index: 900;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    background-color: #e3e3e396;
+}
+
+.calendarLink {
+    float: right;
+    cursor: pointer;
+}
+
+.calendarIcon{
+    display: list-item;
+    width: 20px;
+    height: 20px;
+}
+
+.calendarIconMoodle{
+    display: inline-block;
+    margin: 0;
+    width:24px;
+    height: 24px;
+}
+.calendarIcon:hover, calendarIconMoodle:hover{
+    transform: scale(1.4);
+}
