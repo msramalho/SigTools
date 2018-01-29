@@ -30,7 +30,7 @@ class MoodleEvent {
         let anchor = eventTd.find("a");
         let d = new Date(parseFloat(anchor[0].href.match(/time=(\d+)/)[1]));
         return {
-            name: encodeURIComponent(anchor.text()),
+            name: anchor.text(),
             type: jTry(() => {
                 return eventTd.find("img").attr("title");
             }, ""),
