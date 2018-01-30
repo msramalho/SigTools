@@ -75,7 +75,9 @@ function eventToGCalendar(extractor, event) {
  */
 function jTry(command, defaultValue) {
     try {
-        return command();
+        let tempRes = command();
+        if (tempRes.length == 0) return defaultValue;
+        return tempRes;
     } catch (error) {
         return defaultValue;
     }

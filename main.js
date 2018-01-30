@@ -25,7 +25,7 @@ function createModal(extractor, events, repeat) {
         <li>
             <input type="checkbox" id="event_${i}" ${events[i].download?"checked":""}>
             <label for="event_${i}">${extractor.getName(events[i])}</label>
-            <span class="calendarLink"><a title="Add this single event to your Google Calendar in One click!"><img class="calendarIcon" src="${chrome.extension.getURL("icons/gcalendar.png")}"></a></span>
+            <span class="calendarLink"><a title="Add this single event to your Google Calendar in One click!" ><img class="calendarIcon" src="${chrome.extension.getURL("icons/gcalendar.png")}"></a></span>
         </li>`;
     }
 
@@ -58,7 +58,6 @@ function createModal(extractor, events, repeat) {
                 cal.addEvent(extractor.getName(event), extractor.getDescription(event), event.location, event.from.toString(), event.to.toString(), repeat);
         }, extractor);
 
-        console.log(cal.n);
         //donwloas .ics file
         if (!cal.download())
             alert("No event selected for download!");

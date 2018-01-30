@@ -3,35 +3,39 @@
 class ExamsTimetable {
     constructor() {
         this.table = $("table.dados:not(.mapa)");
+        this.exams = new Array(this.table.length);
     }
 
     attachIfPossible() {
         if (this.table) {
-            let saveBtn = $('<a class="calendarBtn" title="Save this To your Calendar">📆</a>');
-            this.table.before(saveBtn);
-            saveBtn.click((e) => {
-                this.exams = this.exams == undefined ? this.getEvents() : this.exams;
-                handleEvents(this, this.exams.events);
+            this.table.each((index, table) => {
+                table = $(table);
+                let saveBtn = $('<a class="calendarBtn" title="Save this To your Calendar">📆</a>');
+                table.before(saveBtn);
+                saveBtn.click((e) => {
+                    this.exams[index] = this.exams[index] == undefined ? this.getEvents(index) : this.exams[index];
+                    handleEvents(this, this.exams[index].events);
+                });
             });
         }
     }
 
-    getEvents() {
+    getEvents(index) {
         return {
             info: jTry(() => {
-                    return $(this.table.parents("table")[0]).prev("h3").html().split(" ")[0];
+                    return $(this.table.eq(index).parents("table")[0]).prev("h3").html().split(" ")[0];
                 },
                 "Exam"),
-            events: this.table.parseExamTable()
+            events: this.table.eq(index).parseExamTable()
         };
     }
 
     getName(event) {
-        return `[${event.subject.acronym}] - ${this.exams.info} - ${event.location}`;
+        return `[${event.subject.acronym}] - ${event.location}`;
     }
 
     getDescription(event) {
-        return `<h3>${this.exams.info} ${event.subject.name} [${event.subject.acronym}]</h3>${getAnchor("Subject:", event.subject.url, event.subject.name)}`;
+        return `<h3>Exam ${event.subject.name} [${event.subject.acronym}]</h3>${getAnchor("Exam page:", event.subject.url, event.subject.name)}<br>${event.info}`;
     }
 
     static getEvent(day, exameTd) {
@@ -42,13 +46,17 @@ class ExamsTimetable {
         let end = new Date(day.getTime());
         end = end.setHoursMinutes(hours, 1);
         //get other variables from the html
-        let rooms = exameTd.find("span.exame-sala").text();
         let subjectInfo = exameTd.find("a:first-child()");
         return {
             from: start,
             to: end,
-            location: rooms,
+            location: jTry(() => {
+                return exameTd.find("span.exame-sala").text();
+            }, "(No Room)"),
             download: false,
+            info: jTry(() => {
+                return encodeURIComponent(exameTd.closest("table:not(.dados)").prev("h3").html());
+            }, "Exam"),
             subject: {
                 name: encodeURIComponent(subjectInfo.attr("title")),
                 acronym: subjectInfo.text(),
