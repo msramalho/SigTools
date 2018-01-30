@@ -74,7 +74,7 @@ Here's the general flow of this extension:
 
 
 ### Performance
-It was developed to be as intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
+It was developed to be as non-intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
 
 
 #### A thanks to...
