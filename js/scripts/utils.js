@@ -29,8 +29,7 @@ Date.prototype.setHoursMinutes = function (daysMinutes, index) {
  * @returns new date after operation
  */
 Date.prototype.toGCalendar = function () {
-    return this.toISOString().replace(/(-)|(\:)/g, "").split(".")[0];
-    // return `${this.getFullYear()}${this.getMonth()}${this.getDay()}T${this.getHours()}${this.getMinutes()}00`;
+    return this.toISOString().replace(/(-)|(\:)/g, "").split(".")[0] + "Z";
 };
 
 /**

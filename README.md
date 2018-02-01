@@ -101,3 +101,7 @@ You can contribute by:
     - Fixed exam pages with wrong exam dates
  - V1.3
     - Fixed problem in the encoding of html (both on the download and direct links)
+ - V1.4
+    - Fixed Timetable bug in the first occurence of a subject that does not start at 8h30. Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
+    - Fixed GMT problems in chrome import - by using ZULU time
+    - Noticed that moodle extractor **only** has information on the day (and not time) of the event
