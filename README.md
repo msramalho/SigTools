@@ -1,5 +1,5 @@
 
-**Important Note:** Since some bugs were found and fixed, an updated version of the extension on the webstore had to be submited, if you don't have the most current version (**1.4**) see how to manually update it [here](https://gadgets.ndtv.com/apps/features/how-to-manually-update-google-chrome-extensions-661907). You can also look at the [Changelog](https://github.com/msramalho/SigToCa#changelog) to see the improvements made.
+**Important Note:** Since some bugs were found and fixed, an updated version of the extension on the webstore had to be submited, if you don't have the most current version (**1.5**) see how to manually update it [here](https://gadgets.ndtv.com/apps/features/how-to-manually-update-google-chrome-extensions-661907). You can also look at the [Changelog](https://github.com/msramalho/SigToCa#changelog) to see the improvements made.
 
 <p align="center">
  <a href="https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme">
@@ -107,3 +107,7 @@ You can contribute by:
     - Fixed Timetable bug in the first occurence of a subject that does not start at 8h30. Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
     - Fixed GMT problems in chrome import - by using ZULU time
     - Noticed that moodle extractor **only** has information on the day (and not time) of the event
+ - V1.5
+    - Adapted to sigarra (fuzzy) way of using classes in tables for the exam extractor
+    - Only displat exam tables if they have at least one event
+    - Make one-click link (for the timetable extractor) obbey recurrence of events specified in the page (previously the event was non-recurring even if it actually was). Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
