@@ -71,7 +71,7 @@ function createModal(extractor, events, repeat) {
     modal.find(".sig_eventsList li a").each((index, a) => {
         $(a).click((e)=>{
             e.preventDefault();
-            window.open((eventToGCalendar(extractor, events[index])).replace(/\s/g, "%20"), "_blank");
+            window.open((eventToGCalendar(extractor, events[index], repeat)).replace(/\s/g, "%20"), "_blank");
         });
     });
 
