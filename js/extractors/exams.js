@@ -11,7 +11,6 @@ class ExamsTimetable {
             this.table.each((index, table) => {
                 table = $(table);
                 this.exams[index] = this.exams[index] == undefined ? this.getEvents(index) : this.exams[index];
-                console.log(this.exams[index]);
                 if (this.exams[index].events.length != 0) {
                     let saveBtn = $('<a class="calendarBtn" title="Save this To your Calendar">📆</a>');
                     table.before(saveBtn);
