@@ -111,3 +111,4 @@ You can contribute by:
     - Adapted to sigarra (fuzzy) way of using classes in tables for the exam extractor
     - Only displat exam tables if they have at least one event
     - Make one-click link (for the timetable extractor) obbey recurrence of events specified in the page (previously the event was non-recurring even if it actually was). Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
+    - Icons have been properly defined in the manifest
