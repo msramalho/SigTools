@@ -100,9 +100,9 @@ You can contribute by:
  - V1.1
     - Multiple exam tables on the same page support
  - V1.2
-    - Fixed exam pages with wrong exam dates
+    - Fixed exam pages with wrong exam dates. Thanks to [@G-Pereira](https://github.com/G-Pereira)
  - V1.3
-    - Fixed problem in the encoding of html (both on the download and direct links)
+    - Fixed problem in the encoding of html (both on the download and direct links). Thanks to [@G-Pereira](https://github.com/G-Pereira)
  - V1.4
     - Fixed Timetable bug in the first occurence of a subject that does not start at 8h30. Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
     - Fixed GMT problems in chrome import - by using ZULU time
