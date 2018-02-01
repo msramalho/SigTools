@@ -114,11 +114,13 @@ $.prototype.tableToEvents = function (fromDate) {
         let day = this[i];
         let counter = 1; //count the number of blocks this class takes
         for (let j = 2; j < day.length; j++) { //ignore the first row with day names, start at two to see previous
-            if ((day[j] != day[j - 1] || j == day.length - 1) && (j <= 0 || day[j - 1].length > 0)) { //if this event stops toDay and is not empty or if its the last event of the day and is not empty
+            if ((day[j] != day[j - 1] || j == day.length - 1) && (day[j - 1].length > 0)) { //if this event stops toDay and is not empty or if its the last event of the day and is not empty
                 events.push(getClass(day[j - 1], i, this[0][j - counter], this[0][j - 1], fromDate));
                 counter = 1;
             } else if (day[j] == day[j - 1]) {
                 counter += 1;
+            }else if(day[j] != day[j - 1]){
+                counter = 1;
             }
         }
     }
