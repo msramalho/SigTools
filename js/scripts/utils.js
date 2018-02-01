@@ -64,7 +64,7 @@ function daydiff(first, second) {
  */
 function eventToGCalendar(extractor, event) {
     return (
-        `https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event)}&location=${event.location}&details=${extractor.getDescription(event)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event)}&sprop=website:${"https://github.com/msramalho/SigToCa"}`);
+        `https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigToCa"}`);
     return res;
 }
 
@@ -90,7 +90,7 @@ function jTry(command, defaultValue) {
  * @param {*} text the url text description
  */
 function getAnchor(title, href, text) {
-    if (href != undefined && !href.includes("undefined") && !text.includes("undefined")) return `${title} <a href="${encodeURIComponent(href)}">${text}</a><br/>`;
+    if (href != undefined && !href.includes("undefined") && !text.includes("undefined")) return `${title} <a href="${href}">${text}</a><br/>`;
     else if (text != undefined && !text.includes("undefined")) return `${title} ${text}<br/>`;
     return "";
 }

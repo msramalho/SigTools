@@ -99,3 +99,5 @@ You can contribute by:
     - Multiple exam tables on the same page support
  - V1.2
     - Fixed exam pages with wrong exam dates
+ - V1.3
+    - Fixed problem in the encoding of html (both on the download and direct links)
