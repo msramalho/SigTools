@@ -37,7 +37,7 @@ class MoodleEvent {
 
     static getEvent(eventTd) {
         let anchor = eventTd.find("a");
-        let d = new Date(parseFloat(anchor[0].href.match(/time=(\d+)/)[1]));
+        let d = new Date(1000 * parseFloat(anchor[0].href.match(/time=(\d+)/)[1]));
         return {
             name: anchor.text(),
             type: jTry(() => {
