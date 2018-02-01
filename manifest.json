@@ -1,11 +1,11 @@
 {
 	"manifest_version": 2,
 	"name": "Sigarra To Calendar",
-	"short_name": "SigToCal",
-	"version": "1.1",
+	"short_name": "SigToCa",
+	"version": "1.2",
 	"description": "Sigarra To Calendar - Automatically add Sigarra Timetables to your Calendar Apps",
 	"browser_action": {
-		"default_title": "SigToCal",
+		"default_title": "SigToCa",
 		"default_icon": "icons/icon.png"
 	},
 	"content_scripts": [{
