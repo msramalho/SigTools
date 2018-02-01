@@ -43,15 +43,15 @@ Automatically add Sigarra Timetables to your Calendar Apps (using *.ics* format 
 
 ## Instructions
 Here's the general flow of this extension:
- 1. Navigate to any Sigarra (Moodle) page with a timetable and, if it is recognized by SigToCal, a blue button (📆) will appear next to the table 
+ 1. Navigate to any Sigarra (Moodle) page with a timetable and, if it is recognized by SigToCa, a blue button (📆) will appear next to the table
  2. Click that button and choose, from the list of detected events, the ones you want to save
  3. Click the Download button and an *.ics* file will be downloaded to your computer
  4. Go to your calendar app and upload that file to any calendar and that's it!
 
 **OR**
  1. Same but where you see the Google Calendar button (<img src="https://github.com/msramalho/SigToCa/blob/master/icons/gcalendar.png" width="24"/>) you can click it to add that event directly to your Google Calendar on the browser.
- 
- 
+
+
 **Important**: This extension not only identifies the events in the page but, in the case of recurring events like classes, generates the *.ics* file in accordance to the time range specified in the page!
 
 ### Prints

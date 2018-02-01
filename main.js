@@ -32,7 +32,7 @@ function createModal(extractor, events, repeat) {
     let modal =
         `<div id="sig_eventsModal">
             <div class="sig_modalBody">
-                <h1>SigToCal</h1>
+                <h1>SigToCa</h1>
                 <h2>Select the events you want to download:</h2>
                 <ul class="sig_eventsList">
                     ${eventsHtml}
