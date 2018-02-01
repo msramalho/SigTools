@@ -91,3 +91,11 @@ You can contribute by:
  - Fixing bugs - fork + branch + pull request
  - Adding more [modules/extractors](https://github.com/msramalho/SigToCa/tree/master/js/extractors) each module should address a different calendar need
  - Sharing this Extension
+
+# Changelog
+ - V1.0
+    - MVP, timetable + exams + mooodle
+ - V1.1
+    - Multiple exam tables on the same page support
+ - V1.2
+    - Fixed exam pages with wrong exam dates
