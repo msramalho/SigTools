@@ -2,7 +2,7 @@
 "use strict";
 class ExamsTimetable {
     constructor() {
-        this.table = $("table.dados:not(.mapa)");
+        this.table = $("table.dados:not(.mapa)").add("table.dadossz:not(.mapa)");
         this.exams = new Array(this.table.length);
     }
 
@@ -10,12 +10,15 @@ class ExamsTimetable {
         if (this.table) {
             this.table.each((index, table) => {
                 table = $(table);
-                let saveBtn = $('<a class="calendarBtn" title="Save this To your Calendar">📆</a>');
-                table.before(saveBtn);
-                saveBtn.click((e) => {
-                    this.exams[index] = this.exams[index] == undefined ? this.getEvents(index) : this.exams[index];
-                    handleEvents(this, this.exams[index].events);
-                });
+                this.exams[index] = this.exams[index] == undefined ? this.getEvents(index) : this.exams[index];
+                console.log(this.exams[index]);
+                if (this.exams[index].events.length != 0) {
+                    let saveBtn = $('<a class="calendarBtn" title="Save this To your Calendar">📆</a>');
+                    table.before(saveBtn);
+                    saveBtn.click((e) => {
+                        handleEvents(this, this.exams[index].events);
+                    });
+                }
             });
         }
     }
