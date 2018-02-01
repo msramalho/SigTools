@@ -4,9 +4,14 @@
 	"short_name": "SigToCa",
 	"version": "1.5",
 	"description": "Sigarra To Calendar - Automatically add Sigarra Timetables to your Calendar Apps",
+	"icons": {
+		"16": "icons/icon-16.png",
+		"48": "icons/icon-48.png",
+		"128": "icons/icon-128.png"
+	},
 	"browser_action": {
 		"default_title": "SigToCa",
-		"default_icon": "icons/icon.png"
+		"default_icon": "icons/icon-48.png"
 	},
 	"content_scripts": [{
 		"matches": ["https://*.up.pt/*hor_geral*", "https://*.up.pt/*HOR_GERAL*"],
