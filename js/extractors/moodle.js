@@ -11,18 +11,27 @@ class MoodleEvent {
             $(td).attr("data-core_calendar-popupcontent", newPopupContent);
         });
     }
-    static getName(event) {
+
+    static convertToURI(original) {
+        let event = jQuery.extend(true, {}, original);
+        event.url = encodeURIComponent(event.url);
+        return event;
+    }
+
+    static getName(event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
         return `${event.name} (${event.type})`;
     }
 
-    static getDescription(event) {
+    static getDescription(event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
         return `<h3>${event.name} (${event.type})</h3>${getAnchor("Link:", event.url, "moodle")}`;
     }
 
     static getNewDiv(div, event) {
         return `
         ${div.find("img")[0].outerHTML}
-        <a class="sig_moodleCalendar" href="${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
+        <a class="sig_moodleCalendar" href="#" onclick="window.open(decodeURI('${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}'));" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
         ${div.find("a")[0].outerHTML}`;
     }
 

@@ -30,11 +30,21 @@ class ExamsTimetable {
         };
     }
 
-    getName(event) {
+    convertToURI(original) {
+        let event = jQuery.extend(true, {}, original);
+        event.subject.name = encodeURIComponent(event.subject.name);
+        event.info = encodeURIComponent(event.info);
+        event.subject.url = encodeURIComponent(event.subject.url);
+        return event;
+    }
+
+    getName(event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
         return `[${event.subject.acronym}] - ${event.location}`;
     }
 
-    getDescription(event) {
+    getDescription(event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
         return `<h3>Exam ${event.subject.name} [${event.subject.acronym}]</h3>${getAnchor("Exam page:", event.subject.url, event.subject.name)}<br>${event.info}`;
     }
 
@@ -55,10 +65,10 @@ class ExamsTimetable {
             }, "(No Room)"),
             download: false,
             info: jTry(() => {
-                return encodeURIComponent(exameTd.closest("table:not(.dados)").prev("h3").html());
+                return exameTd.closest("table:not(.dados)").prev("h3").html();
             }, "Exam"),
             subject: {
-                name: encodeURIComponent(subjectInfo.attr("title")),
+                name: subjectInfo.attr("title"),
                 acronym: subjectInfo.text(),
                 url: subjectInfo[0].href
             }
