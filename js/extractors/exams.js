@@ -72,10 +72,13 @@ $.prototype.parseExamTable = function () {
 
     this.find("> tbody > tr > th").each((rowIndex, row) => { //iterate each th
         let date = new Date($(row).find("span.exame-data").text());
-        let correspTable = this.find(`tbody > tr > td > table.dados.mapa:eq(${rowIndex})`);
-        correspTable.find("td.exame").each((exameIndex, exameTd) => {
-            exams.push(ExamsTimetable.getEvent(date, $(exameTd)));
-        });
+        let correspTr = this.find(`tbody > tr > td.l.k:eq(${rowIndex})`);
+        let correspTable = correspTr.find("table.dados.mapa");
+        if (correspTable != undefined) {
+            correspTable.find("td.exame").each((exameIndex, exameTd) => {
+                exams.push(ExamsTimetable.getEvent(date, $(exameTd)));
+            });
+        }
     });
 
     return exams;
