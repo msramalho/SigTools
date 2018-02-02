@@ -1,5 +1,5 @@
 
-**Important Note:** Since some bugs were found and fixed, an updated version of the extension on the webstore had to be submited, if you don't have the most current version (**1.5**) see how to manually update it [here](https://gadgets.ndtv.com/apps/features/how-to-manually-update-google-chrome-extensions-661907). You can also look at the [Changelog](https://github.com/msramalho/SigToCa#changelog) to see the improvements made.
+**Important Note:** Since some bugs were found and fixed, an updated version of the extension on the webstore had to be submited, if you don't have the most current version (**1.6**) see how to manually update it [here](https://gadgets.ndtv.com/apps/features/how-to-manually-update-google-chrome-extensions-661907). You can also look at the [Changelog](https://github.com/msramalho/SigToCa#changelog) to see the improvements made.
 
 <p align="center">
  <a href="https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme">
@@ -112,3 +112,5 @@ You can contribute by:
     - Only displat exam tables if they have at least one event
     - Make one-click link (for the timetable extractor) obbey recurrence of events specified in the page (previously the event was non-recurring even if it actually was). Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
     - Icons have been properly defined in the manifest
+ - V1.6
+    - Fixed date parsing in text string like "Semanas de X a Y", most likely to appear in POST requests to https://sigarra.up.pt/feup/pt/hor_geral.estudantes_view (when there is no side-table with the time intervals)
