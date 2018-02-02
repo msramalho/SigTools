@@ -12,6 +12,7 @@ Automatically add Sigarra Timetables to your Calendar Apps (using *.ics* format 
 
 ### Install via:
  - [WebStore](https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme)
+ - [Add-on for Firefox](https://addons.mozilla.org/en-US/firefox/addon/sigarra-to-calendar/) Thanks a bunch to [@afonsobspinto](https://github.com/afonsobspinto)
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
  - From [.crx](https://github.com/msramalho/SigToCa/blob/master/extra/SigToCa.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
 
