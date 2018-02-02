@@ -29,8 +29,8 @@ class ClassesTimetable {
             $("h3").each((index, h3) => {
                 if ($(h3).text().includes("Semanas de ")) {
                     let parts = $(h3).text().replace(" ", "").match(/(\d+-\d+-\d+)/g);
-                    lifetimeFrom = textToDate(parts[0].replace("-", ""));
-                    lifetimeTo = textToDate(parts[1].replace("-", ""));
+                    lifetimeFrom = textToDate2(parts[0]);
+                    lifetimeTo = textToDate2(parts[1]);
                 }
             });
         }

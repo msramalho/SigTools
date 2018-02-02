@@ -33,8 +33,8 @@ Date.prototype.toGCalendar = function () {
 };
 
 /**
- * convert year/month/day string into a date variable
- * @param {string} text format: year/month/day
+ * convert YearMonthDay string into a date variable
+ * @param {string} text format: YearMonthDay
  * @returns new date after operation
  */
 function textToDate(text) {
@@ -43,6 +43,14 @@ function textToDate(text) {
         Number(text.substr(4, 2)) - 1,
         Number(text.substr(6, 2))
     );
+}
+/**
+ * convert day-month-year string into a date variable
+ * @param {string} text format: day-month-year
+ * @returns new date after operation
+ */
+function textToDate2(text) {
+    return new Date(text.split("-").reverse().join("-"));
 }
 
 /**
