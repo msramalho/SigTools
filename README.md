@@ -104,13 +104,13 @@ You can contribute by:
  - V1.3
     - Fixed problem in the encoding of html (both on the download and direct links). Thanks to [@G-Pereira](https://github.com/G-Pereira)
  - V1.4
-    - Fixed Timetable bug in the first occurence of a subject that does not start at 8h30. Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
+    - Fixed Timetable bug in the first occurrence of a subject that does not start at 8h30. Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
     - Fixed GMT problems in chrome import - by using ZULU time
     - Noticed that moodle extractor **only** has information on the day (and not time) of the event
  - V1.5
     - Adapted to sigarra (fuzzy) way of using classes in tables for the exam extractor
     - Only displat exam tables if they have at least one event
-    - Make one-click link (for the timetable extractor) obbey recurrence of events specified in the page (previously the event was non-recurring even if it actually was). Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
+    - Make one-click link (for the timetable extractor) obey recurrence of events specified in the page (previously the event was non-recurring even if it actually was). Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
     - Icons have been properly defined in the manifest
  - V1.6
     - Fixed date parsing in text string like "Semanas de X a Y", most likely to appear in POST requests to https://sigarra.up.pt/feup/pt/hor_geral.estudantes_view (when there is no side-table with the time intervals)
