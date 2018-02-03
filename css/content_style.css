@@ -86,6 +86,7 @@ a#sig_downloadIcs {
     display: list-item;
     width: 20px;
     height: 20px;
+    margin: 0px 2px;
 }
 
 .calendarIconMoodle{
