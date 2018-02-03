@@ -74,7 +74,18 @@ function eventToGCalendar(extractor, event, repeat) {
     let recur = "";
     if (repeat) recur = `&recur=RRULE:FREQ=${repeat.freq};UNTIL=${(new Date(repeat.until)).toGCalendar()}`;
     return (
-        `https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigToCa"}${recur}`);
+        `https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigToCa"}${recur}`);
+}
+
+/**
+ * return a URL for adding events to Outlook.com
+ * @param {Extractor} extractor class that implements getName and getDescription from the event
+ * @param {event object} event needs to have (at least) {from, to, location, download}
+ * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
+ */
+function eventToOutlookCalendar(extractor, event, repeat) {
+    var data = `&startdt=${event.from.toGCalendar()}&enddt=${event.to.toGCalendar()}&subject=${extractor.getName(event, true)}&location=${event.location}&body=${extractor.getDescription(event, true, true)}`;
+    return 'https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent' + data;
 }
 
 /**

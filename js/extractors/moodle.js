@@ -23,15 +23,25 @@ class MoodleEvent {
         return `${event.name} (${event.type})`;
     }
 
-    static getDescription(event, forUrl) {
+    /**
+     * 
+     * @param {*} event 
+     * @param {*} forUrl 
+     * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted 
+     */
+    static getDescription(event, forUrl, noHTML) {
         if (forUrl) event = this.convertToURI(event);
-        return `<h3>${event.name} (${event.type})</h3>${getAnchor("Link:", event.url, "moodle")}`;
+        if(noHTML) 
+            return `${event.name} (${event.type})%0ALink:${event.url}`; //%0A is a new line encoded
+        else 
+            return `<h3>${event.name} (${event.type})</h3>${getAnchor("Link:", event.url, "moodle")}`;
     }
 
     static getNewDiv(div, event) {
         return `
         ${div.find("img")[0].outerHTML}
         <a class="sig_moodleCalendar" href="#" onclick="window.open(decodeURI('${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}'));" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
+        <a class="sig_moodleCalendar" href="#" onclick="window.open(decodeURI('${encodeURI(eventToOutlookCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}'));" title="Add this single event to your Outlook.com Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="outlook calendar icon" src="${chrome.extension.getURL("icons/outlook.png")}"/></a>
         ${div.find("a")[0].outerHTML}`;
     }
 
