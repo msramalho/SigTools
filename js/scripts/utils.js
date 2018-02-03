@@ -103,3 +103,23 @@ function getAnchor(title, href, text) {
     else if (text != undefined && !text.includes("undefined")) return `${title} ${text}<br/>`;
     return "";
 }
+
+/**
+ * Return the index of the day in the week, for portugues days - Monday is 1
+ * @param {String} day
+ */
+function getPtDayOfWeek(day) {
+    return ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"].indexOf(day.trim().toLowerCase());
+}
+
+/**
+ * Extends jquery to return text of element without the text of any nested elements
+ */
+jQuery.fn.selfText = function () {
+    return this
+        .clone() //clone the element
+        .children() //select all the children
+        .remove() //remove all the children
+        .end() //again go back to selected element
+        .text();
+};

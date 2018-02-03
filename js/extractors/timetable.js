@@ -34,10 +34,17 @@ class ClassesTimetable {
                 }
             });
         }
+        let events = $(table).tableToEvents(lifetimeFrom);
+        if (this.table.parent("div").next("div").find("table.dados th[colspan=6]")[0] != undefined) {
+            //if there is a table for overlaping classes
+            this.table.parent("div").next("div").find("table.dados tr.d").each((trIndex, tr) => {
+                events.push(getOverlapingClass(tr.innerHTML, lifetimeFrom, events)); //could send only events prior to this if, but no real impact
+            });
+        }
         return {
             from: lifetimeFrom,
             to: lifetimeTo,
-            events: $(table).tableToEvents(lifetimeFrom)
+            events: events
         };
     }
 
@@ -119,7 +126,7 @@ $.prototype.tableToEvents = function (fromDate) {
                 counter = 1;
             } else if (day[j] == day[j - 1]) {
                 counter += 1;
-            }else if(day[j] != day[j - 1]){
+            } else if (day[j] != day[j - 1]) {
                 counter = 1;
             }
         }
@@ -133,6 +140,7 @@ $.prototype.tableToEvents = function (fromDate) {
  * @param {integer} dayOfWeek from 1 to 6 (Monday to Saturday)
  * @param {string} from eg. 08:30 - 09:00
  * @param {string} to eg. 10:30 - 11:00
+ * @param {Date} the date of the first Sunday
  */
 function getClass(html, dayOfWeek, from, to, firstSunday) {
     if (html == "") return {};
@@ -157,7 +165,7 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
             return cell.find("b a").html();
         }, ""),
         type: jTry(() => {
-            return cell.find("b").text().match(/\((.+)\)/)[1];
+            return getClassType(cell.find("b").text());
         }, ""),
         from: eventFrom,
         to: eventTo,
@@ -193,6 +201,97 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
         },
         download: true
     };
+}
+
+/**
+ * Get an object with all the class information (time, teacher, room, ...) from the table cell html
+ * @param {string} html the content of the cell in the timetable
+ * @param {Date} the date of the first Sunday
+ * @param {list of events} previousEvents to use to find the most probable duration of the class from the know ones
+ */
+function getOverlapingClass(html, firstSunday, previousEvents) {
+    if (html == "") return {};
+
+    //variables that simplify selection
+    let cell = $("<table>" + html + "</table>");
+    let roomAnchor = cell.find('[headers="t4"] a');
+    let teacherAnchor = cell.find('[headers="t5"] a');
+    let classAnchor = cell.find('[headers="t6"] a');
+    let t1 = cell.find('[headers="t1"]');
+    let acronym = t1.find("a").text();
+
+    //time management variables
+    let eventFrom = new Date(firstSunday.getTime());
+    eventFrom = eventFrom.addDays(getPtDayOfWeek(cell.find('[headers="t2"]').text())); //monday adds 1 day to sunday and so on
+    eventFrom = eventFrom.setHoursMinutes(`${cell.find('[headers="t3"]').text()} - `, 0); //split from and set those as the date hours and minutes, reuse the function for getClass
+    let eventTo = new Date(eventFrom.getTime() + getMostProbableDuration(acronym, previousEvents));
+    return {
+        name: jTry(() => {
+            return t1.find("acronym").attr("title");
+        }, "No NAme"),
+        acronym: acronym,
+        type: jTry(() => {
+            return getClassType(t1.selfText().trim());
+        }, ""),
+        from: eventFrom,
+        to: eventTo,
+        class: {
+            name: jTry(() => {
+                    return classAnchor.text();
+                }, ""),
+                url: jTry(() => {
+                    return classAnchor[0].href;
+                }, ""),
+        },
+        location: jTry(() => {
+            return roomTd.text(); // duplicate information due to modular approach
+        }, ""),
+        room: {
+            name: jTry(() => {
+                return roomAnchor.text();
+            }, ""),
+            url: jTry(() => {
+                return roomAnchor[0].href;
+            }, ""),
+        },
+        teacher: {
+            name: jTry(() => {
+                return teacherAnchor.attr("title");
+            }, teacherAnchor.text()),
+            acronym: jTry(() => {
+                return teacherAnchor.text();
+            }, "No Teacher"),
+            url: jTry(() => {
+                return teacherAnchor[0].href;
+            }, "")
+        },
+        download: true,
+        overlap: true
+    };
+}
+
+/**
+ * return the most probable duration of event with Acronym acronym by looking for it in events, if none is found it prompts the user for the value, throws an error if the user cancels the prompt
+ * @param {string} acronym
+ * @param {array of events} events
+ * @returns duration in milliseconds,
+ */
+function getMostProbableDuration(acronym, events) {
+    events.forEach(event => {
+        if (event.acronym == acronym)
+            return event.to - event.from;
+    });
+    return Number(prompt(`An overlaping class was found and there is no information about it's duration. Please insert its duration in minutes (class ${acronym}):`, 120)) * 60 * 1000; //60 * 60 * 1000;
+}
+
+
+/**
+ * get the type of a class, enclosed in parentheses
+ * @param {String} str in the format: "(TYPE)"
+ * @returns TYPE
+ */
+function getClassType(str) {
+    return str.match(/\((.+)\)/)[1];
 }
 
 //init on include
