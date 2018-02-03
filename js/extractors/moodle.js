@@ -38,7 +38,6 @@ class MoodleEvent {
     }
 
     static getNewDiv(div, event) {
-        console.log(event);
         return `
         ${div.find("img")[0].outerHTML}
         <a class="sig_moodleCalendar" href="#" onclick="window.open(decodeURI('${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}'));" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
