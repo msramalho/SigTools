@@ -34,5 +34,6 @@
 	],
 	"web_accessible_resources": ["icons/*"],
 	"content_security_policy": "script-src 'self'; object-src 'self'",
-	"homepage_url": "https://github.com/msramalho/SigToCa"
+	"homepage_url": "https://github.com/msramalho/SigToCa",
+	"options_page": "options.html"
 }
