@@ -252,7 +252,7 @@ function getOverlapingClass(html, firstSunday) {
                 }, ""),
         },
         location: jTry(() => {
-            return roomTd.text(); // duplicate information due to modular approach
+            return roomAnchor.text(); // duplicate information due to modular approach
         }, ""),
         room: {
             name: jTry(() => {
