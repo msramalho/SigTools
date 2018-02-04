@@ -53,6 +53,7 @@ Here's the general flow of this extension:
 
 **OR**
  1. Same but where you see the Google Calendar button (<img src="https://github.com/msramalho/SigToCa/blob/master/icons/gcalendar.png" width="24"/>) you can click it to add that event directly to your Google Calendar on the browser.
+ 
 **OR**
  1. Same but where you see the Outlook.com button (<img src="https://github.com/msramalho/SigToCa/blob/master/icons/outlook.png" width="24"/>) you can click it to add that event directly to your Google Calendar on the browser.
 
