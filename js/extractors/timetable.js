@@ -38,7 +38,7 @@ class ClassesTimetable {
         if (this.table.parent("div").next("div").find("table.dados th[colspan=6]")[0] != undefined) {
             //if there is a table for overlaping classes
             this.table.parent("div").next("div").find("table.dados tr.d").each((trIndex, tr) => {
-                events.push(getOverlapingClass(tr.innerHTML, lifetimeFrom, events)); //could send only events prior to this if, but no real impact
+                events.push(getOverlapingClass(tr.innerHTML, lifetimeFrom)); //could send only events prior to this if, but no real impact
             });
         }
         return {
@@ -64,16 +64,16 @@ class ClassesTimetable {
     }
 
     /**
-     * 
-     * @param {*} event 
-     * @param {*} forUrl 
-     * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted 
+     *
+     * @param {*} event
+     * @param {*} forUrl
+     * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted
      */
     getDescription(event, forUrl, noHTML) {
         if (forUrl) event = this.convertToURI(event);
-        if (noHTML) 
+        if (noHTML)
             return `${event.name}%0A%0ARoom:${event.room.name}%0ATeacher(s):${event.teacher.name} (${event.teacher.acronym})%0AClass:${event.class.name}`; //%0A, new line encoded
-        else 
+        else
             return `<h3>${event.name}</h3>${getAnchor("Room:", event.room.url, event.room.name)}${getAnchor("Teacher(s):", event.teacher.url, `${event.teacher.name} (${event.teacher.acronym})`)}${getAnchor("Class:", event.class.url, event.class.name)}`;
     }
 }
@@ -216,9 +216,8 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
  * Get an object with all the class information (time, teacher, room, ...) from the table cell html
  * @param {string} html the content of the cell in the timetable
  * @param {Date} the date of the first Sunday
- * @param {list of events} previousEvents to use to find the most probable duration of the class from the know ones
  */
-function getOverlapingClass(html, firstSunday, previousEvents) {
+function getOverlapingClass(html, firstSunday) {
     if (html == "") return {};
 
     //variables that simplify selection
@@ -233,7 +232,7 @@ function getOverlapingClass(html, firstSunday, previousEvents) {
     let eventFrom = new Date(firstSunday.getTime());
     eventFrom = eventFrom.addDays(getPtDayOfWeek(cell.find('[headers="t2"]').text())); //monday adds 1 day to sunday and so on
     eventFrom = eventFrom.setHoursMinutes(`${cell.find('[headers="t3"]').text()} - `, 0); //split from and set those as the date hours and minutes, reuse the function for getClass
-    let eventTo = new Date(eventFrom.getTime() + getMostProbableDuration(acronym, previousEvents));
+    let eventTo = new Date(eventFrom.getTime() + getDurationFromUser(acronym));
     return {
         name: jTry(() => {
             return t1.find("acronym").attr("title");
@@ -253,7 +252,7 @@ function getOverlapingClass(html, firstSunday, previousEvents) {
                 }, ""),
         },
         location: jTry(() => {
-            return roomTd.text(); // duplicate information due to modular approach
+            return roomAnchor.text(); // duplicate information due to modular approach
         }, ""),
         room: {
             name: jTry(() => {
@@ -280,16 +279,11 @@ function getOverlapingClass(html, firstSunday, previousEvents) {
 }
 
 /**
- * return the most probable duration of event with Acronym acronym by looking for it in events, if none is found it prompts the user for the value, throws an error if the user cancels the prompt
+ * prompt the user for the class duration, since it is not present
  * @param {string} acronym
- * @param {array of events} events
  * @returns duration in milliseconds,
  */
-function getMostProbableDuration(acronym, events) {
-    events.forEach(event => {
-        if (event.acronym == acronym)
-            return event.to - event.from;
-    });
+function getDurationFromUser(acronym) {
     return Number(prompt(`An overlaping class was found and there is no information about it's duration. Please insert its duration in minutes (class ${acronym}):`, 120)) * 60 * 1000; //60 * 60 * 1000;
 }
 
