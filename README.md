@@ -1,5 +1,5 @@
 
-**Important Note:** Since some bugs were found and fixed, an updated version of the extension on the webstore had to be submited, if you don't have the most current version (**1.8**) see how to manually update it [here](https://gadgets.ndtv.com/apps/features/how-to-manually-update-google-chrome-extensions-661907). You can also look at the [Changelog](https://github.com/msramalho/SigToCa#changelog) to see the improvements made.
+**Important Note:** Since some bugs were found and fixed, an updated version of the extension on the webstore had to be submited, if you don't have the most current version (**1.8.1**) see how to manually update it [here](https://gadgets.ndtv.com/apps/features/how-to-manually-update-google-chrome-extensions-661907). You can also look at the [Changelog](https://github.com/msramalho/SigToCa#changelog) to see the improvements made.
 
 <p align="center">
  <a href="https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme">
@@ -120,3 +120,4 @@ You can contribute by:
  - V1.8
     - Minor updates on the overlaping classes
     - One-click Outlook.com integration for all extractors 🎉 (only for non-beta Outlook). All props go to [@fabiodrg666](https://github.com/fabiodrg666)
+    - .1 - bug fix in overlaping classes
