@@ -45,9 +45,12 @@ class ExamsTimetable {
         return `[${event.subject.acronym}] - ${event.location}`;
     }
 
-    getDescription(event, forUrl) {
+    getDescription(event, forUrl, noHTML) {
         if (forUrl) event = this.convertToURI(event);
-        return `<h3>Exam ${event.subject.name} [${event.subject.acronym}]</h3>${getAnchor("Exam page:", event.subject.url, event.subject.name)}<br>${event.info}`;
+        if(noHTML)
+            return `Exam ${event.subject.name} [${event.subject.acronym}]%0A%0AExam page:${event.subject.url}%0A${event.info}`;
+        else
+            return `<h3>Exam ${event.subject.name} [${event.subject.acronym}]</h3>${getAnchor("Exam page:", event.subject.url, event.subject.name)}<br>${event.info}`;
     }
 
     static getEvent(day, exameTd) {
