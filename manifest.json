@@ -30,7 +30,8 @@
 		"run_at": "document_end"
 	}],
 	"permissions": [
-		"https://*.up.pt/*"
+		"https://*.up.pt/*",
+		"storage"
 	],
 	"web_accessible_resources": ["icons/*"],
 	"content_security_policy": "script-src 'self'; object-src 'self'",
