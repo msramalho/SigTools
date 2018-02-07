@@ -113,7 +113,7 @@ You can contribute by:
     - Noticed that moodle extractor **only** has information on the day (and not time) of the event
  - V1.5
     - Adapted to sigarra (fuzzy) way of using classes in tables for the exam extractor
-    - Only displat exam tables if they have at least one event
+    - Only display exam tables if they have at least one event
     - Make one-click link (for the timetable extractor) obey recurrence of events specified in the page (previously the event was non-recurring even if it actually was). Thanks to [@sergioalmeida13](https://github.com/sergioalmeida13)
     - Icons have been properly defined in the manifest
  - V1.6
