@@ -37,3 +37,23 @@ function asyncGetExamsDescription() {
         }
     )
 }
+
+function asyncGetClassTitle() {
+    return new Promise(
+        function (resolve, reject) {
+            chrome.storage.local.get(null, (obj) => {                
+                resolve(obj.class_title === undefined ? "%name% (%type%)" : obj.class_title);
+            });
+        }
+    )
+}
+
+function asyncGetClassDescription() {
+    return new Promise(
+        function (resolve, reject) {
+            chrome.storage.local.get(null, (obj) => {                
+                resolve(obj.class_desc === undefined ? "%name% (%type%)" : obj.class_desc);
+            });
+        }
+    )
+}
