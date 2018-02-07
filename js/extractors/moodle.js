@@ -18,26 +18,15 @@ class MoodleEvent {
         return event;
     }
 
-    static getName(event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
-        return `${event.name} (${event.type})`;
-    }
-
     /**
      * 
      * @param {*} event 
      * @param {*} forUrl 
      * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted 
      */
-    static getDescription(event, forUrl, noHTML) {
-        if (forUrl) event = this.convertToURI(event);
-        if(noHTML) 
-            return `${event.name} (${event.type})%0ALink:${event.url}`; //%0A is a new line encoded
-        else 
-            return `<h3>${event.name} (${event.type})</h3>${getAnchor("Link:", event.url, "moodle")}`;
-    }
 
     static getNewDiv(div, event) {
+        console.log(encodeURI(eventToGCalendar(MoodleEvent, event)));
         return `
         ${div.find("img")[0].outerHTML}
         <a class="sig_moodleCalendar" href="#" onclick="window.open(decodeURI('${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}'));" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
@@ -63,4 +52,19 @@ class MoodleEvent {
 Object.setPrototypeOf(MoodleEvent.prototype, BaseExtractor);
 
 //init on include
-let extractorMoodleEvent = new MoodleEvent();
+Promise.all([asyncGetMoodleTitle(), asyncGetMoodleDescription()])
+.then(([nameF, descF]) => {
+    // define static methods getName and getDescription
+    MoodleEvent.getName = function (event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
+        return eval('`' + nameF + '`');
+    }
+
+    MoodleEvent.getDescription = function (event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
+        console.log(eval('`' + descF + '`'));
+        return eval('`' + descF + '`');
+    }
+
+    let extractorMoodleEvent = new MoodleEvent();
+})
