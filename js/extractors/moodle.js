@@ -26,8 +26,7 @@ class MoodleEvent {
      */
 
     static getNewDiv(div, event) {
-        console.log(encodeURI(eventToGCalendar(MoodleEvent, event)));
-        // Browsers ignore newlines on the URLs, they are ommited. Therefore, after encoding I encode all newlines
+        // Browsers ignore newlines on the URLs, they are ommited. Therefore, I encode all newlines
         var google = eventToGCalendar(MoodleEvent, event).replace(/\n/g, '%0A');
         var outlook = eventToOutlookCalendar(MoodleEvent, event).replace(/\n/g, '%0A');
         return `
@@ -70,14 +69,14 @@ Promise.all([asyncGetMoodleTitle(), asyncGetMoodleDescription()])
     MoodleEvent.getName = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
         
-        //In case some of the attributes is undefined, replace it with 'n/a'
+        //In case some of the attributes are undefined, replace it with 'n/a'
         return eval('`' + nameF + '`').replace("undefined", "n/a");
     }
 
     MoodleEvent.getDescription = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
         
-        //In case some of the attributes is undefined, replace it with 'n/a'
+        //In case some of the attributes are undefined, replace it with 'n/a'
         return eval('`' + descF + '`').replace("undefined", "n/a");
     }
 
