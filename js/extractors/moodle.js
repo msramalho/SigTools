@@ -27,10 +27,13 @@ class MoodleEvent {
 
     static getNewDiv(div, event) {
         console.log(encodeURI(eventToGCalendar(MoodleEvent, event)));
+        // Browsers ignore newlines on the URLs, they are ommited. Therefore, after encoding I encode all newlines
+        var google = decodeURI(`${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}`).replace(/\n/g, '%0A');
+        var outlook = decodeURI(`${encodeURI(eventToOutlookCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}`).replace(/\n/g, '%0A');
         return `
         ${div.find("img")[0].outerHTML}
-        <a class="sig_moodleCalendar" href="#" onclick="window.open(decodeURI('${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}'));" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
-        <a class="sig_moodleCalendar" href="#" onclick="window.open(decodeURI('${encodeURI(eventToOutlookCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}'));" title="Add this single event to your Outlook.com Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="outlook calendar icon" src="${chrome.extension.getURL("icons/outlook.png")}"/></a>
+        <a class="sig_moodleCalendar" href="#" onclick="window.open('${google}');" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
+        <a class="sig_moodleCalendar" href="#" onclick="window.open('${outlook}');" title="Add this single event to your Outlook.com Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="outlook calendar icon" src="${chrome.extension.getURL("icons/outlook.png")}"/></a>
         ${div.find("a")[0].outerHTML}`;
     }
 
@@ -54,16 +57,20 @@ Object.setPrototypeOf(MoodleEvent.prototype, BaseExtractor);
 //init on include
 Promise.all([asyncGetMoodleTitle(), asyncGetMoodleDescription()])
 .then(([nameF, descF]) => {
-    // define static methods getName and getDescription
+    // define the static methods getName and getDescription
+
     MoodleEvent.getName = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
-        return eval('`' + nameF + '`');
+        
+        //In case some of the attributes is undefined, replace it with 'n/a'
+        return eval('`' + nameF + '`').replace("undefined", "n/a");
     }
 
     MoodleEvent.getDescription = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
-        console.log(eval('`' + descF + '`'));
-        return eval('`' + descF + '`');
+        
+        //In case some of the attributes is undefined, replace it with 'n/a'
+        return eval('`' + descF + '`').replace("undefined", "n/a");
     }
 
     let extractorMoodleEvent = new MoodleEvent();
