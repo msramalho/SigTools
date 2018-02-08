@@ -28,12 +28,20 @@ class MoodleEvent {
     static getNewDiv(div, event) {
         console.log(encodeURI(eventToGCalendar(MoodleEvent, event)));
         // Browsers ignore newlines on the URLs, they are ommited. Therefore, after encoding I encode all newlines
-        var google = decodeURI(`${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}`).replace(/\n/g, '%0A');
-        var outlook = decodeURI(`${encodeURI(eventToOutlookCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}`).replace(/\n/g, '%0A');
+        var google = eventToGCalendar(MoodleEvent, event).replace(/\n/g, '%0A');
+        var outlook = eventToOutlookCalendar(MoodleEvent, event).replace(/\n/g, '%0A');
         return `
         ${div.find("img")[0].outerHTML}
-        <a class="sig_moodleCalendar" href="#" onclick="window.open('${google}');" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
-        <a class="sig_moodleCalendar" href="#" onclick="window.open('${outlook}');" title="Add this single event to your Outlook.com Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="outlook calendar icon" src="${chrome.extension.getURL("icons/outlook.png")}"/></a>
+        <a  class="sig_moodleCalendar" href="#" 
+            onclick="window.open('${google}');" 
+            title="Add this single event to your Google Calendar in One click!">
+                <img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/>
+        </a>
+        <a  class="sig_moodleCalendar" href="#" 
+            onclick="window.open('${outlook}');" 
+            title="Add this single event to your Outlook Calendar in One click!">
+                <img class="calendarIconMoodle smallicon" alt="outlook calendar icon" src="${chrome.extension.getURL("icons/outlook.png")}"/>
+        </a>
         ${div.find("a")[0].outerHTML}`;
     }
 
