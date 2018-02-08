@@ -1,81 +1,98 @@
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script defer src="js/scripts/options.js"></script>
 	<script src="js/scripts/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/options.css">
 </head>
 
 <body>
-	<h1>Moodle format</h1>
-	<h3>Parameters</h3>
-	<ul>
-		<li>
-			<i>name</i> - The event title</li>
-		<li>
-			<i>type</i> - The type of event</li>
-		<li>
-			<i>url</i> - An URL for the event on Moodle page</li>
-	</ul>
-	<p>Title:
-		<input id="moodle_title" type="text"></input>
-	</p>
-	<p>Description:
-		<textarea id="moodle_desc"></textarea>
-	</p>
-	<h1>Classes format</h1>
-	<ul>
-		<li>
-			<i>name</i> - The class name</li>
-		<li>
-			<i>room.name</i> - The room's name</li>
-		<li>
-			<i>room.url</i>
-		</li>
-		<li>
-			<i>class.name</i>
-		</li>
-		<li>
-			<i>class.url</i>
-		</li>
-		<li>
-			<i>teacher.name</i>
-		</li>
-		<li>
-			<i>teacher.url</i>
-		</li>
-		<li>
-			<i>teacher.acronym</i>
-		</li>
-	</ul>
-	<p>Title:
-		<input type="text"></input>
-	</p>
-	<p>Description:
-		<input type="text"></input>
-	</p>
-	<h1>Exams format</h1>
-	<ul>
-		<li>
-			<i>subject.name</i> - The class name</li>
-		<li>
-			<i>subject.acronym</i> - The room's name</li>
-		<li>
-			<i>subject.url</i>
-		</li>
-		<li>
-			<i>subject.name</i>
-		</li>
-		<li>
-			<i>info</i>
-		</li>
-		<li>
-			<i>location</i>
-		</li>
-	</ul>
 
-	<p>Title:
-		<input type="text"></input>
-	</p>
-	<p>Description:
-		<input type="text"></input>
-	</p>
+	<div>
+		<div class="formatDiv">
+			<h1>Moodle format</h1>
+			<h3>Parameters</h3>
+			<ul>
+				<li>
+					<i>${event.name}</i> - The event title</li>
+				<li>
+					<i>${event.type}</i> - The type of event</li>
+				<li>
+					<i>${event.url}</i> - An URL for the event on Moodle page</li>
+			</ul>
+			<h3>Format</h3>
+			<p>Title:
+				<input id="moodle_title" type="text"></input>
+			</p>
+			<p>Description:
+				<textarea id="moodle_desc"></textarea>
+			</p>
+		</div>
+	
+		<div class="formatDiv">
+			<h1>Classes format</h1>
+			<h3>Parameters</h3>
+			<ul>
+				<li>
+					<i>name</i> - The class name</li>
+				<li>
+					<i>room.name</i> - The room's name</li>
+				<li>
+					<i>room.url</i>
+				</li>
+				<li>
+					<i>class.name</i>
+				</li>
+				<li>
+					<i>class.url</i>
+				</li>
+				<li>
+					<i>teacher.name</i>
+				</li>
+				<li>
+					<i>teacher.url</i>
+				</li>
+				<li>
+					<i>teacher.acronym</i>
+				</li>
+			</ul>
+			<h3>Format</h3>
+			<p>Title:
+				<input type="text"></input>
+			</p>
+			<p>Description:
+				<input type="text"></input>
+			</p>
+		</div>
+	
+		<div class="formatDiv">
+			<h1>Exams format</h1>
+			<ul>
+				<li>
+					<i>subject.name</i> - The class name</li>
+				<li>
+					<i>subject.acronym</i> - The room's name</li>
+				<li>
+					<i>subject.url</i>
+				</li>
+				<li>
+					<i>subject.name</i>
+				</li>
+				<li>
+					<i>info</i>
+				</li>
+				<li>
+					<i>location</i>
+				</li>
+			</ul>
+	
+			<p>Title:
+				<input type="text"></input>
+			</p>
+			<p>Description:
+				<input type="text"></input>
+			</p>	
+		</div>
+	</div>
+
 	<button id="btn_save">Save</button>
 </body>

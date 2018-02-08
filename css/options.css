@@ -1,0 +1,7 @@
+.formatDiv {
+    display: inline-block;
+    width: 33%;
+    min-width: 300px;
+    vertical-align: top;
+    height: 100%;
+}
