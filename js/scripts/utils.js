@@ -84,10 +84,10 @@ function eventToGCalendar(extractor, event, repeat) {
  * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
  */
 function eventToOutlookCalendar(extractor, event, repeat) {
-    var data = `&startdt=${event.from.toGCalendar()}&enddt=${event.to.toGCalendar()}
-    &subject=${extractor.getName(event, true)}
-    &location=${event.location}
-    &body=${extractor.getDescription(event, true, true)}`;
+    var data = `&startdt=${event.from.toGCalendar()}&enddt=${event.to.toGCalendar()}` +
+    `&subject=${extractor.getName(event, true)}` +
+    `&location=${event.location}` +
+    `&body=${extractor.getDescription(event, true, true)}`;
 
     return 'https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent' + data;
 }
