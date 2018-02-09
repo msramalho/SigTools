@@ -27,10 +27,8 @@ class MoodleEvent {
 
     static getNewDiv(div, event) {
         // Browsers ignore newlines on the URLs, they are ommited. Therefore, I encode all newlines
-        var google = encodeURI(eventToGCalendar(MoodleEvent, event).replace(/\n/g, '%0A'));
-        console.log(google);
-        console.log(decodeURI(google));
-        var outlook = encodeURI(eventToOutlookCalendar(MoodleEvent, event).replace(/\n/g, '%0A'));
+        var google = encodeURI(eventToGCalendar(MoodleEvent, event));//.replace(/\n/g, '%0A'));
+        var outlook = encodeURI(eventToOutlookCalendar(MoodleEvent, event));//.replace(/\n/g, '%0A'));
         return `
         ${div.find("img")[0].outerHTML}
         <a  class="sig_moodleCalendar" href="#" 
