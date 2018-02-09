@@ -1,3 +1,45 @@
+* {
+    box-sizing: border-box;
+}
+
+/* For small views */
+[class*="col-"] {
+    width: 100%;
+}
+
+/* For widths larger than 600 px */
+@media only screen and (min-width: 600px) {
+    .col-1 {
+        width:100%;
+        float:left;
+    }
+    .col-2 {
+        width:50%;
+        float:left;
+    }
+    .col-3 {
+        width:50%;
+        float:left;
+    }
+}
+
+/* For widths larger than 900 px */
+@media only screen and (min-width: 900px) {
+    .col-1 {
+        width:100%;
+        float:left;
+    }
+    .col-2 {
+        width:50%;
+        float:left;
+    }
+    .col-3 {
+        width:33%;
+        float:left;
+    }
+}
+
+
 .mainDiv {
     display: inline-block;
     width: 33%;
