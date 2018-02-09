@@ -11,17 +11,22 @@
 
 /* For widths larger than 600 px */
 @media only screen and (min-width: 600px) {
-    .col-a1 {
+    .col-a1 > ul, .col-a2 > ul {
+        height: 140px;
+    }
+
+    .col-a1, .col-a2 {
         width:50%;
         float:left;
     }
-    .col-a2 {
-        width:50%;
-        float:left;
-    }
+
     .col-a3 {
         width:100%;
         float:none;
+    }
+
+    .col-a3 + ul {
+        height: auto;
     }
 }
 
@@ -39,6 +44,10 @@
         width:33%;
         float:left;
     }
+
+    ul {
+        height: 140px;
+    }
 }
 
 .row::after {
@@ -54,9 +63,8 @@
 .formatDiv textarea {
     resize: none;
     width: 100%;
-    height: 150px;
+    height: 100px;
     box-sizing: border-box;
-    margin: 0px 5px;
 }
 
 .formatDiv span {

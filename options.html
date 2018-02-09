@@ -11,13 +11,13 @@
 		<div class="col-a1 col-b1">
 			<h1>Moodle format</h1>
 			<h3>Parameters</h3>
-			<ul>
+			<ul heigth="140px">
 				<li>
-					<i>${event.name}</i> - The event title</li>
+					<i>${name}</i> - The event title</li>
 				<li>
-					<i>${event.type}</i> - The type of event</li>
+					<i>${type}</i> - The type of event</li>
 				<li>
-					<i>${event.url}</i> - An URL for the event on Moodle page</li>
+					<i>${url}</i> - An URL for the event on Moodle page</li>
 			</ul>
 			<h3>Format</h3>
 			<div class="formatDiv">
@@ -31,63 +31,64 @@
 		<div class="col-a2 col-b2">
 			<h1>Classes format</h1>
 			<h3>Parameters</h3>
-			<ul>
+			<ul heigth="140px">
 				<li>
-					<i>name</i> - The class name</li>
+					<i>${name}</i> - The class name</li>
 				<li>
-					<i>room.name</i> - The room's name</li>
+					<i>${room.name}</i> - The room's name</li>
 				<li>
-					<i>room.url</i>
+					<i>${room.url}</i>
 				</li>
 				<li>
-					<i>class.name</i>
+					<i>${class.name}</i>
 				</li>
 				<li>
-					<i>class.url</i>
+					<i>${class.url}</i>
 				</li>
 				<li>
-					<i>teacher.name</i>
+					<i>${teacher.name}</i>
 				</li>
 				<li>
-					<i>teacher.url</i>
+					<i>${teacher.url}</i>
 				</li>
 				<li>
-					<i>teacher.acronym</i>
+					<i>${teacher.acronym}</i>
 				</li>
 			</ul>
 			<h3>Format</h3>
-			<p>Title:
-				<input type="text"></input>
-			</p>
-			<p>Description:
-				<input type="text"></input>
-			</p>
+			<div class="formatDiv">
+				<span>Title:</span>
+				<input id="class_title" type="text"></input>
+				<span>Description:</span>
+				<textarea id="class_desc"></textarea>
+			</div>
 		</div>
 	
 		<div class="col-a3 col-b3">
 			<h1>Exams format</h1>
-			<ul>
+			<h3>Parameters</h3>
+			<ul heigth="140px">
 				<li>
-					<i>subject.name</i> - The class name</li>
+					<i>${subject.name}</i> - The class name</li>
 				<li>
-					<i>subject.acronym</i> - The room's name</li>
+					<i>${subject.acronym}</i> - The room's name</li>
 				<li>
-					<i>subject.url</i>
+					<i>${subject.url}</i>
 				</li>
 				<li>
-					<i>info</i>
+					<i>${info}</i>
 				</li>
 				<li>
-					<i>location</i>
+					<i>${location}</i>
 				</li>
 			</ul>
-	
-			<p>Title:
-				<input type="text"></input>
-			</p>
-			<p>Description:
-				<input type="text"></input>
-			</p>	
+			<h3>Format</h3>
+			<div class="formatDiv">
+				<span>Title:</span>
+				<input id="exam_title" type="text"></input>
+				<span>Description:</span>
+				<textarea id="exam_desc"></textarea>
+			</div>
 		</div>
 	</div>
 
