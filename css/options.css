@@ -5,47 +5,46 @@
 /* For small views */
 [class*="col-"] {
     width: 100%;
+    padding: 2px 10px;
+    display: inline-block;
 }
 
 /* For widths larger than 600 px */
 @media only screen and (min-width: 600px) {
-    .col-1 {
+    .col-a1 {
+        width:50%;
+        float:left;
+    }
+    .col-a2 {
+        width:50%;
+        float:left;
+    }
+    .col-a3 {
         width:100%;
-        float:left;
-    }
-    .col-2 {
-        width:50%;
-        float:left;
-    }
-    .col-3 {
-        width:50%;
-        float:left;
+        float:none;
     }
 }
 
 /* For widths larger than 900 px */
 @media only screen and (min-width: 900px) {
-    .col-1 {
-        width:100%;
+    .col-b1 {
+        width:33%;
         float:left;
     }
-    .col-2 {
-        width:50%;
+    .col-b2 {
+        width:33%;
         float:left;
     }
-    .col-3 {
+    .col-b3 {
         width:33%;
         float:left;
     }
 }
 
-
-.mainDiv {
-    display: inline-block;
-    width: 33%;
-    min-width: 300px;
-    vertical-align: top;
-    height: 100%;
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
 }
 
 .formatDiv {
