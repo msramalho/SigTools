@@ -57,25 +57,25 @@ class ClassesTimetable {
         event.class.url = encodeURIComponent(event.class.url);
         return event;
     }
+    
+    // getName(event, forUrl) {
+    //     if (forUrl) event = this.convertToURI(event);
+    //     return `[${event.acronym}] - ${event.type} - ${event.room.name}`;
+    // }
 
-    getName(event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
-        return `[${event.acronym}] - ${event.type} - ${event.room.name}`;
-    }
-
-    /**
-     * 
-     * @param {*} event 
-     * @param {*} forUrl 
-     * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted 
-     */
-    getDescription(event, forUrl, noHTML) {
-        if (forUrl) event = this.convertToURI(event);
-        if (noHTML) 
-            return `${event.name}%0A%0ARoom:${event.room.name}%0ATeacher(s):${event.teacher.name} (${event.teacher.acronym})%0AClass:${event.class.name}`; //%0A, new line encoded
-        else 
-            return `<h3>${event.name}</h3>${getAnchor("Room:", event.room.url, event.room.name)}${getAnchor("Teacher(s):", event.teacher.url, `${event.teacher.name} (${event.teacher.acronym})`)}${getAnchor("Class:", event.class.url, event.class.name)}`;
-    }
+    // /**
+    //  * 
+    //  * @param {*} event 
+    //  * @param {*} forUrl 
+    //  * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted 
+    //  */
+    // getDescription(event, forUrl, noHTML) {
+    //     if (forUrl) event = this.convertToURI(event);
+    //     if (noHTML) 
+    //         return `${event.name}%0A%0ARoom:${event.room.name}%0ATeacher(s):${event.teacher.name} (${event.teacher.acronym})%0AClass:${event.class.name}`; //%0A, new line encoded
+    //     else 
+    //         return `<h3>${event.name}</h3>${getAnchor("Room:", event.room.url, event.room.name)}${getAnchor("Teacher(s):", event.teacher.url, `${event.teacher.name} (${event.teacher.acronym})`)}${getAnchor("Class:", event.class.url, event.class.name)}`;
+    // }
 }
 Object.setPrototypeOf(ClassesTimetable.prototype, BaseExtractor);
 
@@ -298,5 +298,27 @@ function getClassType(str) {
 }
 
 //init on include
-let extractorClassesTimetable = new ClassesTimetable();
-extractorClassesTimetable.attachIfPossible();
+Promise.all([asyncGetClassTitle(), asyncGetClassDescription()])
+.then(([nameF, descF]) => {
+    // define the static methods getName and getDescription
+
+    MoodleEvent.getName = function (event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
+        nameF = parseStrFormat(nameF, "class");
+
+        //In case some of the attributes are undefined, replace it with 'n/a'
+        return eval('`' + nameF + '`').replace("undefined", "n/a");
+    }
+
+    MoodleEvent.getDescription = function (event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
+        
+        descF = parseStrFormat(descF, "class");
+        
+        //In case some of the attributes are undefined, replace it with 'n/a'
+        return eval('`' + descF + '`').replace("undefined", "n/a");
+    }
+
+    let extractorClassesTimetable = new ClassesTimetable();
+    extractorClassesTimetable.attachIfPossible();
+})
