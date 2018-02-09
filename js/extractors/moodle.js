@@ -68,13 +68,16 @@ Promise.all([asyncGetMoodleTitle(), asyncGetMoodleDescription()])
 
     MoodleEvent.getName = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
-        
+        nameF = parseStrFormat(nameF, "moodle");
+
         //In case some of the attributes are undefined, replace it with 'n/a'
         return eval('`' + nameF + '`').replace("undefined", "n/a");
     }
 
     MoodleEvent.getDescription = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
+        
+        descF = parseStrFormat(descF, "moodle");
         
         //In case some of the attributes are undefined, replace it with 'n/a'
         return eval('`' + descF + '`').replace("undefined", "n/a");

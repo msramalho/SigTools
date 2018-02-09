@@ -138,3 +138,34 @@ jQuery.fn.selfText = function () {
         .end() //again go back to selected element
         .text();
 };
+
+/**
+ * Parses a string that represents a format for event's title and description
+ * @param {*} str The string to be parsed
+ * @param {*} type Specifies the formatted string kind. 'moodle', 'exam' or 'class'
+ */
+function parseStrFormat(str, type) {
+    if(type == "moodle") {
+        return str.replace("${name}", "${event.name}")
+                .replace("${type}", "${event.type}")
+                .replace("${url}", "${event.url}");
+    }
+    else if(type == "exam") {
+        return str.replace("${subject.name}", "${event.subject.name}")
+                .replace("${subject.acronym}", "${event.subject.acronym}")
+                .replace("${subject.url}", "${event.subject.url}")
+                .replace("${location}", "${event.location}")
+                .replace("${info}", "${event.info}");
+    }
+    else if(type == "class") {
+        return str.replace("${name}", "${event.name}")
+                .replace("${room.name}", "${event.room.name}")
+                .replace("${room.url}", "${event.room.url}")
+                .replace("${class.name}", "${event.class.name}")
+                .replace("${class.url}", "${event.class.url}")
+                .replace("${teacher.name}", "${event.teacher.name}")
+                .replace("${teacher.url}", "${event.teacher.url}")
+                .replace("${teacher.acronym}", "${event.teacher.acronym}");
+    }
+    else return NULL;
+}
