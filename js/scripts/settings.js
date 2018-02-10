@@ -4,7 +4,8 @@ function asyncGetMoodle() {
             chrome.storage.local.get(null, (obj) => {                
                 resolve({
                     title: obj.moodle_title,
-                    desc: obj.moodle_desc
+                    desc: obj.moodle_desc,
+                    isHTML: obj.isHTML
                 });
             });
         }

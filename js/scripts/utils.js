@@ -171,3 +171,38 @@ function parseStrFormat(str, type) {
     }
     else return NULL;
 }
+
+/**
+ * Returns an element object <a> for OneClick feature with a <img> child
+ * @param {*} class_atr_a The class for <a> element
+ * @param {*} class_atr_img The class for <img> child element
+ * @param {*} service 'google' || 'outlook'. This is used to set the title and icon
+ * @param {*} url
+ */
+function generateOneClickDOM(class_atr_a, class_atr_img, service, url) {
+    var a = document.createElement("a");
+    var img = document.createElement("img");
+    
+    // set class
+    a.className = class_atr_a;
+    img.className = class_atr_img;
+    
+    // set title and append an <img>
+    if(service == "google") {
+        a.setAttribute("title", "Add this single event to your Google Calendar in One click!");
+        img.setAttribute("alt", "google calendar icon");
+        img.setAttribute("src", `${chrome.extension.getURL("icons/gcalendar.png")}`);
+    }
+    else if(service == "outlook") {
+        a.setAttribute("title", "Add this single event to your Outlook Calendar in One click!");
+        img.setAttribute("alt", "outlook calendar icon");
+        img.setAttribute("src", `${chrome.extension.getURL("icons/outlook.png")}`);
+    }
+    a.appendChild(img);
+
+    // add event listener
+    a.setAttribute("onclick", `window.open('${url}');`);
+
+    console.log(a);
+    return a;
+}

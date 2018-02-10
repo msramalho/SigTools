@@ -26,21 +26,19 @@ class MoodleEvent {
      */
 
     static getNewDiv(div, event) {
-        // Browsers ignore newlines on the URLs, they are ommited. Therefore, I encode all newlines
-        var google = encodeURI(eventToGCalendar(MoodleEvent, event));//.replace(/\n/g, '%0A'));
-        var outlook = encodeURI(eventToOutlookCalendar(MoodleEvent, event));//.replace(/\n/g, '%0A'));
+        var google_url = eventToGCalendar(MoodleEvent, event);
+        var outlook_url = eventToOutlookCalendar(MoodleEvent, event);
+
+        // Browsers ignore newlines on the URLs, they are ommited. Therefore, I encode all newlines if formats are plain text
+        if(!MoodleEvent.isHTML) {
+            google_url = google_url.replace(/\n/g, '%0A');
+            outlook_url = outlook_url.replace(/\n/g, '%0A')
+        }
+        
         return `
         ${div.find("img")[0].outerHTML}
-        <a  class="sig_moodleCalendar" href="#" 
-            onclick="window.open(decodeURI('${google}').replace(/\\s/g, '%20'));" 
-            title="Add this single event to your Google Calendar in One click!">
-                <img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/>
-        </a>
-        <a  class="sig_moodleCalendar" href="#" 
-            onclick="window.open(decodeURI('${outlook}').replace(/\\s/g, '%20'));" 
-            title="Add this single event to your Outlook Calendar in One click!">
-                <img class="calendarIconMoodle smallicon" alt="outlook calendar icon" src="${chrome.extension.getURL("icons/outlook.png")}"/>
-        </a>
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url).outerHTML}
         ${div.find("a")[0].outerHTML}`;
     }
 
@@ -79,6 +77,8 @@ asyncGetMoodle()
         //In case some of the attributes are undefined, replace it with 'n/a'
         return eval('`' + parseStrFormat(moodle.desc, "moodle") + '`').replace("undefined", "n/a");
     }
+
+    MoodleEvent.isHTML = moodle.isHTML;
 
     let extractorMoodleEvent = new MoodleEvent();
 })
