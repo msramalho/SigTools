@@ -67,7 +67,7 @@
     box-sizing: border-box;
 }
 
-.formatDiv span {
+.formatDiv span, .formatDiv input[type="text"] {
     width: 100%;
     display: inline-block;
 }
