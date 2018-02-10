@@ -1,18 +1,11 @@
-function asyncGetMoodleTitle() {
+function asyncGetMoodle() {
     return new Promise(
         function (resolve, reject) {
             chrome.storage.local.get(null, (obj) => {                
-                resolve(obj.moodle_title === undefined ? "%name% (%type%)" : obj.moodle_title);
-            });
-        }
-    )
-}
-
-function asyncGetMoodleDescription() {
-    return new Promise(
-        function (resolve, reject) {
-            chrome.storage.local.get(null, (obj) => {                
-                resolve(obj.moodle_desc === undefined ? "%name% (%type%)" : obj.moodle_desc);
+                resolve({
+                    title: obj.moodle_title,
+                    desc: obj.moodle_desc
+                });
             });
         }
     )

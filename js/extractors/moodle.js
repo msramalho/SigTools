@@ -62,25 +62,22 @@ class MoodleEvent {
 Object.setPrototypeOf(MoodleEvent.prototype, BaseExtractor);
 
 //init on include
-Promise.all([asyncGetMoodleTitle(), asyncGetMoodleDescription()])
-.then(([nameF, descF]) => {
+asyncGetMoodle()
+.then((moodle) => {
     // define the static methods getName and getDescription
-
+    console.log(moodle);
     MoodleEvent.getName = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
-        nameF = parseStrFormat(nameF, "moodle");
 
         //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + nameF + '`').replace("undefined", "n/a");
+        return eval('`' + parseStrFormat(moodle.title, "moodle") + '`').replace("undefined", "n/a");
     }
 
     MoodleEvent.getDescription = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
-        
-        descF = parseStrFormat(descF, "moodle");
-        
+
         //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + descF + '`').replace("undefined", "n/a");
+        return eval('`' + parseStrFormat(moodle.desc, "moodle") + '`').replace("undefined", "n/a");
     }
 
     let extractorMoodleEvent = new MoodleEvent();
