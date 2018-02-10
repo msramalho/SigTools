@@ -7,11 +7,19 @@ class stringFormats {
         chrome.storage.local.get(null, (obj) => {
             console.log(obj);
             
-            this.moodle_title = (obj.moodle_title === undefined ? "%name% (%type%)" : obj.moodle_title);
-            this.moodle_desc = (obj.moodle_desc === undefined ? "%name% (%type%)\nlink:%link%" : obj.moodle_desc);
-
+            this.moodle_title = obj.moodle_title;
+            this.moodle_desc = obj.moodle_desc;
+            this.exam_title = obj.exam_title;
+            this.exam_desc = obj.exam_desc;
+            this.class_title = obj.class_title;
+            this.class_desc = obj.class_desc;
+            // load stuff
             $("#moodle_title").val(this.moodle_title);
             $("#moodle_desc").val(this.moodle_desc);
+            $("#exam_title").val(this.exam_title);
+            $("#exam_desc").val(this.exam_desc);
+            $("#class_title").val(this.class_title);
+            $("#class_desc").val(this.class_desc);
         });
     }
 
