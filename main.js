@@ -21,6 +21,7 @@ function handleEvents(extractor, events, from, to) {
 function createModal(extractor, events, repeat) {
     let eventsHtml = "";
     for (let i = 0; i < events.length; i++) {
+        console.log(extractor);
         eventsHtml += `
         <li>
             <input type="checkbox" id="event_${i}" ${events[i].download?"checked":""}>
