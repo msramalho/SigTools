@@ -12,7 +12,7 @@
 /* For widths larger than 600 px */
 @media only screen and (min-width: 600px) {
     .col-a1 > ul, .col-a2 > ul {
-        height: 160px;
+        height: 140px;
     }
 
     .col-a1, .col-a2 {
