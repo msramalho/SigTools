@@ -85,7 +85,7 @@ $("#btn_save").click(function() {
     options.classTitle = $("#class_title").val();
     options.classDescription = $("#class_desc").val();
     options.examTitle = $("#exam_title").val();
-    options.classDescription = $("#exam_desc").val();
+    options.examDescription = $("#exam_desc").val();
 
     console.log(options);
     // Update chrome.storage
