@@ -13,6 +13,7 @@ class stringFormats {
             this.exam_desc = obj.exam_desc;
             this.class_title = obj.class_title;
             this.class_desc = obj.class_desc;
+            
             // load stuff
             $("#moodle_title").val(this.moodle_title);
             $("#moodle_desc").val(this.moodle_desc);
@@ -24,10 +25,13 @@ class stringFormats {
     }
 
     saveFormats() {   
-        console.log(this.moodle_desc);
         var settings = {
             moodle_desc: this.moodle_desc,
-            moodle_title: this.moodle_title
+            moodle_title: this.moodle_title,
+            exam_title: this.exam_title,
+            exam_desc: this.exam_desc,
+            class_title: this.class_title,
+            class_desc: this.class_desc
         }
         chrome.storage.local.set(settings);
     }
@@ -53,20 +57,37 @@ class stringFormats {
     set moodleDescription(desc) {
         this.moodle_desc = desc;
     }
+
+    set classTitle(title) {
+        this.class_title = title;
+    }
+
+    set classDescription(desc) {
+        this.class_desc = desc;
+    }
+
+    set examTitle(title) {
+        this.exam_title = title;
+    }
+
+    set examDescription(desc) {
+        this.exam_desc = desc;
+    }
 }
 
 var options = new stringFormats();
+
 // add onclick event for 'Save' button
 $("#btn_save").click(function() {
-    // Load text from HTML elements
-    var m_title = $("#moodle_title").val();
-    var m_desc = $("#moodle_desc").val();
+    // Load text from HTML elements and store on object
+    options.moodleTitle = $("#moodle_title").val();
+    options.moodleDescription = $("#moodle_desc").val();
+    options.classTitle = $("#class_title").val();
+    options.classDescription = $("#class_desc").val();
+    options.examTitle = $("#exam_title").val();
+    options.classDescription = $("#exam_desc").val();
 
-    // Update class fields
-    options.moodleTitle = m_title;
-    options.moodleDescription = m_desc;
     console.log(options);
-
     // Update chrome.storage
     options.saveFormats();
 });

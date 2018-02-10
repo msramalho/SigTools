@@ -159,6 +159,8 @@ function parseStrFormat(str, type) {
     }
     else if(type == "class") {
         return str.replace("${name}", "${event.name}")
+                .replace("${acronym}", "${event.acronym}")
+                .replace("${type}", "${event.type}")
                 .replace("${room.name}", "${event.room.name}")
                 .replace("${room.url}", "${event.room.url}")
                 .replace("${class.name}", "${event.class.name}")
