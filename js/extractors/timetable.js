@@ -300,9 +300,9 @@ function getClassType(str) {
 //init on include
 Promise.all([asyncGetClassTitle(), asyncGetClassDescription()])
 .then(([nameF, descF]) => {
-    // define the static methods getName and getDescription
-
-    MoodleEvent.getName = function (event, forUrl) {
+    
+    // define the methods getName and getDescription
+    ClassesTimetable.prototype.getName = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
         nameF = parseStrFormat(nameF, "class");
 
@@ -310,7 +310,7 @@ Promise.all([asyncGetClassTitle(), asyncGetClassDescription()])
         return eval('`' + nameF + '`').replace("undefined", "n/a");
     }
 
-    MoodleEvent.getDescription = function (event, forUrl) {
+    ClassesTimetable.prototype.getDescription = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
         
         descF = parseStrFormat(descF, "class");
