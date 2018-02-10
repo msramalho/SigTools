@@ -50,3 +50,13 @@ function asyncGetClassDescription() {
         }
     )
 }
+
+function asyncGetIsHTML() {
+    return new Promise(
+        function (resolve, reject) {
+            chrome.storage.local.get(null, (obj) => {                
+                resolve(obj.isHTML);
+            });
+        }
+    )
+}

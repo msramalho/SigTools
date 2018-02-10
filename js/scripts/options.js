@@ -13,6 +13,7 @@ class stringFormats {
             this.exam_desc = obj.exam_desc;
             this.class_title = obj.class_title;
             this.class_desc = obj.class_desc;
+            this.isHTML = obj.isHTML;
             
             // load stuff
             $("#moodle_title").val(this.moodle_title);
@@ -21,6 +22,7 @@ class stringFormats {
             $("#exam_desc").val(this.exam_desc);
             $("#class_title").val(this.class_title);
             $("#class_desc").val(this.class_desc);
+            $("#chkbox_html").checked = this.isHTML;
         });
     }
 
@@ -31,7 +33,8 @@ class stringFormats {
             exam_title: this.exam_title,
             exam_desc: this.exam_desc,
             class_title: this.class_title,
-            class_desc: this.class_desc
+            class_desc: this.class_desc,
+            isHTML: this.isHTML
         }
         chrome.storage.local.set(settings);
     }
@@ -86,6 +89,7 @@ $("#btn_save").click(function() {
     options.classDescription = $("#class_desc").val();
     options.examTitle = $("#exam_title").val();
     options.examDescription = $("#exam_desc").val();
+    options.isHTML = $("#chkbox_html").checked;
 
     console.log(options);
     // Update chrome.storage
