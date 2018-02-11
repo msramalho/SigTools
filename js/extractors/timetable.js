@@ -298,25 +298,25 @@ function getClassType(str) {
 }
 
 //init on include
-Promise.all([asyncGetClassTitle(), asyncGetClassDescription()])
-.then(([nameF, descF]) => {
-    
+asyncGetClass()
+.then((classes) => {
     // define the methods getName and getDescription
     ClassesTimetable.prototype.getName = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
-        nameF = parseStrFormat(nameF, "class");
 
         //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + nameF + '`').replace("undefined", "n/a");
+        return eval('`' + parseStrFormat(classes.title, "class") + '`').replace("undefined", "n/a");
     }
 
     ClassesTimetable.prototype.getDescription = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
         
-        descF = parseStrFormat(descF, "class");
-        
         //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + descF + '`').replace("undefined", "n/a");
+        return eval('`' + parseStrFormat(classes.desc, "class") + '`').replace("undefined", "n/a");
+    }
+
+    ClassesTimetable.prototype.isHTML = function() {
+        return classes.isHTML;
     }
 
     let extractorClassesTimetable = new ClassesTimetable();

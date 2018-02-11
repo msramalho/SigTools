@@ -21,13 +21,14 @@ function handleEvents(extractor, events, from, to) {
 function createModal(extractor, events, repeat) {
     let eventsHtml = "";
     for (let i = 0; i < events.length; i++) {
-        console.log(extractor);
+        var google_url = eventToGCalendar(extractor, events[i], repeat);
+        var outlook_url = eventToOutlookCalendar(extractor, events[i], repeat);
         eventsHtml += `
         <li>
             <input type="checkbox" id="event_${i}" ${events[i].download?"checked":""}>
             <label for="event_${i}">${extractor.getName(events[i])}</label>
-            <span class="calendarLink"><a class="oneClickGoogle" title="Add this single event to your Google Calendar in One click!" ><img class="calendarIcon" src="${chrome.extension.getURL("icons/gcalendar.png")}"></a></span>
-            <span class="calendarLink"><a class="oneClickOutlook" title="Add this single event to your Outlook.com Calendar in One click!" ><img class="calendarIcon" src="${chrome.extension.getURL("icons/outlook.png")}"></a></span>
+            <span class="calendarLink">${generateOneClickDOM(null, "calendarIcon", "google", google_url, extractor.isHTML()).outerHTML}</span>
+            <span class="calendarLink">${generateOneClickDOM(null, "calendarIcon", "outlook", outlook_url, extractor.isHTML()).outerHTML}</span>
         </li>`;
     }
 
@@ -69,18 +70,6 @@ function createModal(extractor, events, repeat) {
     modal.find(".sig_overlay").click(() => {
         updateEvents(modal, events);
         clearModal();
-    });
-    modal.find(".sig_eventsList li a.oneClickGoogle").each((index, a) => {
-        $(a).click((e)=>{
-            e.preventDefault();
-            window.open((eventToGCalendar(extractor, events[index], repeat)).replace(/\s/g, "%20"), "_blank");
-        });
-    });
-    modal.find(".sig_eventsList li a.oneClickOutlook").each((index, a) => {
-        $(a).click((e)=>{
-            e.preventDefault();
-            window.open((eventToOutlookCalendar(extractor, events[index], repeat)).replace(/\s/g, "%20"), "_blank");
-        });
     });
 
 }
