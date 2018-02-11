@@ -200,13 +200,16 @@ function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html) {
         img.setAttribute("src", `${chrome.extension.getURL("icons/outlook.png")}`);
     }
     a.appendChild(img);
+    
+    // add href attribute to automatically set the pointer/cursor
+    a.setAttribute("href", "#");
 
     // add event listener
     if(html) 
         a.setAttribute("onclick", `window.open(decodeURI('${encodeURI(url)}').replace(/\\s/g, "%20"));`);
     else 
-        a.setAttribute("onclick", `window.open('${url.replace(/\\n/g, '%0A')}');`);
-    console.log(a);
+        a.setAttribute("onclick", `window.open('${url.replace(/\n/g, '%0A')}');`);
+    
     return a;
 }
 
