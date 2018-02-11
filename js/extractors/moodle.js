@@ -30,15 +30,11 @@ class MoodleEvent {
         var outlook_url = eventToOutlookCalendar(MoodleEvent, event);
 
         // Browsers ignore newlines on the URLs, they are ommited. Therefore, I encode all newlines if formats are plain text
-        if(!MoodleEvent.isHTML) {
-            google_url = google_url.replace(/\n/g, '%0A');
-            outlook_url = outlook_url.replace(/\n/g, '%0A')
-        }
-        
+
         return `
         ${div.find("img")[0].outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url).outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, MoodleEvent.isHTML).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, MoodleEvent.isHTML).outerHTML}
         ${div.find("a")[0].outerHTML}`;
     }
 

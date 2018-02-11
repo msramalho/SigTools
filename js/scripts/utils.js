@@ -174,12 +174,13 @@ function parseStrFormat(str, type) {
 
 /**
  * Returns an element object <a> for OneClick feature with a <img> child
- * @param {*} class_atr_a The class for <a> element
- * @param {*} class_atr_img The class for <img> child element
- * @param {*} service 'google' || 'outlook'. This is used to set the title and icon
- * @param {*} url
+ * @param {string} class_atr_a The class for <a> element
+ * @param {string} class_atr_img The class for <img> child element
+ * @param {string} service 'google' || 'outlook'. This is used to set the correct title and icon automatically
+ * @param {string} url
+ * @param {boolean} html URL's with inline html or with plain text require different encodings 
  */
-function generateOneClickDOM(class_atr_a, class_atr_img, service, url) {
+function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html) {
     var a = document.createElement("a");
     var img = document.createElement("img");
     
@@ -201,8 +202,11 @@ function generateOneClickDOM(class_atr_a, class_atr_img, service, url) {
     a.appendChild(img);
 
     // add event listener
-    a.setAttribute("onclick", `window.open('${url}');`);
-
+    if(html) 
+        a.setAttribute("onclick", `window.open(decodeURI('${encodeURI(url)}').replace(/\\s/g, "%20"));`);
+    else 
+        a.setAttribute("onclick", `window.open('${url.replace(/\\n/g, '%0A')}');`);
     console.log(a);
     return a;
 }
+

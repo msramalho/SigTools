@@ -22,7 +22,7 @@ class stringFormats {
             $("#exam_desc").val(this.exam_desc);
             $("#class_title").val(this.class_title);
             $("#class_desc").val(this.class_desc);
-            $("#chkbox_html").checked = this.isHTML;
+            $("#chkbox_html").attr("checked", this.isHTML);
         });
     }
 
@@ -89,7 +89,7 @@ $("#btn_save").click(function() {
     options.classDescription = $("#class_desc").val();
     options.examTitle = $("#exam_title").val();
     options.examDescription = $("#exam_desc").val();
-    options.isHTML = $("#chkbox_html").checked;
+    options.isHTML = document.querySelector("#chkbox_html").checked;
 
     console.log(options);
     // Update chrome.storage
