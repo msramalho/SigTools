@@ -33,8 +33,8 @@ class MoodleEvent {
 
         return `
         ${div.find("img")[0].outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, MoodleEvent.isHTML).outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, MoodleEvent.isHTML).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, MoodleEvent.isHTML()).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, MoodleEvent.isHTML()).outerHTML}
         ${div.find("a")[0].outerHTML}`;
     }
 
@@ -74,7 +74,9 @@ asyncGetMoodle()
         return eval('`' + parseStrFormat(moodle.desc, "moodle") + '`').replace("undefined", "n/a");
     }
 
-    MoodleEvent.isHTML = moodle.isHTML;
+    MoodleEvent.isHTML = function() {
+        return moodle.isHTML;
+    }
 
     let extractorMoodleEvent = new MoodleEvent();
 })
