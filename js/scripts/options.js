@@ -91,4 +91,5 @@ $("#btn_save").click(function() {
 
     // Update chrome.storage
     options.saveFormats();
+    alert('Refresh sigarra/moodle pages to apply changes');
 });
