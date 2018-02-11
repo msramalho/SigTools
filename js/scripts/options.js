@@ -5,8 +5,6 @@ class stringFormats {
     constructor() {
 
         chrome.storage.local.get(null, (obj) => {
-            console.log(obj);
-            
             this.moodle_title = obj.moodle_title;
             this.moodle_desc = obj.moodle_desc;
             this.exam_title = obj.exam_title;
@@ -91,7 +89,6 @@ $("#btn_save").click(function() {
     options.examDescription = $("#exam_desc").val();
     options.isHTML = document.querySelector("#chkbox_html").checked;
 
-    console.log(options);
     // Update chrome.storage
     options.saveFormats();
 });

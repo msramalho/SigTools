@@ -59,7 +59,6 @@ Object.setPrototypeOf(MoodleEvent.prototype, BaseExtractor);
 asyncGetMoodle()
 .then((moodle) => {
     // define the static methods getName and getDescription
-    console.log(moodle);
     MoodleEvent.getName = function (event, forUrl) {
         if (forUrl) event = this.convertToURI(event);
 
