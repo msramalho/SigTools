@@ -12,21 +12,15 @@ function asyncGetMoodle() {
     )
 }
 
-function asyncGetExamsTitle() {
+function asyncGetExam() {
     return new Promise(
         function (resolve, reject) {
             chrome.storage.local.get(null, (obj) => {                
-                resolve(obj.exam_title === undefined ? "%name% (%type%)" : obj.exam_title);
-            });
-        }
-    )
-}
-
-function asyncGetExamsDescription() {
-    return new Promise(
-        function (resolve, reject) {
-            chrome.storage.local.get(null, (obj) => {                
-                resolve(obj.exam_desc === undefined ? "%name% (%type%)" : obj.exam_desc);
+                resolve({
+                    title: obj.exam_title,
+                    desc: obj.exam_desc,
+                    isHTML: obj.isHTML
+                });
             });
         }
     )
