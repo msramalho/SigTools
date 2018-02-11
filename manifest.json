@@ -16,23 +16,29 @@
 	"content_scripts": [{
 		"matches": ["https://*.up.pt/*hor_geral*", "https://*.up.pt/*HOR_GERAL*"],
 		"css": ["css/content_style.css"],
-		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "main.js", "js/extractors/timetable.js"],
+		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "main.js", "js/scripts/settings.js", "js/extractors/timetable.js"],
 		"run_at": "document_end"
 	}, {
 		"matches": ["https://*.up.pt/*exa_geral*", "https://*.up.pt/*EXA_GERAL*"],
 		"css": ["css/content_style.css"],
-		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "main.js", "js/extractors/exams.js"],
+		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "main.js", "js/scripts/settings.js", "js/extractors/exams.js"],
 		"run_at": "document_end"
 	}, {
 		"matches": ["https://moodle.up.pt/*"],
 		"css": ["css/content_style.css"],
-		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "main.js", "js/extractors/moodle.js"],
+		"js": ["js/scripts/jquery.min.js", "js/scripts/utils.js", "js/scripts/ics.deps.min.js", "js/scripts/ics.min.js", "js/extractors/base.js", "main.js", "js/scripts/settings.js", "js/extractors/moodle.js"],
 		"run_at": "document_end"
 	}],
 	"permissions": [
-		"https://*.up.pt/*"
+		"https://*.up.pt/*",
+		"storage"
 	],
+	"background": {
+		"scripts": ["js/scripts/init.js"],
+		"persistent": false
+	},
 	"web_accessible_resources": ["icons/*"],
 	"content_security_policy": "script-src 'self'; object-src 'self'",
-	"homepage_url": "https://github.com/msramalho/SigToCa"
+	"homepage_url": "https://github.com/msramalho/SigToCa",
+	"options_page": "options.html"
 }

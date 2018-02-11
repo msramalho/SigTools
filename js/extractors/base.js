@@ -21,6 +21,13 @@ class BaseExtractor {
         return "";
     }
 
+    /** 
+     * returns true if description/name are html syntax. Otherwise, if textplain, returns false.
+    */
+    isHTML() {
+        return false;
+    }
+
     /**
      * returns an event object that matches the current extractor's format and context
      */
