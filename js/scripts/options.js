@@ -78,8 +78,7 @@ class stringFormats {
 
 var options = new stringFormats();
 
-// add onclick event for 'Save' button
-$("#btn_save").click(function() {
+function saveChanges() {
     // Load text from HTML elements and store on object
     options.moodleTitle = $("#moodle_title").val();
     options.moodleDescription = $("#moodle_desc").val();
@@ -91,5 +90,15 @@ $("#btn_save").click(function() {
 
     // Update chrome.storage
     options.saveFormats();
-    alert('Refresh sigarra/moodle pages to apply changes');
+    alert('Saved!\nPlease, Refresh sigarra/moodle pages to apply changes.');
+}
+// add onclick event for 'Save' button
+$("#btn_save").click(saveChanges);
+
+// intercept ctrl+s to save options
+$(window).bind('keydown', function(event) {
+    if ((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase() == 's') {
+        event.preventDefault();
+        saveChanges();
+    }
 });
