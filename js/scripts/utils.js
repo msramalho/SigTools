@@ -84,7 +84,11 @@ function eventToGCalendar(extractor, event, repeat) {
  * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
  */
 function eventToOutlookCalendar(extractor, event, repeat) {
-    var data = `&startdt=${event.from.toGCalendar()}&enddt=${event.to.toGCalendar()}&subject=${extractor.getName(event, true)}&location=${event.location}&body=${extractor.getDescription(event, true, true)}`;
+    var data = `&startdt=${event.from.toGCalendar()}&enddt=${event.to.toGCalendar()}` +
+    `&subject=${extractor.getName(event, true)}` +
+    `&location=${event.location}` +
+    `&body=${extractor.getDescription(event, true, true)}`;
+
     return 'https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent' + data;
 }
 
@@ -134,3 +138,78 @@ jQuery.fn.selfText = function() {
         .end() //again go back to selected element
         .text();
 };
+
+/**
+ * Parses a string that represents a format for event's title and description
+ * @param {*} str The string to be parsed
+ * @param {*} type Specifies the formatted string kind. 'moodle', 'exam' or 'class'
+ */
+function parseStrFormat(str, type) {
+    if(type == "moodle") {
+        return str.replace("${name}", "${event.name}")
+                .replace("${type}", "${event.type}")
+                .replace("${url}", "${event.url}");
+    }
+    else if(type == "exam") {
+        return str.replace("${subject.name}", "${event.subject.name}")
+                .replace("${subject.acronym}", "${event.subject.acronym}")
+                .replace("${subject.url}", "${event.subject.url}")
+                .replace("${location}", "${event.location}")
+                .replace("${info}", "${event.info}");
+    }
+    else if(type == "class") {
+        return str.replace("${name}", "${event.name}")
+                .replace("${acronym}", "${event.acronym}")
+                .replace("${type}", "${event.type}")
+                .replace("${room.name}", "${event.room.name}")
+                .replace("${room.url}", "${event.room.url}")
+                .replace("${class.name}", "${event.class.name}")
+                .replace("${class.url}", "${event.class.url}")
+                .replace("${teacher.name}", "${event.teacher.name}")
+                .replace("${teacher.url}", "${event.teacher.url}")
+                .replace("${teacher.acronym}", "${event.teacher.acronym}");
+    }
+    else return NULL;
+}
+
+/**
+ * Returns an element object <a> for OneClick feature with a <img> child
+ * @param {string} class_atr_a The class for <a> element
+ * @param {string} class_atr_img The class for <img> child element
+ * @param {string} service 'google' || 'outlook'. This is used to set the correct title and icon automatically
+ * @param {string} url
+ * @param {boolean} html URL's with inline html or with plain text require different encodings 
+ */
+function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html) {
+    var a = document.createElement("a");
+    var img = document.createElement("img");
+    
+    // set class
+    a.className = class_atr_a;
+    img.className = class_atr_img;
+    
+    // set title and append an <img>
+    if(service == "google") {
+        a.setAttribute("title", "Add this single event to your Google Calendar in One click!");
+        img.setAttribute("alt", "google calendar icon");
+        img.setAttribute("src", `${chrome.extension.getURL("icons/gcalendar.png")}`);
+    }
+    else if(service == "outlook") {
+        a.setAttribute("title", "Add this single event to your Outlook Calendar in One click!");
+        img.setAttribute("alt", "outlook calendar icon");
+        img.setAttribute("src", `${chrome.extension.getURL("icons/outlook.png")}`);
+    }
+    a.appendChild(img);
+    
+    // add href attribute to automatically set the pointer/cursor
+    a.setAttribute("href", "#");
+
+    // add event listener
+    if(html) 
+        a.setAttribute("onclick", `window.open(decodeURI('${encodeURI(url)}').replace(/\\s/g, "%20"));`);
+    else 
+        a.setAttribute("onclick", `window.open('${url.replace(/\n/g, '%0A')}');`);
+    
+    return a;
+}
+

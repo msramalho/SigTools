@@ -40,19 +40,6 @@ class ExamsTimetable {
         return event;
     }
 
-    getName(event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
-        return `[${event.subject.acronym}] - ${event.location}`;
-    }
-
-    getDescription(event, forUrl, noHTML) {
-        if (forUrl) event = this.convertToURI(event);
-        if(noHTML)
-            return `Exam ${event.subject.name} [${event.subject.acronym}]%0A%0AExam page:${event.subject.url}%0A${event.info}`;
-        else
-            return `<h3>Exam ${event.subject.name} [${event.subject.acronym}]</h3>${getAnchor("Exam page:", event.subject.url, event.subject.name)}<br>${event.info}`;
-    }
-
     static getEvent(day, exameTd) {
         //calculate the start and end times
         let hours = exameTd.html().match(/\d+:\d+-\d+:\d+/g)[0].replace("-", " - ");
@@ -100,7 +87,27 @@ $.prototype.parseExamTable = function () {
 };
 
 
+asyncGetExam()
+.then((exam) => {
+    ExamsTimetable.prototype.getName = function(event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
 
-//init on include
-let extractorExamsTimetable = new ExamsTimetable();
-extractorExamsTimetable.attachIfPossible();
+        //In case some of the attributes are undefined, replace it with 'n/a'
+        return eval('`' + parseStrFormat(exam.title, "exam") + '`').replace("undefined", "n/a");
+    }
+
+    ExamsTimetable.prototype.getDescription = function(event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
+
+        //In case some of the attributes are undefined, replace it with 'n/a'
+        return eval('`' + parseStrFormat(exam.desc, "exam") + '`').replace("undefined", "n/a");
+    }
+
+    ExamsTimetable.prototype.isHTML = function() {
+        return exam.isHTML;
+    }
+
+    //init on include
+    let extractorExamsTimetable = new ExamsTimetable();
+    extractorExamsTimetable.attachIfPossible();
+})
