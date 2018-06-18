@@ -19,10 +19,10 @@ class MoodleEvent {
     }
 
     /**
-     * 
-     * @param {*} event 
-     * @param {*} forUrl 
-     * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted 
+     *
+     * @param {*} event
+     * @param {*} forUrl
+     * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted
      */
 
     static getNewDiv(div, event) {
@@ -57,25 +57,25 @@ Object.setPrototypeOf(MoodleEvent.prototype, BaseExtractor);
 
 //init on include
 asyncGetMoodle()
-.then((moodle) => {
-    // define the static methods getName and getDescription
-    MoodleEvent.getName = function (event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
+    .then((moodle) => {
+        // define the static methods getName and getDescription
+        MoodleEvent.getName = function(event, forUrl) {
+            if (forUrl) event = this.convertToURI(event);
 
-        //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + parseStrFormat(moodle.title, "moodle") + '`').replace("undefined", "n/a");
-    }
+            //In case some of the attributes are undefined, replace it with 'n/a'
+            return eval('`' + parseStrFormat(moodle.title, "moodle") + '`').replace("undefined", "n/a");
+        }
 
-    MoodleEvent.getDescription = function (event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
+        MoodleEvent.getDescription = function(event, forUrl) {
+            if (forUrl) event = this.convertToURI(event);
 
-        //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + parseStrFormat(moodle.desc, "moodle") + '`').replace("undefined", "n/a");
-    }
+            //In case some of the attributes are undefined, replace it with 'n/a'
+            return eval('`' + parseStrFormat(moodle.desc, "moodle") + '`').replace("undefined", "n/a");
+        }
 
-    MoodleEvent.isHTML = function() {
-        return moodle.isHTML;
-    }
+        MoodleEvent.isHTML = function() {
+            return moodle.isHTML;
+        }
 
-    let extractorMoodleEvent = new MoodleEvent();
-})
+        let extractorMoodleEvent = new MoodleEvent();
+    })

@@ -57,11 +57,11 @@ class ClassesTimetable {
         event.class.url = encodeURIComponent(event.class.url);
         return event;
     }
-    
+
 }
 Object.setPrototypeOf(ClassesTimetable.prototype, BaseExtractor);
 
-$.prototype.parseTable = function (dupCols, dupRows, textMode) {
+$.prototype.parseTable = function(dupCols, dupRows, textMode) {
     if (dupCols === undefined) dupCols = false;
     if (dupRows === undefined) dupRows = false;
     if (textMode === undefined) textMode = false;
@@ -70,9 +70,9 @@ $.prototype.parseTable = function (dupCols, dupRows, textMode) {
         curr_x = 0,
         curr_y = 0;
 
-    this.find("> tbody > tr").each(function (row_idx, row) { //only the first instance of the table
+    this.find("> tbody > tr").each(function(row_idx, row) { //only the first instance of the table
         curr_y = 0;
-        $(" > td, > th", row).each(function (col_idx, col) {
+        $(" > td, > th", row).each(function(col_idx, col) {
             let rowspan = $(col).attr('rowspan') || 1;
             let colspan = $(col).attr('colspan') || 1;
             let content = $(col).html().replace(/&nbsp;/g, "") || "";
@@ -106,7 +106,7 @@ $.prototype.parseTable = function (dupCols, dupRows, textMode) {
     return columns;
 };
 
-$.prototype.tableToEvents = function (fromDate) {
+$.prototype.tableToEvents = function(fromDate) {
     let events = [];
     for (let i = 1; i < this.length; i++) { //ignore the first column, with times
         let day = this[i];
@@ -281,26 +281,26 @@ function getClassType(str) {
 
 //init on include
 asyncGetClass()
-.then((classes) => {
-    // define the methods getName and getDescription
-    ClassesTimetable.prototype.getName = function (event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
+    .then((classes) => {
+        // define the methods getName and getDescription
+        ClassesTimetable.prototype.getName = function(event, forUrl) {
+            if (forUrl) event = this.convertToURI(event);
 
-        //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + parseStrFormat(classes.title, "class") + '`').replace("undefined", "n/a");
-    }
+            //In case some of the attributes are undefined, replace it with 'n/a'
+            return eval('`' + parseStrFormat(classes.title, "class") + '`').replace("undefined", "n/a");
+        }
 
-    ClassesTimetable.prototype.getDescription = function (event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
-        
-        //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + parseStrFormat(classes.desc, "class") + '`').replace("undefined", "n/a");
-    }
+        ClassesTimetable.prototype.getDescription = function(event, forUrl) {
+            if (forUrl) event = this.convertToURI(event);
 
-    ClassesTimetable.prototype.isHTML = function() {
-        return classes.isHTML;
-    }
+            //In case some of the attributes are undefined, replace it with 'n/a'
+            return eval('`' + parseStrFormat(classes.desc, "class") + '`').replace("undefined", "n/a");
+        }
 
-    let extractorClassesTimetable = new ClassesTimetable();
-    extractorClassesTimetable.attachIfPossible();
-})
+        ClassesTimetable.prototype.isHTML = function() {
+            return classes.isHTML;
+        }
+
+        let extractorClassesTimetable = new ClassesTimetable();
+        extractorClassesTimetable.attachIfPossible();
+    })

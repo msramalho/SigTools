@@ -69,7 +69,7 @@ class ExamsTimetable {
 }
 Object.setPrototypeOf(ExamsTimetable.prototype, BaseExtractor);
 
-$.prototype.parseExamTable = function () {
+$.prototype.parseExamTable = function() {
     let exams = [];
 
     this.find("> tbody > tr > th").each((rowIndex, row) => { //iterate each th
@@ -88,26 +88,26 @@ $.prototype.parseExamTable = function () {
 
 
 asyncGetExam()
-.then((exam) => {
-    ExamsTimetable.prototype.getName = function(event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
+    .then((exam) => {
+        ExamsTimetable.prototype.getName = function(event, forUrl) {
+            if (forUrl) event = this.convertToURI(event);
 
-        //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + parseStrFormat(exam.title, "exam") + '`').replace("undefined", "n/a");
-    }
+            //In case some of the attributes are undefined, replace it with 'n/a'
+            return eval('`' + parseStrFormat(exam.title, "exam") + '`').replace("undefined", "n/a");
+        }
 
-    ExamsTimetable.prototype.getDescription = function(event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
+        ExamsTimetable.prototype.getDescription = function(event, forUrl) {
+            if (forUrl) event = this.convertToURI(event);
 
-        //In case some of the attributes are undefined, replace it with 'n/a'
-        return eval('`' + parseStrFormat(exam.desc, "exam") + '`').replace("undefined", "n/a");
-    }
+            //In case some of the attributes are undefined, replace it with 'n/a'
+            return eval('`' + parseStrFormat(exam.desc, "exam") + '`').replace("undefined", "n/a");
+        }
 
-    ExamsTimetable.prototype.isHTML = function() {
-        return exam.isHTML;
-    }
+        ExamsTimetable.prototype.isHTML = function() {
+            return exam.isHTML;
+        }
 
-    //init on include
-    let extractorExamsTimetable = new ExamsTimetable();
-    extractorExamsTimetable.attachIfPossible();
-})
+        //init on include
+        let extractorExamsTimetable = new ExamsTimetable();
+        extractorExamsTimetable.attachIfPossible();
+    })
