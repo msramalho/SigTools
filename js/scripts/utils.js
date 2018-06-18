@@ -166,7 +166,7 @@ function parseStrFormat(str, type) {
             .replace("${teacher.name}", "${event.teacher.name}")
             .replace("${teacher.url}", "${event.teacher.url}")
             .replace("${teacher.acronym}", "${event.teacher.acronym}");
-    } else return NULL;
+    } else return null;
 }
 
 /**

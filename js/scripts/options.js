@@ -12,7 +12,7 @@ class stringFormats {
             this.class_title = obj.class_title;
             this.class_desc = obj.class_desc;
             this.isHTML = obj.isHTML;
-            
+
             // load stuff
             $("#moodle_title").val(this.moodle_title);
             $("#moodle_desc").val(this.moodle_desc);
@@ -24,7 +24,7 @@ class stringFormats {
         });
     }
 
-    saveFormats() {   
+    saveFormats() {
         var settings = {
             moodle_desc: this.moodle_desc,
             moodle_title: this.moodle_title,
