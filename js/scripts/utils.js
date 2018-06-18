@@ -141,32 +141,22 @@ jQuery.fn.selfText = function() {
 
 /**
  * Parses a string that represents a format for event's title and description
- * @param {*} str The string to be parsed
- * @param {*} type Specifies the formatted string kind. 'moodle', 'exam' or 'class'
+ * @param {object} event this variable is used in eval so DO NOT remove because of unused warning
+ * @param {String} str The string to be parsed
+ * @param {bool} isHTML used for conversions like "\n" -> "<br/>"
  */
-function parseStrFormat(str, type) {
-    if (type == "moodle") {
-        return str.replace("${name}", "${event.name}")
-            .replace("${type}", "${event.type}")
-            .replace("${url}", "${event.url}");
-    } else if (type == "exam") {
-        return str.replace("${subject.name}", "${event.subject.name}")
-            .replace("${subject.acronym}", "${event.subject.acronym}")
-            .replace("${subject.url}", "${event.subject.url}")
-            .replace("${location}", "${event.location}")
-            .replace("${info}", "${event.info}");
-    } else if (type == "class") {
-        return str.replace("${name}", "${event.name}")
-            .replace("${acronym}", "${event.acronym}")
-            .replace("${type}", "${event.type}")
-            .replace("${room.name}", "${event.room.name}")
-            .replace("${room.url}", "${event.room.url}")
-            .replace("${class.name}", "${event.class.name}")
-            .replace("${class.url}", "${event.class.url}")
-            .replace("${teacher.name}", "${event.teacher.name}")
-            .replace("${teacher.url}", "${event.teacher.url}")
-            .replace("${teacher.acronym}", "${event.teacher.acronym}");
-    } else return null;
+function parseStrFormat(event, str, isHTML) {
+    let res = "`" + str.replace(/\${(.*?)}/gm, "${event.$1}") + "`";
+
+    if (isHTML) res = res.replace('\n', "<br/>");
+
+    try {
+        res = eval(res).replace("undefined", "n/a");
+    } catch (error) {
+        alert(`There was an error parsing the event format for:\n${res}\n\nPlease check the options page for SigToCa to check if you have a typo in your format options`);
+    }
+
+    return res;
 }
 
 /**

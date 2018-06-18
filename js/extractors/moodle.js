@@ -63,14 +63,14 @@ asyncGetMoodle()
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
-            return eval('`' + parseStrFormat(moodle.title, "moodle") + '`').replace("undefined", "n/a");
+            return parseStrFormat(event, moodle.title, moodle.isHTML);
         }
 
         MoodleEvent.getDescription = function(event, forUrl) {
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
-            return eval('`' + parseStrFormat(moodle.desc, "moodle") + '`').replace("undefined", "n/a");
+            return parseStrFormat(event, moodle.desc, moodle.isHTML);
         }
 
         MoodleEvent.isHTML = function() {

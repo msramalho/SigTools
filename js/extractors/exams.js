@@ -93,14 +93,14 @@ asyncGetExam()
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
-            return eval('`' + parseStrFormat(exam.title, "exam") + '`').replace("undefined", "n/a");
+            return parseStrFormat(event, exam.title, exam.isHTML);
         }
 
         ExamsTimetable.prototype.getDescription = function(event, forUrl) {
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
-            return eval('`' + parseStrFormat(exam.desc, "exam") + '`').replace("undefined", "n/a");
+            return parseStrFormat(event, exam.desc, exam.isHTML);
         }
 
         ExamsTimetable.prototype.isHTML = function() {

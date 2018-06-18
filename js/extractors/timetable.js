@@ -287,14 +287,14 @@ asyncGetClass()
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
-            return eval('`' + parseStrFormat(classes.title, "class") + '`').replace("undefined", "n/a");
+            return parseStrFormat(event, classes.title, classes.isHTML);
         }
 
         ClassesTimetable.prototype.getDescription = function(event, forUrl) {
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
-            return eval('`' + parseStrFormat(classes.desc, "class") + '`').replace("undefined", "n/a");
+            return parseStrFormat(event, classes.desc, classes.isHTML);
         }
 
         ClassesTimetable.prototype.isHTML = function() {
