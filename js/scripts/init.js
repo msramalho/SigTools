@@ -7,7 +7,7 @@ let DEFAULT_OPTIONS = {
     class_title: "[${acronym}] - ${type} - ${room.name}",
     class_desc: "Room:${room.name}\nTeacher(s):${teacher.name} (${teacher.acronym})\nClass:${class.name}",
     exam_title: "Exam [${subject.acronym}] - ${location}",
-    exam_desc: "Exam: ${subject.name} [${subject.acronym}]\nExam page:${subject.url}\nInformation:${event.info}",
+    exam_desc: "Exam: ${subject.name} [${subject.acronym}]\nExam page:${subject.url}\nInformation:${info}",
     isHTML: false
 };
 
