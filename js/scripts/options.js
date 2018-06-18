@@ -1,9 +1,12 @@
 "use strict";
 //https://developer.chrome.com/extensions/content_scripts#run_at
 
+/**
+ * Class to hold the user settings regarding the output format
+ */
 class stringFormats {
     constructor() {
-
+        // read from the local storage
         chrome.storage.local.get(null, (obj) => {
             this.moodle_title = obj.moodle_title;
             this.moodle_desc = obj.moodle_desc;
@@ -13,7 +16,7 @@ class stringFormats {
             this.class_desc = obj.class_desc;
             this.isHTML = obj.isHTML;
 
-            // load stuff
+            // load variables into current object
             $("#moodle_title").val(this.moodle_title);
             $("#moodle_desc").val(this.moodle_desc);
             $("#exam_title").val(this.exam_title);
@@ -24,6 +27,7 @@ class stringFormats {
         });
     }
 
+    // commit the changes into local storage
     saveFormats() {
         var settings = {
             moodle_desc: this.moodle_desc,
@@ -36,61 +40,24 @@ class stringFormats {
         }
         chrome.storage.local.set(settings);
     }
-
-    //
-    // Getters
-    //
-    get moodleTitle() {
-        return this.moodle_title;
-    }
-
-    get moodleDescription() {
-        return this.moodle_desc;
-    }
-
-    //
-    // Setters
-    //
-    set moodleTitle(title) {
-        this.moodle_title = title;
-    }
-
-    set moodleDescription(desc) {
-        this.moodle_desc = desc;
-    }
-
-    set classTitle(title) {
-        this.class_title = title;
-    }
-
-    set classDescription(desc) {
-        this.class_desc = desc;
-    }
-
-    set examTitle(title) {
-        this.exam_title = title;
-    }
-
-    set examDescription(desc) {
-        this.exam_desc = desc;
-    }
 }
 
 var options = new stringFormats();
 
+// read user input into options and save it
 function saveChanges() {
     // Load text from HTML elements and store on object
-    options.moodleTitle = $("#moodle_title").val();
-    options.moodleDescription = $("#moodle_desc").val();
-    options.classTitle = $("#class_title").val();
-    options.classDescription = $("#class_desc").val();
-    options.examTitle = $("#exam_title").val();
-    options.examDescription = $("#exam_desc").val();
+    options.moodle_title = $("#moodle_title").val();
+    options.moodle_desc = $("#moodle_desc").val();
+    options.class_title = $("#class_title").val();
+    options.class_desc = $("#class_desc").val();
+    options.exam_title = $("#exam_title").val();
+    options.exam_desc = $("#exam_desc").val();
     options.isHTML = document.querySelector("#checkbox_html").checked;
 
     // Update chrome.storage
     options.saveFormats();
-    alert('Saved!\nPlease, Refresh sigarra/moodle pages to apply changes.');
+    alert('Saved!\nPlease, refresh sigarra/moodle pages to apply changes.');
 }
 // add onclick event for 'Save' button
 $("#btn_save").click(saveChanges);
