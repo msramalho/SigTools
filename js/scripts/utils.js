@@ -1,9 +1,9 @@
 /**
- * prorotype to add days to the current javascript Date
+ * prototype to add days to the current javascript Date
  * @param {int} days number of days to add
  * @returns new date after operation
  */
-Date.prototype.addDays = function (days) {
+Date.prototype.addDays = function(days) {
     let dat = new Date(this.valueOf());
     dat.setDate(dat.getDate() + days);
     return dat;
@@ -15,7 +15,7 @@ Date.prototype.addDays = function (days) {
  * @param {int} index the index of split(" ") to use 0 => 08:00 and 1 => 10:00
  * @returns new date after operation
  */
-Date.prototype.setHoursMinutes = function (daysMinutes, index) {
+Date.prototype.setHoursMinutes = function(daysMinutes, index) {
     let dat = new Date(this.valueOf());
     let partIndex = daysMinutes.split(" - ")[index];
     let parts = partIndex.split(":");
@@ -28,7 +28,7 @@ Date.prototype.setHoursMinutes = function (daysMinutes, index) {
  * format a date according to google calendar's: YYYYMMDDTHHmmSS and return it as a string
  * @returns new date after operation
  */
-Date.prototype.toGCalendar = function () {
+Date.prototype.toGCalendar = function() {
     return this.toISOString().replace(/(-)|(\:)/g, "").split(".")[0] + "Z";
 };
 
@@ -89,7 +89,7 @@ function eventToOutlookCalendar(extractor, event, repeat) {
 }
 
 /**
- * execute a command and returna default value if an exception is thrown
+ * execute a command and return a default value if an exception is thrown
  * @param {callback} command to execute, which can fail
  * @param {*} defaultValue to return on catch
  */
@@ -116,7 +116,7 @@ function getAnchor(title, href, text) {
 }
 
 /**
- * Return the index of the day in the week, for portugues days - Monday is 1
+ * Return the index of the day in the week, for portuguese days - Monday is 1
  * @param {String} day
  */
 function getPtDayOfWeek(day) {
@@ -126,7 +126,7 @@ function getPtDayOfWeek(day) {
 /**
  * Extends jquery to return text of element without the text of any nested elements
  */
-jQuery.fn.selfText = function () {
+jQuery.fn.selfText = function() {
     return this
         .clone() //clone the element
         .children() //select all the children
