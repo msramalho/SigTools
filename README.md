@@ -53,7 +53,7 @@ Here's the general flow of this extension:
 
 **OR**
  1. Same but where you see the Google Calendar button (<img src="https://github.com/msramalho/SigToCa/blob/master/icons/gcalendar.png" width="24"/>) you can click it to add that event directly to your Google Calendar on the browser.
- 
+
 **OR**
  1. Same but where you see the Outlook.com button (<img src="https://github.com/msramalho/SigToCa/blob/master/icons/outlook.png" width="24"/>) you can click it to add that event directly to your Outlook.com Calendar on the browser.
 
@@ -88,7 +88,7 @@ It was developed to be as non-intrusive as possible, requires no permission, onl
  - [FileSaver.js](https://github.com/eligrey/FileSaver.js)
  - [Blob.js](https://github.com/eligrey/Blob.js)
 
-For saving me a lot of time
+For saving us a lot of time
 
 
 # Contribute
@@ -97,6 +97,13 @@ You can contribute by:
  - Fixing bugs - fork + branch + pull request
  - Adding more [modules/extractors](https://github.com/msramalho/SigToCa/tree/master/js/extractors) each module should address a different calendar need
  - Sharing this Extension
+
+# Tests
+Tests are being added where possible, to run them:
+```bash
+npm install mocha # if not installed
+mocha tests
+```
 
 # Changelog
  - V1.0
