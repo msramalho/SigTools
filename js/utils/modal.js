@@ -2,14 +2,14 @@
 
 /**
  * display list of events to present to the user and the download interface
- * @param {Extractor} extractor a BaseExtractor descendant that handled the events
+ * @param {Extractor} extractor a Extractor descendant that handled the events
  * @param {Date} from for recurring events when do they start [optional]
  * @param {Date} to for recurring events when do they end [optional]
  * @param {Array} events list of objects that need to have (at least) {from, to, location, download}
  */
 function handleEvents(extractor, events, from, to) {
     let repeat = undefined;
-    if (from && to && daydiff(from, to) > 6) {
+    if (from && to && dayDiff(from, to) > 6) {
         repeat = {
             freq: "WEEKLY",
             until: to.toString()

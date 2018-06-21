@@ -67,7 +67,7 @@ class ExamsTimetable {
         };
     }
 }
-Object.setPrototypeOf(ExamsTimetable.prototype, BaseExtractor);
+Object.setPrototypeOf(ExamsTimetable.prototype, Extractor);
 
 $.prototype.parseExamTable = function() {
     let exams = [];

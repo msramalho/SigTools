@@ -38,7 +38,7 @@ class ClassesTimetable {
         if (this.table.parent("div").next("div").find("table.dados th[colspan=6]")[0] != undefined) {
             //if there is a table for overlaping classes
             this.table.parent("div").next("div").find("table.dados tr.d").each((trIndex, tr) => {
-                events.push(getOverlapingClass(tr.innerHTML, lifetimeFrom)); //could send only events prior to this if, but no real impact
+                events.push(getOverlappingClass(tr.innerHTML, lifetimeFrom)); //could send only events prior to this if, but no real impact
             });
         }
         return {
@@ -59,7 +59,7 @@ class ClassesTimetable {
     }
 
 }
-Object.setPrototypeOf(ClassesTimetable.prototype, BaseExtractor);
+Object.setPrototypeOf(ClassesTimetable.prototype, Extractor);
 
 $.prototype.parseTable = function(dupCols, dupRows, textMode) {
     if (dupCols === undefined) dupCols = false;
@@ -199,7 +199,7 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
  * @param {string} html the content of the cell in the timetable
  * @param {Date} the date of the first Sunday
  */
-function getOverlapingClass(html, firstSunday) {
+function getOverlappingClass(html, firstSunday) {
     if (html == "") return {};
 
     //variables that simplify selection
@@ -268,7 +268,6 @@ function getOverlapingClass(html, firstSunday) {
 function getDurationFromUser(acronym) {
     return Number(prompt(`An overlaping class was found and there is no information about it's duration. Please insert its duration in minutes (class ${acronym}):`, 120)) * 60 * 1000; //60 * 60 * 1000;
 }
-
 
 /**
  * get the type of a class, enclosed in parentheses

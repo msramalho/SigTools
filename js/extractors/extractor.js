@@ -1,9 +1,14 @@
 "use strict";
-class BaseExtractor {
+/**
+ * The base extractor that works as an interface for the other interfaces
+ */
+class Extractor {
+    structure = {}
+
     constructor() {}
 
     /**
-     * add the calendar btn to the DOM tree (only maked sense ifApplicable is true) with the correct listeners
+     * add the calendar btn to the DOM tree (only made sense ifApplicable is true) with the correct listeners
      */
     attachIfPossible() {}
 

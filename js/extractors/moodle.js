@@ -53,7 +53,7 @@ class MoodleEvent {
         };
     }
 }
-Object.setPrototypeOf(MoodleEvent.prototype, BaseExtractor);
+Object.setPrototypeOf(MoodleEvent.prototype, Extractor);
 
 //init on include
 asyncGetMoodle()
