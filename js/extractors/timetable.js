@@ -1,5 +1,36 @@
 "use strict";
+
 class ClassesTimetable {
+    structure = {
+        name: "Timetable",
+        description: "Extracts timetables from sigarra",
+        parameters: [{
+                name: "name",
+                example: "Sistemas Operativos"
+            },
+            {
+                name: "acronym",
+                example: "SOPE"
+            }
+            //TODO: add remaining
+        ],
+        format: [{
+                name: "title",
+                type: "text",
+                default: "${name}"
+            },
+            {
+                name: "description",
+                type: "text",
+                default: "Type:${type}\nLink:${url}"
+            }, {
+                name: "isHtml",
+                type: "boolean",
+                default: true
+            }
+        ]
+    }
+
     constructor() {
         this.table = $("table.horario");
         this.timetable = [];
