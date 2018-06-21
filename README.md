@@ -98,6 +98,25 @@ You can contribute by:
  - Adding more [modules/extractors](https://github.com/msramalho/SigToCa/tree/master/js/extractors) each module should address a different calendar need
  - Sharing this Extension
 
+# Code structure
+ * `extractors` for all the scripts that extract information from a page and act accordingly
+ * `lib` for external scripts
+ * `scripts` for the JS scripts that are atomic or that are used for an `hmtl` page
+ * `utils` for functions that are reused among the `extractors` and other scripts
+
+In the [manifest.json](manifest.json) file, in the `content_scripts` section, there is an initial match to load all the global scripts and then, for each page, each extractor is loaded.
+
+### Extractors code
+```javascript
+class NewExtractor {
+    constructor() {...}
+    ...
+}
+Object.setPrototypeOf(NewExtractor.prototype, Extractor);
+// All the functions that are used by this script but do not belong to the class definition should follow the above line
+...
+```
+
 # Tests
 Tests are being added where possible, to run them:
 ```bash
