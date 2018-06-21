@@ -8,33 +8,37 @@ class Extractor {
     constructor() {}
 
     /**
-     * add the calendar btn to the DOM tree (only made sense ifApplicable is true) with the correct listeners
+     * Loads the structure.storage values into memory or uses the defaults if not set
      */
-    attachIfPossible() {}
+    init() {
+        let that = this;
+        return new Promise(
+            function(resolve, reject) {
+                chrome.storage.local.get(structure.name, (obj) => {
+                    structure.storage.forEach(option => {
+                        // if this option is not set yet, then use the default, else use stored value
+                        if (obj[option.name] == undefined) that[option.name] = option.default;
+                        else that[option.name] = obj[option.name];
+                    });
+                    resolve();
+                });
+            }
+        )
+    }
 
     /**
      * function that receives an event and returns its name in the desired format
      */
-    getName(event) {
-        return "";
+    getName(event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
+        return parseStrFormat(event, this.title, this.isHTML);
     }
 
     /**
      * function that receives an event and returns its description in the desired format
      */
-    getDescription(event) {
-        return "";
+    getDescription(event, forUrl) {
+        if (forUrl) event = this.convertToURI(event);
+        return parseStrFormat(event, this.description, this.isHTML);
     }
-
-    /**
-     * returns true if description/name are html syntax. Otherwise, if textplain, returns false.
-     */
-    isHTML() {
-        return false;
-    }
-
-    /**
-     * returns an event object that matches the current extractor's format and context
-     */
-    static getEvent() {}
 }

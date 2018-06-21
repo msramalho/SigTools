@@ -1,8 +1,8 @@
 "use strict";
 
-class ClassesTimetable {
+class Timetable {
     structure = {
-        name: "Timetable",
+        name: "timetable",
         description: "Extracts timetables from sigarra",
         parameters: [{
                 name: "name",
@@ -14,7 +14,7 @@ class ClassesTimetable {
             }
             //TODO: add remaining
         ],
-        format: [{
+        storage: [{
                 name: "title",
                 type: "text",
                 default: "${name}"
@@ -24,7 +24,7 @@ class ClassesTimetable {
                 type: "text",
                 default: "Type:${type}\nLink:${url}"
             }, {
-                name: "isHtml",
+                name: "isHTML",
                 type: "boolean",
                 default: true
             }
@@ -34,6 +34,7 @@ class ClassesTimetable {
     constructor() {
         this.table = $("table.horario");
         this.timetable = [];
+        init().then(() => attachIfPossible());
     }
 
     attachIfPossible() {
@@ -90,7 +91,7 @@ class ClassesTimetable {
     }
 
 }
-Object.setPrototypeOf(ClassesTimetable.prototype, Extractor);
+Object.setPrototypeOf(Timetable.prototype, Extractor);
 
 $.prototype.parseTable = function(dupCols, dupRows, textMode) {
     if (dupCols === undefined) dupCols = false;
@@ -309,28 +310,31 @@ function getClassType(str) {
     return str.match(/\((.+)\)/)[1];
 }
 
+
+new Timetable();
+/*
 //init on include
 asyncGetClass()
     .then((classes) => {
         // define the methods getName and getDescription
-        ClassesTimetable.prototype.getName = function(event, forUrl) {
+        Timetable.prototype.getName = function(event, forUrl) {
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
             return parseStrFormat(event, classes.title, classes.isHTML);
         }
 
-        ClassesTimetable.prototype.getDescription = function(event, forUrl) {
+        Timetable.prototype.getDescription = function(event, forUrl) {
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
             return parseStrFormat(event, classes.desc, classes.isHTML);
         }
 
-        ClassesTimetable.prototype.isHTML = function() {
+        Timetable.prototype.isHTML = function() {
             return classes.isHTML;
         }
 
-        let extractorClassesTimetable = new ClassesTimetable();
-        extractorClassesTimetable.attachIfPossible();
-    })
+        let extractorTimetable = new Timetable();
+        extractorTimetable.attachIfPossible();
+    })*/
