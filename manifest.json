@@ -37,10 +37,6 @@
         "https://*.up.pt/*",
         "storage"
     ],
-    "background": {
-        "scripts": ["js/scripts/init.js"],
-        "persistent": false
-    },
     "web_accessible_resources": ["icons/*"],
     "content_security_policy": "script-src 'self'; object-src 'self'",
     "homepage_url": "https://github.com/msramalho/SigToCa",
