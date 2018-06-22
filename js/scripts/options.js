@@ -4,6 +4,7 @@
 let template = `
 <div class="col-a1 col-b1">
 <h1>{{extractor}} format</h1>
+<p>{{description}}</p>
 <h3>Parameters</h3>
 <ul>
     {{#parameters}}
