@@ -64,11 +64,8 @@ function saveChanges() {
     });
     // Update chrome.storage
     chrome.storage.local.set(settings);
-    chrome.storage.local.get(function(result) {
-        console.log(result)
-    });
 
-    console.log('Saved!\nPlease, refresh sigarra/moodle pages to apply changes.');
+    alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
 }
 // add onclick event for 'Save' button
 $("#btn_save").click(saveChanges);

@@ -55,7 +55,7 @@ class Timetable extends Extractor {
                 textarea: [
                     {
                         name: "description",
-                        default: "Type: ${type}<br/>Class: <a href=\"${class.url}\">${class.name}</a><br/>Teacher: <a href=\"${teacher.url}\">${teacher.name} (${teacher.acronym})</a><br/>Room: <a href=\"${room.url}\">${room.name}</a>"
+                        default: "Type: ${type}\nClass: <a href=\"${class.url}\">${class.name}</a>\nTeacher: <a href=\"${teacher.url}\">${teacher.name} (${teacher.acronym})</a>\nRoom: <a href=\"${room.url}\">${room.name}</a>"
                     }
                 ],
                 boolean: [{
@@ -338,30 +338,5 @@ function getClassType(str) {
     return str.match(/\((.+)\)/)[1];
 }
 
+// add an instance to the EXTRACTORS variable, and also trigger attachIfPossible due to constructor
 EXTRACTORS.push(new Timetable());
-/*
-//init on include
-asyncGetClass()
-    .then((classes) => {
-        // define the methods getName and getDescription
-        Timetable.prototype.getName = function(event, forUrl) {
-            if (forUrl) event = this.convertToURI(event);
-
-            //In case some of the attributes are undefined, replace it with 'n/a'
-            return parseStrFormat(event, classes.title, classes.isHTML);
-        }
-
-        Timetable.prototype.getDescription = function(event, forUrl) {
-            if (forUrl) event = this.convertToURI(event);
-
-            //In case some of the attributes are undefined, replace it with 'n/a'
-            return parseStrFormat(event, classes.desc, classes.isHTML);
-        }
-
-        Timetable.prototype.isHTML = function() {
-            return classes.isHTML;
-        }
-
-        let extractorTimetable = new Timetable();
-        extractorTimetable.attachIfPossible();
-    })*/
