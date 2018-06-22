@@ -1,8 +1,69 @@
 "use strict";
-class ClassesTimetable {
+
+class Timetable extends Extractor {
+
     constructor() {
+        super();
         this.table = $("table.horario");
         this.timetable = [];
+        this.ready();
+    }
+
+    structure() {
+        return {
+            extractor: "timetable",
+            description: "Extracts timetables from sigarra",
+            parameters: [{
+                    name: "name",
+                    description: "eg: Programação em Lógica"
+                },
+                {
+                    name: "acronym",
+                    description: "eg: PLOG"
+                },{
+                    name: "type",
+                    description: "eg: T, TP, PL"
+                },{
+                    name: "room.name",
+                    description: "eg: B001"
+                },{
+                    name: "room.url",
+                    description: "link to the room on sigarra"
+                },{
+                    name: "class.name",
+                    description: "eg: 5MIEIC01"
+                },{
+                    name: "class.url",
+                    description: "link to the class information"
+                },{
+                    name: "teacher.name",
+                    description: "eg: Raul Moreira Vidal"
+                },{
+                    name: "teacher.acronym",
+                    description: "eg: RMV"
+                },{
+                    name: "teacher.url",
+                    description: "link to the teacher page on sigarra"
+                }
+            ],
+            storage: {
+                text: [{
+                        name: "title",
+                        default: "[${acronym}] - ${type} - ${room.name}"
+                    }
+                ],
+                textarea: [
+                    {
+                        name: "description",
+                        default: "Type: ${type}\nClass: <a href=\"${class.url}\">${class.name}</a>\nTeacher: <a href=\"${teacher.url}\">${teacher.name} (${teacher.acronym})</a>\nRoom: <a href=\"${room.url}\">${room.name}</a>"
+                    }
+                ],
+                boolean: [{
+                    name: "isHTML",
+                    default: true
+                }]
+            }
+        }
     }
 
     attachIfPossible() {
@@ -38,7 +99,7 @@ class ClassesTimetable {
         if (this.table.parent("div").next("div").find("table.dados th[colspan=6]")[0] != undefined) {
             //if there is a table for overlaping classes
             this.table.parent("div").next("div").find("table.dados tr.d").each((trIndex, tr) => {
-                events.push(getOverlapingClass(tr.innerHTML, lifetimeFrom)); //could send only events prior to this if, but no real impact
+                events.push(getOverlappingClass(tr.innerHTML, lifetimeFrom)); //could send only events prior to this if, but no real impact
             });
         }
         return {
@@ -59,7 +120,6 @@ class ClassesTimetable {
     }
 
 }
-Object.setPrototypeOf(ClassesTimetable.prototype, BaseExtractor);
 
 $.prototype.parseTable = function(dupCols, dupRows, textMode) {
     if (dupCols === undefined) dupCols = false;
@@ -199,7 +259,7 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
  * @param {string} html the content of the cell in the timetable
  * @param {Date} the date of the first Sunday
  */
-function getOverlapingClass(html, firstSunday) {
+function getOverlappingClass(html, firstSunday) {
     if (html == "") return {};
 
     //variables that simplify selection
@@ -269,7 +329,6 @@ function getDurationFromUser(acronym) {
     return Number(prompt(`An overlaping class was found and there is no information about it's duration. Please insert its duration in minutes (class ${acronym}):`, 120)) * 60 * 1000; //60 * 60 * 1000;
 }
 
-
 /**
  * get the type of a class, enclosed in parentheses
  * @param {String} str in the format: "(TYPE)"
@@ -279,28 +338,5 @@ function getClassType(str) {
     return str.match(/\((.+)\)/)[1];
 }
 
-//init on include
-asyncGetClass()
-    .then((classes) => {
-        // define the methods getName and getDescription
-        ClassesTimetable.prototype.getName = function(event, forUrl) {
-            if (forUrl) event = this.convertToURI(event);
-
-            //In case some of the attributes are undefined, replace it with 'n/a'
-            return parseStrFormat(event, classes.title, classes.isHTML);
-        }
-
-        ClassesTimetable.prototype.getDescription = function(event, forUrl) {
-            if (forUrl) event = this.convertToURI(event);
-
-            //In case some of the attributes are undefined, replace it with 'n/a'
-            return parseStrFormat(event, classes.desc, classes.isHTML);
-        }
-
-        ClassesTimetable.prototype.isHTML = function() {
-            return classes.isHTML;
-        }
-
-        let extractorClassesTimetable = new ClassesTimetable();
-        extractorClassesTimetable.attachIfPossible();
-    })
+// add an instance to the EXTRACTORS variable, and also trigger attachIfPossible due to constructor
+EXTRACTORS.push(new Timetable());

@@ -1,107 +1,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer src="js/scripts/options.js"></script>
-    <script src="js/lib/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/options.css">
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/utils/global.js"></script>
+    <script src="js/extractors/extractor.js"></script>
+    <script src="js/extractors/exams.js"></script>
+    <script src="js/extractors/moodle.js"></script>
+    <script src="js/extractors/timetable.js"></script>
+    <script src="js/scripts/options.js"></script>
 </head>
 
 <body>
     If you feel that a different format for events would be better, go ahead and set it 😄
-    <div class="row">
-        <div class="col-a1 col-b1">
-            <h1>Moodle format</h1>
-            <h3>Parameters</h3>
-            <ul>
-                <li>
-                    <i>${name}</i> - The event title</li>
-                <li>
-                    <i>${type}</i> - The type of event</li>
-                <li>
-                    <i>${url}</i> - An URL for the event on Moodle page</li>
-            </ul>
-            <h3>Format</h3>
-            <div class="formatDiv">
-                <span>Title:</span>
-                <input id="moodle_title" type="text"></input>
-                <span>Description:</span>
-                <textarea id="moodle_desc"></textarea>
-            </div>
-        </div>
-
-        <div class="col-a2 col-b2">
-            <h1>Classes format</h1>
-            <h3>Parameters</h3>
-            <ul>
-                <li>
-                    <i>${name}</i> - e.g. Sistemas Operativos
-                </li>
-                <li>
-                    <i>${acronym}</i> - e.g. SOPE
-                </li>
-                <li>
-                    <i>${type}</i> - e.g. T, TP, PL
-                </li>
-                <li>
-                    <i>${room.name}</i> - e.g. B001</li>
-                <li>
-                    <i>${room.url}</i>
-                </li>
-                <li>
-                    <i>${class.name}</i> - e.g. 2MIEIC01
-                </li>
-                <li>
-                    <i>${class.url}</i>
-                </li>
-                <li>
-                    <i>${teacher.name}</i>
-                </li>
-                <li>
-                    <i>${teacher.acronym}</i>
-                </li>
-                <li>
-                    <i>${teacher.url}</i>
-                </li>
-            </ul>
-            <h3>Format</h3>
-            <div class="formatDiv">
-                <span>Title:</span>
-                <input id="class_title" type="text"></input>
-                <span>Description:</span>
-                <textarea id="class_desc"></textarea>
-            </div>
-        </div>
-
-        <div class="col-a3 col-b3">
-            <h1>Exams format</h1>
-            <h3>Parameters</h3>
-            <ul>
-                <li>
-                    <i>${subject.name}</i> - The class name</li>
-                <li>
-                    <i>${subject.acronym}</i> - The room's name</li>
-                <li>
-                    <i>${subject.url}</i>
-                </li>
-                <li>
-                    <i>${info}</i>
-                </li>
-                <li>
-                    <i>${location}</i>
-                </li>
-            </ul>
-            <h3>Format</h3>
-            <div class="formatDiv">
-                <span>Title:</span>
-                <input id="exam_title" type="text"></input>
-                <span>Description:</span>
-                <textarea id="exam_desc"></textarea>
-            </div>
-        </div>
-    </div>
-    <div style="margin: 2px 5px;">
-        <input id="checkbox_html" type="checkbox">HTML (some calendars support events with HTML descriptions)</input>
-        <br>
+    <div id="settings" class="row"></div>
+    <div style="margin-top:10px;">
         <button id="btn_save">Save</button>
     </div>
 

@@ -1,71 +1,80 @@
 "use strict";
 //https://developer.chrome.com/extensions/content_scripts#run_at
 
-/**
- * Class to hold the user settings regarding the output format
- */
-class stringFormats {
-    constructor() {
-        // read from the local storage
-        chrome.storage.local.get(null, (obj) => {
-            this.moodle_title = obj.moodle_title;
-            this.moodle_desc = obj.moodle_desc;
-            this.exam_title = obj.exam_title;
-            this.exam_desc = obj.exam_desc;
-            this.class_title = obj.class_title;
-            this.class_desc = obj.class_desc;
-            this.isHTML = obj.isHTML;
+let template = `
+<div class="col-a1 col-b1">
+<h1>{{extractor}} format</h1>
+<p>{{description}}</p>
+<h3>Parameters</h3>
+<ul>
+    {{#parameters}}
+    <li><strong class="parameter-code"><code>$&#123{{name}}&#125</code></strong> {{description}}</li>
+    {{/parameters}}
+</ul>
+<h3>Format</h3>
+<div class="formatDiv">
+    {{#storage.text}}
+        <span>{{name}}</span>
+        <input class="{{name}}" id="{{extractor}}_{{name}}" type="text" value="{{value}}"/>
+    {{/storage.text}}
+    {{#storage.textarea}}
+        <span>{{name}}</span>
+        <textarea class="{{name}}" id="{{extractor}}_{{name}}">{{{value}}}</textarea>
+    {{/storage.textarea}}
+    {{#storage.boolean}}
+        <label><input class="{{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}"/>{{name}}</label>
+    {{/storage.boolean}}
 
-            // load variables into current object
-            $("#moodle_title").val(this.moodle_title);
-            $("#moodle_desc").val(this.moodle_desc);
-            $("#exam_title").val(this.exam_title);
-            $("#exam_desc").val(this.exam_desc);
-            $("#class_title").val(this.class_title);
-            $("#class_desc").val(this.class_desc);
-            $("#checkbox_html").attr("checked", this.isHTML);
-        });
-    }
+</div>
+</div>`
 
-    // commit the changes into local storage
-    saveFormats() {
-        var settings = {
-            moodle_desc: this.moodle_desc,
-            moodle_title: this.moodle_title,
-            exam_title: this.exam_title,
-            exam_desc: this.exam_desc,
-            class_title: this.class_title,
-            class_desc: this.class_desc,
-            isHTML: this.isHTML
-        }
-        chrome.storage.local.set(settings);
-    }
-}
-
-var options = new stringFormats();
 
 // read user input into options and save it
 function saveChanges() {
-    // Load text from HTML elements and store on object
-    options.moodle_title = $("#moodle_title").val();
-    options.moodle_desc = $("#moodle_desc").val();
-    options.class_title = $("#class_title").val();
-    options.class_desc = $("#class_desc").val();
-    options.exam_title = $("#exam_title").val();
-    options.exam_desc = $("#exam_desc").val();
-    options.isHTML = document.querySelector("#checkbox_html").checked;
+    let settings = {}
+    EXTRACTORS.forEach(ex => {
+        let extractor = ex.structure.extractor;
+        settings[extractor] = settings[extractor] ? settings[extractor] : {};
+        getProperties(ex.structure.storage).forEach(prop => {
+            ex.structure.storage[prop].forEach(option => {
+                let input = $(`#${extractor}_${option.name}`) // option input
+                let val = input.val() // default is the input value tag
 
+                if (prop == "boolean") // boolean uses checkbox, so val() won't work
+                    val = input[0].checked
+
+                // save value
+                settings[extractor][option.name] = val
+                option.value = settings[extractor][option.name] // save the value in the structure
+            });
+        });
+    });
     // Update chrome.storage
-    options.saveFormats();
-    alert('Saved!\nPlease, refresh sigarra/moodle pages to apply changes.');
-}
-// add onclick event for 'Save' button
-$("#btn_save").click(saveChanges);
+    chrome.storage.local.set(settings);
 
-// intercept ctrl+s to save options
-$(window).bind('keydown', function(event) {
-    if ((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase() == 's') {
-        event.preventDefault();
-        saveChanges();
-    }
+    alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
+}
+
+
+$(document).ready(function() {
+    // generate the extractor options form according to the template
+    EXTRACTORS.forEach(ex => {
+        $("#settings").append($(Mustache.render(template, ex.structure)))
+    });
+
+    // make checkboxes with value="true" be checked
+    $("input[type='checkbox'][value='true']").each(function() {
+        $(this).prop('checked', true)
+    });
+
+    // add onclick event for 'Save' button
+    $("#btn_save").click(saveChanges);
+
+    // intercept ctrl+s to save options
+    $(window).bind('keydown', function(event) {
+        if ((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase() == 's') {
+            event.preventDefault();
+            saveChanges();
+        }
+    });
 });

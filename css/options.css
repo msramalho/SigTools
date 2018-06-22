@@ -71,3 +71,7 @@
     width: 100%;
     display: inline-block;
 }
+
+.parameter-code{
+    padding-right: 20px;
+}

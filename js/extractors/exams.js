@@ -1,10 +1,56 @@
-//https://sigarra.up.pt/feup/pt/exa_geral.mapa_de_exames?p_curso_id=742
 "use strict";
-class ExamsTimetable {
+
+class Exams extends Extractor {
+
     constructor() {
+        super();
         this.table = $("table.dados:not(.mapa)").add("table.dadossz:not(.mapa)");
         this.exams = new Array(this.table.length);
+        this.ready();
     }
+
+    structure() {
+        return {
+            extractor: "exams",
+            description: "Extracts exams events from sigarra",
+            parameters: [{
+                    name: "subject.name",
+                    description: "eg: Programação em Lógica"
+                },
+                {
+                    name: "subject.acronym",
+                    description: "eg: PLOG"
+                },{
+                    name: "subject.url",
+                    description: "link to the exam page on sigarra"
+                },{
+                    name: "info",
+                    description: "eg: Normal, Recurso, ..."
+                },{
+                    name: "location",
+                    description: "list of rooms, if available"
+                }
+            ],
+            storage: {
+                text: [{
+                        name: "title",
+                        default: "Exam [${subject.acronym}] - ${location}"
+                    }
+                ],
+                textarea: [
+                    {
+                        name: "description",
+                        default: "Exam: ${subject.name} [${subject.acronym}]\nExam page: <a href=\"${subject.url}\">${subject.name}</a>\nInformation:${info}"
+                    }
+                ],
+                boolean: [{
+                    name: "isHTML",
+                    default: true
+                }]
+            }
+        }
+    }
+
 
     attachIfPossible() {
         if (this.table) {
@@ -67,7 +113,6 @@ class ExamsTimetable {
         };
     }
 }
-Object.setPrototypeOf(ExamsTimetable.prototype, BaseExtractor);
 
 $.prototype.parseExamTable = function() {
     let exams = [];
@@ -78,7 +123,7 @@ $.prototype.parseExamTable = function() {
         let correspTable = correspTr.find("table.dados.mapa");
         if (correspTable != undefined) {
             correspTable.find("td.exame").each((exameIndex, exameTd) => {
-                exams.push(ExamsTimetable.getEvent(date, $(exameTd)));
+                exams.push(Exams.getEvent(date, $(exameTd)));
             });
         }
     });
@@ -86,28 +131,5 @@ $.prototype.parseExamTable = function() {
     return exams;
 };
 
-
-asyncGetExam()
-    .then((exam) => {
-        ExamsTimetable.prototype.getName = function(event, forUrl) {
-            if (forUrl) event = this.convertToURI(event);
-
-            //In case some of the attributes are undefined, replace it with 'n/a'
-            return parseStrFormat(event, exam.title, exam.isHTML);
-        }
-
-        ExamsTimetable.prototype.getDescription = function(event, forUrl) {
-            if (forUrl) event = this.convertToURI(event);
-
-            //In case some of the attributes are undefined, replace it with 'n/a'
-            return parseStrFormat(event, exam.desc, exam.isHTML);
-        }
-
-        ExamsTimetable.prototype.isHTML = function() {
-            return exam.isHTML;
-        }
-
-        //init on include
-        let extractorExamsTimetable = new ExamsTimetable();
-        extractorExamsTimetable.attachIfPossible();
-    })
+// add an instance to the EXTRACTORS variable, and also trigger attachIfPossible due to constructor
+EXTRACTORS.push(new Exams());

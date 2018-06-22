@@ -1,7 +1,7 @@
 function asyncGetMoodle() {
     return new Promise(
         function (resolve, reject) {
-            chrome.storage.local.get(null, (obj) => {                
+            chrome.storage.local.get(null, (obj) => {
                 resolve({
                     title: obj.moodle_title,
                     desc: obj.moodle_desc,
@@ -15,7 +15,7 @@ function asyncGetMoodle() {
 function asyncGetExam() {
     return new Promise(
         function (resolve, reject) {
-            chrome.storage.local.get(null, (obj) => {                
+            chrome.storage.local.get(null, (obj) => {
                 resolve({
                     title: obj.exam_title,
                     desc: obj.exam_desc,
@@ -29,7 +29,7 @@ function asyncGetExam() {
 function asyncGetClass() {
     return new Promise(
         function (resolve, reject) {
-            chrome.storage.local.get(null, (obj) => {                
+            chrome.storage.local.get(null, (obj) => {
                 resolve({
                     title: obj.class_title,
                     desc: obj.class_desc,

@@ -1,18 +1,58 @@
 "use strict";
-class MoodleEvent {
+
+class Moodle extends Extractor {
+
     constructor() {
+        super();
+        this.ready();
+    }
+
+    attachIfPossible() {
         $(".hasevent").each((index, td) => {
             let popupContent = $(`<div>${$(td).attr("data-core_calendar-popupcontent")}</div>`);
             let newPopupContent = "";
             popupContent.find("div").each((index, div) => {
                 div = $(div);
-                newPopupContent += MoodleEvent.getNewDiv(div, MoodleEvent.getEvent(div));
+                newPopupContent += this.getNewDiv(div, Moodle.getEvent(div));
             });
             $(td).attr("data-core_calendar-popupcontent", newPopupContent);
         });
     }
 
-    static convertToURI(original) {
+    structure() {
+        return {
+            extractor: "moodle",
+            description: "Extracts moodle calendar events",
+            parameters: [{
+                    name: "name",
+                    description: "eg: Minitest Compilers"
+                },
+                {
+                    name: "type",
+                    description: "eg: Submission"
+                }, {
+                    name: "url",
+                    description: "link to the event page in moodle"
+                }
+            ],
+            storage: {
+                text: [{
+                    name: "title",
+                    default: "${name}"
+                }],
+                textarea: [{
+                    name: "description",
+                    default: "Type:${type}\nLink: <a href=\"${url}\">${name}</a>"
+                }],
+                boolean: [{
+                    name: "isHTML",
+                    default: true
+                }]
+            }
+        }
+    }
+
+    convertToURI(original) {
         let event = jQuery.extend(true, {}, original);
         event.url = encodeURIComponent(event.url);
         return event;
@@ -24,17 +64,15 @@ class MoodleEvent {
      * @param {*} forUrl
      * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted
      */
-
-    static getNewDiv(div, event) {
-        var google_url = eventToGCalendar(MoodleEvent, event);
-        var outlook_url = eventToOutlookCalendar(MoodleEvent, event);
+    getNewDiv(div, event) {
+        var google_url = eventToGCalendar(this, event);
+        var outlook_url = eventToOutlookCalendar(this, event);
 
         // Browsers ignore newlines on the URLs, they are ommited. Therefore, I encode all newlines if formats are plain text
-
         return `
         ${div.find("img")[0].outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, MoodleEvent.isHTML()).outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, MoodleEvent.isHTML()).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, Moodle.isHTML).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, Moodle.isHTML).outerHTML}
         ${div.find("a")[0].outerHTML}`;
     }
 
@@ -53,29 +91,6 @@ class MoodleEvent {
         };
     }
 }
-Object.setPrototypeOf(MoodleEvent.prototype, BaseExtractor);
 
-//init on include
-asyncGetMoodle()
-    .then((moodle) => {
-        // define the static methods getName and getDescription
-        MoodleEvent.getName = function(event, forUrl) {
-            if (forUrl) event = this.convertToURI(event);
-
-            //In case some of the attributes are undefined, replace it with 'n/a'
-            return parseStrFormat(event, moodle.title, moodle.isHTML);
-        }
-
-        MoodleEvent.getDescription = function(event, forUrl) {
-            if (forUrl) event = this.convertToURI(event);
-
-            //In case some of the attributes are undefined, replace it with 'n/a'
-            return parseStrFormat(event, moodle.desc, moodle.isHTML);
-        }
-
-        MoodleEvent.isHTML = function() {
-            return moodle.isHTML;
-        }
-
-        let extractorMoodleEvent = new MoodleEvent();
-    })
+// add an instance to the EXTRACTORS variable, and also trigger attachIfPossible due to constructor
+EXTRACTORS.push(new Moodle());
