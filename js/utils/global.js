@@ -57,3 +57,14 @@ jQuery.fn.selfText = function() {
         .end() //again go back to selected element
         .text();
 };
+
+/**
+ * Return a list of names of the objects properties
+ */
+function getProperties(obj) {
+    let props = []
+    for (var property in obj)
+        if (obj.hasOwnProperty(property))
+            props.push(property);
+    return props;
+}
