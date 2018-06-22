@@ -27,8 +27,8 @@ function createModal(extractor, events, repeat) {
         <li>
             <input type="checkbox" id="event_${i}" ${events[i].download?"checked":""}>
             <label for="event_${i}">${extractor.getName(events[i])}</label>
-            <span class="calendarLink">${generateOneClickDOM(null, "calendarIcon", "google", google_url, extractor.isHTML()).outerHTML}</span>
-            <span class="calendarLink">${generateOneClickDOM(null, "calendarIcon", "outlook", outlook_url, extractor.isHTML()).outerHTML}</span>
+            <span class="calendarLink">${generateOneClickDOM(null, "calendarIcon", "google", google_url, extractor.isHTML).outerHTML}</span>
+            <span class="calendarLink">${generateOneClickDOM(null, "calendarIcon", "outlook", outlook_url, extractor.isHTML).outerHTML}</span>
         </li>`;
     }
 
