@@ -7,7 +7,7 @@ let template = `
 <h3>Parameters</h3>
 <ul>
     {{#parameters}}
-    <li><i>$&#123{{name}}&#123</i> e.g. {{example}}</li>
+    <li><strong class="parameter-code"><code>$&#123{{name}}&#125</code></strong> {{description}}</li>
     {{/parameters}}
 </ul>
 <h3>Format</h3>
