@@ -1,13 +1,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer src="js/scripts/options.js"></script>
-    <script src="js/lib/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/options.css">
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/utils/global.js"></script>
+    <script src="js/extractors/extractor.js"></script>
+    <!-- <script src="js/extractors/exams.js"></script> -->
+    <!-- <script src="js/extractors/moodle.js"></script> -->
+    <script src="js/extractors/timetable.js"></script>
+    <script src="js/scripts/options.js"></script>
 </head>
 
 <body>
     If you feel that a different format for events would be better, go ahead and set it 😄
+    <div id="settings" class="row"></div>
+
     <div class="row">
         <div class="col-a1 col-b1">
             <h1>Moodle format</h1>
