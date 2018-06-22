@@ -108,12 +108,19 @@ In the [manifest.json](manifest.json) file, in the `content_scripts` section, th
 
 ### Extractors code
 ```javascript
-class NewExtractor {
-    constructor() {...}
+class NewExtractor extends Extractor{
+    constructor() {
+        super();
+        ...
+        this.ready(); // this will trigger init and then attachIfPossible
+    }
+    //must implement: structure, attachIfPossible
+    structure() { return {...} }
+    attachIfPossible() {...}
     ...
 }
-Object.setPrototypeOf(NewExtractor.prototype, Extractor);
-// All the functions that are used by this script but do not belong to the class definition should follow the above line
+// All the functions that are used by this script but do not
+// belong to the class definition should follow the above line
 ...
 ```
 
