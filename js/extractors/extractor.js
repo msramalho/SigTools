@@ -26,11 +26,19 @@ class Extractor {
     }
 
     /**
+     * function that receives an event and clones it, and calls encodeURIComponent on the necessary elements and then returns the new object, that can be safely used in injected URIs
+     */
+    convertToURI(original) {
+        throw "Must implement convertToURI method on children of Extractor"
+    }
+
+    /**
      * simple wrapper that waits for init and then calls attachIfPossible, should be called in constructor of implementing classes
      */
     ready() {
-        this.init().then(this.attachIfPossible())
+        this.init().then(() => this.attachIfPossible())
     }
+
     /**
      * Loads the structure.storage values into memory or uses the defaults if not set
      */
