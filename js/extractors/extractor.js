@@ -39,11 +39,11 @@ class Extractor {
         return new Promise(
             function(resolve, reject) {
                 chrome.storage.local.get(that.structure.extractor, (obj) => {
-                    obj=obj[that.structure.extractor]; // remove wrapper so that values are directly accessible
+                    obj = obj[that.structure.extractor]; // remove wrapper so that values are directly accessible
                     getProperties(that.structure.storage).forEach(prop => {
                         that.structure.storage[prop].forEach(option => {
                             // if this option is not set yet, then use the default, else use stored value
-                            if (obj[option.name] == undefined) that[option.name] = option.default;
+                            if (obj == undefined || obj[option.name] == undefined) that[option.name] = option.default;
                             else that[option.name] = obj[option.name];
                             option.value = that[option.name]; // save the value in the structure
                         });
