@@ -28,19 +28,6 @@ let template = `
 </div>
 </div>`
 
-$(document).ready(function() {
-    // generate the extractor options form according to the template
-    EXTRACTORS.forEach(ex => {
-        console.log(ex.structure);
-        $("#settings").append($(Mustache.render(template, ex.structure)))
-    });
-
-    // make checkboxes with value="true" be checked
-    $("input[type='checkbox'][value='true']").each(function() {
-        $(this).prop('checked', true)
-    });
-});
-
 
 // read user input into options and save it
 function saveChanges() {
@@ -67,13 +54,27 @@ function saveChanges() {
 
     alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
 }
-// add onclick event for 'Save' button
-$("#btn_save").click(saveChanges);
 
-// intercept ctrl+s to save options
-$(window).bind('keydown', function(event) {
-    if ((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase() == 's') {
-        event.preventDefault();
-        saveChanges();
-    }
+
+$(document).ready(function() {
+    // generate the extractor options form according to the template
+    EXTRACTORS.forEach(ex => {
+        $("#settings").append($(Mustache.render(template, ex.structure)))
+    });
+
+    // make checkboxes with value="true" be checked
+    $("input[type='checkbox'][value='true']").each(function() {
+        $(this).prop('checked', true)
+    });
+
+    // add onclick event for 'Save' button
+    $("#btn_save").click(saveChanges);
+
+    // intercept ctrl+s to save options
+    $(window).bind('keydown', function(event) {
+        if ((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase() == 's') {
+            event.preventDefault();
+            saveChanges();
+        }
+    });
 });
