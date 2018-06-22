@@ -1,40 +1,46 @@
 "use strict";
 
-class Timetable {
-    structure = {
-        name: "timetable",
-        description: "Extracts timetables from sigarra",
-        parameters: [{
-                name: "name",
-                example: "Sistemas Operativos"
-            },
-            {
-                name: "acronym",
-                example: "SOPE"
-            }
-            //TODO: add remaining
-        ],
-        storage: [{
-                name: "title",
-                type: "text",
-                default: "${name}"
-            },
-            {
-                name: "description",
-                type: "text",
-                default: "Type:${type}\nLink:${url}"
-            }, {
-                name: "isHTML",
-                type: "boolean",
-                default: true
-            }
-        ]
-    }
+class Timetable extends Extractor {
 
     constructor() {
+        super();
         this.table = $("table.horario");
         this.timetable = [];
-        init().then(() => attachIfPossible());
+        this.ready();
+    }
+
+    structure() {
+        return {
+            extractor: "timetable",
+            description: "Extracts timetables from sigarra",
+            parameters: [{
+                    name: "name",
+                    example: "Programação em Lógica"
+                },
+                {
+                    name: "acronym",
+                    example: "PLOG"
+                }
+                //TODO: add remaining
+            ],
+            storage: {
+                text: [{
+                        name: "title",
+                        default: "[${acronym}] - ${type} - ${room.name}"
+                    }
+                ],
+                textarea: [
+                    {
+                        name: "description",
+                        default: "Type: ${type}<br/>Class: <a href=\"${class.url}\">${class.name}</a><br/>Teacher: <a href=\"${teacher.url}\">${teacher.name} (${teacher.acronym})</a><br/>Room: <a href=\"${room.url}\">${room.name}</a>"
+                    }
+                ],
+                boolean: [{
+                    name: "isHTML",
+                    default: true
+                }]
+            }
+        }
     }
 
     attachIfPossible() {
@@ -91,7 +97,6 @@ class Timetable {
     }
 
 }
-Object.setPrototypeOf(Timetable.prototype, Extractor);
 
 $.prototype.parseTable = function(dupCols, dupRows, textMode) {
     if (dupCols === undefined) dupCols = false;
@@ -310,8 +315,7 @@ function getClassType(str) {
     return str.match(/\((.+)\)/)[1];
 }
 
-
-new Timetable();
+EXTRACTORS.push(new Timetable());
 /*
 //init on include
 asyncGetClass()
