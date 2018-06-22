@@ -15,13 +15,36 @@ class Timetable extends Extractor {
             description: "Extracts timetables from sigarra",
             parameters: [{
                     name: "name",
-                    example: "Programação em Lógica"
+                    description: "eg: Programação em Lógica"
                 },
                 {
                     name: "acronym",
-                    example: "PLOG"
+                    description: "eg: PLOG"
+                },{
+                    name: "type",
+                    description: "eg: T, TP, PL"
+                },{
+                    name: "room.name",
+                    description: "eg: B001"
+                },{
+                    name: "room.url",
+                    description: "link to the room on sigarra"
+                },{
+                    name: "class.name",
+                    description: "eg: 5MIEIC01"
+                },{
+                    name: "class.url",
+                    description: "link to the class information"
+                },{
+                    name: "teacher.name",
+                    description: "eg: Raul Moreira Vidal"
+                },{
+                    name: "teacher.acronym",
+                    description: "eg: RMV"
+                },{
+                    name: "teacher.url",
+                    description: "link to the teacher page on sigarra"
                 }
-                //TODO: add remaining
             ],
             storage: {
                 text: [{
