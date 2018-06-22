@@ -1,6 +1,6 @@
 //https://sigarra.up.pt/feup/pt/exa_geral.mapa_de_exames?p_curso_id=742
 "use strict";
-class ExamsTimetable {
+class Exams {
     constructor() {
         this.table = $("table.dados:not(.mapa)").add("table.dadossz:not(.mapa)");
         this.exams = new Array(this.table.length);
@@ -67,7 +67,7 @@ class ExamsTimetable {
         };
     }
 }
-Object.setPrototypeOf(ExamsTimetable.prototype, Extractor);
+Object.setPrototypeOf(Exams.prototype, Extractor);
 
 $.prototype.parseExamTable = function() {
     let exams = [];
@@ -78,7 +78,7 @@ $.prototype.parseExamTable = function() {
         let correspTable = correspTr.find("table.dados.mapa");
         if (correspTable != undefined) {
             correspTable.find("td.exame").each((exameIndex, exameTd) => {
-                exams.push(ExamsTimetable.getEvent(date, $(exameTd)));
+                exams.push(Exams.getEvent(date, $(exameTd)));
             });
         }
     });
@@ -89,25 +89,25 @@ $.prototype.parseExamTable = function() {
 
 asyncGetExam()
     .then((exam) => {
-        ExamsTimetable.prototype.getName = function(event, forUrl) {
+        Exams.prototype.getName = function(event, forUrl) {
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
             return parseStrFormat(event, exam.title, exam.isHTML);
         }
 
-        ExamsTimetable.prototype.getDescription = function(event, forUrl) {
+        Exams.prototype.getDescription = function(event, forUrl) {
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
             return parseStrFormat(event, exam.desc, exam.isHTML);
         }
 
-        ExamsTimetable.prototype.isHTML = function() {
+        Exams.prototype.isHTML = function() {
             return exam.isHTML;
         }
 
         //init on include
-        let extractorExamsTimetable = new ExamsTimetable();
-        extractorExamsTimetable.attachIfPossible();
+        let extractorExams = new Exams();
+        extractorExams.attachIfPossible();
     })

@@ -1,12 +1,12 @@
 "use strict";
-class MoodleEvent {
+class Moodle {
     constructor() {
         $(".hasevent").each((index, td) => {
             let popupContent = $(`<div>${$(td).attr("data-core_calendar-popupcontent")}</div>`);
             let newPopupContent = "";
             popupContent.find("div").each((index, div) => {
                 div = $(div);
-                newPopupContent += MoodleEvent.getNewDiv(div, MoodleEvent.getEvent(div));
+                newPopupContent += Moodle.getNewDiv(div, Moodle.getEvent(div));
             });
             $(td).attr("data-core_calendar-popupcontent", newPopupContent);
         });
@@ -26,15 +26,15 @@ class MoodleEvent {
      */
 
     static getNewDiv(div, event) {
-        var google_url = eventToGCalendar(MoodleEvent, event);
-        var outlook_url = eventToOutlookCalendar(MoodleEvent, event);
+        var google_url = eventToGCalendar(Moodle, event);
+        var outlook_url = eventToOutlookCalendar(Moodle, event);
 
         // Browsers ignore newlines on the URLs, they are ommited. Therefore, I encode all newlines if formats are plain text
 
         return `
         ${div.find("img")[0].outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, MoodleEvent.isHTML()).outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, MoodleEvent.isHTML()).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, Moodle.isHTML).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, Moodle.isHTML).outerHTML}
         ${div.find("a")[0].outerHTML}`;
     }
 
@@ -53,29 +53,29 @@ class MoodleEvent {
         };
     }
 }
-Object.setPrototypeOf(MoodleEvent.prototype, Extractor);
+Object.setPrototypeOf(Moodle.prototype, Extractor);
 
 //init on include
 asyncGetMoodle()
     .then((moodle) => {
         // define the static methods getName and getDescription
-        MoodleEvent.getName = function(event, forUrl) {
+        Moodle.getName = function(event, forUrl) {
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
             return parseStrFormat(event, moodle.title, moodle.isHTML);
         }
 
-        MoodleEvent.getDescription = function(event, forUrl) {
+        Moodle.getDescription = function(event, forUrl) {
             if (forUrl) event = this.convertToURI(event);
 
             //In case some of the attributes are undefined, replace it with 'n/a'
             return parseStrFormat(event, moodle.desc, moodle.isHTML);
         }
 
-        MoodleEvent.isHTML = function() {
+        Moodle.isHTML = function() {
             return moodle.isHTML;
         }
 
-        let extractorMoodleEvent = new MoodleEvent();
+        let extractorMoodle = new Moodle();
     })
