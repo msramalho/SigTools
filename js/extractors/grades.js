@@ -37,11 +37,12 @@ class Grades extends Extractor {
         if (!this.originalTable.length) return
 
         // append the main div
-        this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"></div>`)
+        this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2>SigToCa</h2></div>`)
 
+        // attach modules (order of invocation matters)
+        this.attachDownload()
         this.attachCharts()
         this.attachMetrics()
-        this.attachDownload()
     }
 
     /**
@@ -143,13 +144,13 @@ class Grades extends Extractor {
         let semester = t.find("tr:last-child td:last-child").html().substring(0, 1)
 
         // JSON download
-        this.originalTable.before(`<a href="#" id="gradeDownloadJSON">Download JSON</a> `)
+        $("div.gradeChartDiv").append(`<a href="#" id="gradeDownloadJSON">Download JSON</a> `)
         $("#gradeDownloadJSON").click(() => {
             download(JSON.stringify(this.grades), subject + "_" + year + "_" + semester + ".json")
         })
 
         // csv download
-        this.originalTable.before(`<a href="#" id="gradeDownloadCsv">Download CSV</a>`)
+        $("div.gradeChartDiv").append(`<a href="#" id="gradeDownloadCsv">Download CSV</a>`)
         $("#gradeDownloadCsv").click(() => {
             download(jsonToCsv(this.grades), subject + "_" + year + "_" + semester + ".csv")
         })
