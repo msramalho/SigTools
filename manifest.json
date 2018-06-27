@@ -32,6 +32,10 @@
         "matches": ["https://moodle.up.pt/*"],
         "js": ["js/extractors/moodle.js"],
         "run_at": "document_end"
+    }, {
+        "matches": ["https://*.up.pt/*show_pauta_resul*", "https://*.up.pt/*SHOW_PAUTA_RESUL*"],
+        "js": ["js/lib/chart.min.js", "js/lib/math.min.js", "js/lib/mustache.min.js", "js/extractors/grades.js"],
+        "run_at": "document_end"
     }],
     "permissions": [
         "https://*.up.pt/*",

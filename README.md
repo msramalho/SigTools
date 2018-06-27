@@ -88,6 +88,8 @@ It was developed to be as non-intrusive as possible, requires no permission, onl
  - [FileSaver.js](https://github.com/eligrey/FileSaver.js)
  - [Blob.js](https://github.com/eligrey/Blob.js)
  - [mustache](https://github.com/janl/mustache.js/)
+ - [chart.js](https://github.com/chartjs/Chart.js)
+ - [math.js](https://github.com/josdejong/mathjs/)
 
 For saving us a lot of time
 
