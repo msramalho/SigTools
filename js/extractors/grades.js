@@ -60,7 +60,7 @@ class Grades extends Extractor {
                 datasets: [{
                     label: "Grades",
                     data: this.getAccumulatedGrades(),
-                    backgroundColor: "#009688"
+                    backgroundColor: this.chart_color
                 }]
             }
         })

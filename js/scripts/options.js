@@ -21,6 +21,9 @@ let template = `
         <span>{{name}}</span>
         <textarea class="{{name}}" id="{{extractor}}_{{name}}">{{{value}}}</textarea>
     {{/storage.textarea}}
+    {{#storage.color}}
+        <label><input class="{{name}}" id="{{extractor}}_{{name}}" type="color" value="{{value}}"/>{{name}}</label>
+    {{/storage.color}}
     {{#storage.boolean}}
         <label><input class="{{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}"/>{{name}}</label>
     {{/storage.boolean}}
