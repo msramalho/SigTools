@@ -68,3 +68,33 @@ function getProperties(obj) {
             props.push(property);
     return props;
 }
+
+/**
+ * Export a string to a file and download it
+ */
+function download(contents, filename) {
+    saveAs(new Blob([contents], {
+        type: "text/plain;charset=utf-8"
+    }), filename)
+}
+
+/**
+ * Convert JSON object to CSV string
+ */
+function jsonToCsv(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+            if (line != '') line += ','
+
+            line += array[i][index];
+        }
+
+        str += line + '\r\n';
+    }
+
+    return str;
+}
