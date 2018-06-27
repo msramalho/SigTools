@@ -278,7 +278,7 @@ function getOverlappingClass(html, firstSunday) {
     return {
         name: jTry(() => {
             return t1.find("acronym").attr("title");
-        }, "No NAme"),
+        }, "No Name"),
         acronym: acronym,
         type: jTry(() => {
             return getClassType(t1.selfText().trim());
