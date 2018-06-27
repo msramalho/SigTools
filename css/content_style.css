@@ -103,7 +103,6 @@ calendarIconMoodle:hover {
 
 .gradeChartDiv {
     float: right;
-    background-color: blue;
     width: calc(100% - 550px);
 }
 
