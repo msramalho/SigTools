@@ -109,3 +109,12 @@ calendarIconMoodle:hover {
 .gradeChartDiv canvas {
     height: 400;
 }
+
+.gradeMetrics {
+    margin: 5px;
+    font-size: 1.2em;
+}
+
+.gradeMetrics table {
+    width: 100%;
+}

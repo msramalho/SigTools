@@ -36,8 +36,19 @@ class Grades extends Extractor {
         // return if table not found
         if (!this.originalTable.length) return
 
+        // append the main div
+        this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"></div>`)
+
+        this.attachCharts()
+        this.attachMetrics()
+    }
+
+    /**
+     * inject the histogram of the grades
+     */
+    attachCharts() {
         // append the canvas
-        this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><canvas id="gradesChart"></canvas></div>`);
+        $("div.gradeChartDiv").append(`<canvas id="gradesChart"></canvas>`)
 
         // generate the chart
         new Chart($("#gradesChart").get(), {
@@ -49,9 +60,71 @@ class Grades extends Extractor {
                     data: this.getAccumulatedGrades(),
                     backgroundColor: "#009688"
                 }]
-            },
-            options: {}
-        });
+            }
+        })
+    }
+
+    /**
+     * inject metrics and textual information
+     */
+    attachMetrics() {
+        let g = this.getNumericGrades();
+        let m = math
+
+        let name = $(".nomelogin").html()
+        let mine = this.grades.find(i => i.name == name).grade
+        mine = $.isNumeric(mine) ? parseInt(mine) : 0
+
+        let passed = g.length
+        let failed = this.getGrades().length - passed
+
+        let max = m.max(g),
+            min = m.min(g)
+        let best = this.grades.filter(i => i.grade == max).sort((a, b) => a - b)
+        let worst = this.grades.filter(i => i.grade == min).sort((a, b) => a - b)
+        let fail = this.grades.filter(i => !$.isNumeric(i.grade)).sort((a, b) => a - b)
+
+        let metricsHtml = `
+        <div class="gradeMetrics">
+            <h4>Personal Analysis</h4>
+            <table>
+                <tr><td>My grade: </td><td>${mine}</td></tr>
+                <tr><td>Position: </td><td>${g.sort().reverse().indexOf(mine)+1}º</td></tr>
+                <tr><td>Same as me: </td><td>${this.getGrades().filter(i => i == mine).length}</td></tr>
+            </table>
+            <hr/>
+            <h4>Overall Statistics</h4>
+            <table>
+                <tr><td>Average: </td><td>${m.round(m.mean(g), 2)}</td> <td>Std: </td><td>${m.round(m.std(g),2)}</td></tr>
+                <tr><td>Min: </td><td>${m.min(g)}</td> <td>Max: </td><td>${m.max(g)}</td></tr>
+                <tr><td>Median: </td><td>${m.median(g)}</td> <td>Mode: </td><td>${m.mode(g)}</td></tr>
+                <tr><td>Passed: </td><td>${passed}</td> <td>in percent: </td><td>${m.round(100*passed/(failed+passed), 2)}%</td></tr>
+                <tr><td>Failed: </td><td>${failed}</td> <td>in percent: </td><td>${m.round(100*failed/(failed+passed), 2)}%</td></tr>
+            </table>
+            <hr/>
+            <h4>Group Analysis</h4>
+            <strong>Best students - with ${max}</strong>
+            <p>${this._getHtmlStudentList(best)}</p>
+            <strong>Worst (passed) students - with ${min}</strong>
+            <p>${this._getHtmlStudentList(worst)}</p>
+            <strong>Failed students</strong>
+            <p>${this._getHtmlStudentList(fail)}</p>
+        </div>
+        `
+        $("div.gradeChartDiv").append(metricsHtml)
+    }
+
+    _getHtmlStudentList(students) {
+        return Mustache.render(`
+        {{#list.length}}
+            <ul>
+                {{#list}}
+                    <li><a href="fest_geral.cursos_list?pv_num_unico={{id}}">{{name}}</a></li>
+                {{/list}}
+            </ul>
+        {{/list.length}}`, {
+            list: students
+        })
     }
 
     /**
@@ -66,7 +139,7 @@ class Grades extends Extractor {
         //iterate rows, ignoring the header
         this.table.find("tr:has(>td)").each((_, tr) => {
             this.grades.push({
-                id: $(tr).find("td.n").html(),
+                id: $(tr).find("td.l").html(),
                 name: $(tr).find("td:nth-child(2)").html(),
                 course: $(tr).find("td:nth-child(3)").html(),
                 grade: $(tr).find("td.n").html()
@@ -80,9 +153,21 @@ class Grades extends Extractor {
      * @returns an array, aligned with the labels, of the counting operation
      */
     getAccumulatedGrades() {
-        let grades = this.getGrades(), res = []
+        let grades = this.getGrades()
+        let res = []
         this.getLabels().forEach(l => {
             res.push([...grades].filter(g => g == l).length)
+        });
+        return res;
+    }
+
+    /**
+     * returns an array that contains only numeric-valued grades
+     */
+    getNumericGrades() {
+        let res = []
+        this.getGrades().forEach(l => {
+            if ($.isNumeric(l)) res.push(parseInt(l))
         });
         return res;
     }
@@ -98,15 +183,6 @@ class Grades extends Extractor {
         let intersect = new Set([...extra].filter(x => present.has(x))) // intersect extra with present
         return Array.from(new Set([...intersect, ...mandatory])) // join intersection with mandatory
     }
-
-    getEvents(index) {
-
-    }
-
-    convertToURI(original) {
-
-    }
-
 }
 
 // add an instance to the EXTRACTORS variable, and also trigger attachIfPossible due to constructor
