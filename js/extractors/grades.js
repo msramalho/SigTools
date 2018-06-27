@@ -41,6 +41,7 @@ class Grades extends Extractor {
 
         this.attachCharts()
         this.attachMetrics()
+        this.attachDownload()
     }
 
     /**
@@ -114,6 +115,10 @@ class Grades extends Extractor {
         $("div.gradeChartDiv").append(metricsHtml)
     }
 
+    /**
+     * Uses Mustache to generate an unordered list of students with links
+     * @param {array of {id,grade,name,course}} students
+     */
     _getHtmlStudentList(students) {
         return Mustache.render(`
         {{#list.length}}
@@ -124,6 +129,29 @@ class Grades extends Extractor {
             </ul>
         {{/list.length}}`, {
             list: students
+        })
+    }
+
+    /**
+     * inject html to download the data
+     */
+    attachDownload() {
+        // read subject data
+        let t = $("table.form")
+        let subject = t.find("tr:nth-child(3) td:last-child").html()
+        let year = t.find("tr:nth-child(6) td:last-child").html().substring(0, 4)
+        let semester = t.find("tr:last-child td:last-child").html().substring(0, 1)
+
+        // JSON download
+        this.originalTable.before(`<a href="#" id="gradeDownloadJSON">Download JSON</a> `)
+        $("#gradeDownloadJSON").click(() => {
+            download(JSON.stringify(this.grades), subject + "_" + year + "_" + semester + ".json")
+        })
+
+        // csv download
+        this.originalTable.before(`<a href="#" id="gradeDownloadCsv">Download CSV</a>`)
+        $("#gradeDownloadCsv").click(() => {
+            download(jsonToCsv(this.grades), subject + "_" + year + "_" + semester + ".csv")
         })
     }
 
