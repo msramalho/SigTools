@@ -100,3 +100,13 @@ a#sig_downloadIcs {
 calendarIconMoodle:hover {
     transform: scale(1.4);
 }
+
+.gradeChartDiv {
+    float: right;
+    background-color: blue;
+    width: calc(100% - 550px);
+}
+
+.gradeChartDiv canvas {
+    height: 400;
+}
