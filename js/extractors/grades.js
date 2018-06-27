@@ -34,7 +34,7 @@ class Grades extends Extractor {
 
     attachIfPossible() {
         // return if table not found
-        if (this.originalTable == undefined) return
+        if (!this.originalTable.length) return
 
         // append the canvas
         this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><canvas id="gradesChart"></canvas></div>`);
