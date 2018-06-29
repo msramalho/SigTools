@@ -12,7 +12,7 @@ class TemplateExtractor extends Extractor {
         return {
             extractor: "the name of the extractor", // must be unique among extractors
             description: "a simple description of what it does",
-            parameters: [{//a list of the parameters that can be used ny users
+            parameters: [{//a list of the parameters that can be used any user
                     name: "name of the parameter",
                     description: "either describe or exemplify"
                 }
