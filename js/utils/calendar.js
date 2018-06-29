@@ -35,7 +35,7 @@ function eventToOutlookCalendar(extractor, event, repeat) {
  * @param {string} url
  * @param {boolean} html URL's with inline html or with plain text require different encodings
  */
-function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html) {
+function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html, title) {
     var a = document.createElement("a");
     var img = document.createElement("img");
 
@@ -57,6 +57,7 @@ function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html) {
 
     // add href attribute to automatically set the pointer/cursor
     a.setAttribute("href", "#");
+    if (title != undefined) a.innerHTML += title
 
     // add event listener
     if (html)

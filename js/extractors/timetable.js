@@ -30,10 +30,10 @@ class Timetable extends Extractor {
                     name: "room.url",
                     description: "link to the room on sigarra"
                 },{
-                    name: "class.name",
+                    name: "klass.name",
                     description: "eg: 5MIEIC01"
                 },{
-                    name: "class.url",
+                    name: "klass.url",
                     description: "link to the class information"
                 },{
                     name: "teacher.name",
@@ -55,7 +55,7 @@ class Timetable extends Extractor {
                 textarea: [
                     {
                         name: "description",
-                        default: "Type: ${type}\nClass: <a href=\"${class.url}\">${class.name}</a>\nTeacher: <a href=\"${teacher.url}\">${teacher.name} (${teacher.acronym})</a>\nRoom: <a href=\"${room.url}\">${room.name}</a>"
+                        default: "Type: ${type}\nClass: <a href=\"${klass.url}\">${klass.name}</a>\nTeacher: <a href=\"${teacher.url}\">${teacher.name} (${teacher.acronym})</a>\nRoom: <a href=\"${room.url}\">${room.name}</a>"
                     }
                 ],
                 boolean: [{
@@ -115,7 +115,7 @@ class Timetable extends Extractor {
         event.teacher.name = encodeURIComponent(event.teacher.name);
         event.teacher.url = encodeURIComponent(event.teacher.url);
         event.room.url = encodeURIComponent(event.room.url);
-        event.class.url = encodeURIComponent(event.class.url);
+        event.klass.url = encodeURIComponent(event.klass.url);
         return event;
     }
 
@@ -220,7 +220,7 @@ function getClass(html, dayOfWeek, from, to, firstSunday) {
         }, ""),
         from: eventFrom,
         to: eventTo,
-        class: {
+        klass: {
             name: jTry(() => {
                     return classAnchor.text();
                 }, ""),
@@ -285,7 +285,7 @@ function getOverlappingClass(html, firstSunday) {
         }, ""),
         from: eventFrom,
         to: eventTo,
-        class: {
+        klass: {
             name: jTry(() => {
                     return classAnchor.text();
                 }, ""),
