@@ -44,7 +44,7 @@ function createModal(extractor, events, repeat) {
                 <hr>
                 <div>
                     <a id="sig_downloadIcs" class="calendarBtn"
-                        title="Save this To your Calendar">📆 Download .ics</a>
+                        title="Save this to your Calendar">📆 Download .ics</a>
                 </div>
             </div>
             <div class="sig_overlay"></div>

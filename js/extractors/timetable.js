@@ -68,7 +68,7 @@ class Timetable extends Extractor {
 
     attachIfPossible() {
         if (this.table) {
-            let saveBtn = $('<a class="calendarBtn" title="Save this To your Calendar">📆</a>');
+            let saveBtn = $('<a class="calendarBtn" title="Save timetable to your Calendar">📆</a>');
             let timespan = $("table.horario-semanas");
             if (timespan.length > 0) timespan.before(saveBtn);
             else this.table.before(saveBtn);
