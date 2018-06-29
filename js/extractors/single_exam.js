@@ -62,6 +62,7 @@ class SingleExam extends Extractor {
             <a class="calendarBtn dropBtn" target="calendarDropdown" title="Save this exam to your Calendar">📆</a>
             <div id="calendarDropdown" class="dropdown-content">
                 ${generateOneClickDOM("", "dropdownIcon", "google", google_url, this.isHTML, "Google").outerHTML}
+                ${generateOneClickDOM("", "dropdownIcon", "outlook", outlook_url, this.isHTML, "Outlook").outerHTML}
             </div>
         </div>`);
 
