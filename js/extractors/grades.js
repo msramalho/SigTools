@@ -77,21 +77,23 @@ class Grades extends Extractor {
         let mine = this.grades.find(i => i.name == name).grade
         mine = $.isNumeric(mine) ? parseInt(mine) : 0
 
-        let passed = g.length
+        let passed = g.filter(x => x >= 10).length
         let failed = this.getGrades().length - passed
 
         let max = m.max(g),
             min = m.min(g)
         let best = this.grades.filter(i => i.grade == max).sort((a, b) => a - b)
-        let worst = this.grades.filter(i => i.grade == min).sort((a, b) => a - b)
-        let fail = this.grades.filter(i => !$.isNumeric(i.grade)).sort((a, b) => a - b)
+        let fail = this.grades.filter(i => !$.isNumeric(i.grade) || parseInt(i.grade) < 10).map(s => {
+            s.name = `${s.name} (${s.grade})`;
+            return s;
+        })
 
         let metricsHtml = `
         <div class="gradeMetrics">
             <h4>Personal Analysis</h4>
             <table>
                 <tr><td>My grade: </td><td>${mine}</td></tr>
-                <tr><td>Position: </td><td>${g.sort().reverse().indexOf(mine)+1}º</td></tr>
+                <tr><td>Position: </td><td>${g.sort((a, b) => b - a).indexOf(mine)+1}º</td></tr>
                 <tr><td>Same as me: </td><td>${this.getGrades().filter(i => i == mine).length}</td></tr>
             </table>
             <hr/>
@@ -107,8 +109,6 @@ class Grades extends Extractor {
             <h4>Group Analysis</h4>
             <strong>Best students - with ${max}</strong>
             <p>${this._getHtmlStudentList(best)}</p>
-            <strong>Worst (passed) students - with ${min}</strong>
-            <p>${this._getHtmlStudentList(worst)}</p>
             <strong>Failed students</strong>
             <p>${this._getHtmlStudentList(fail)}</p>
         </div>
@@ -206,7 +206,9 @@ class Grades extends Extractor {
      * along with the numeric values from 10 to 20
      */
     getLabels() {
-        let mandatory = new Set(["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"])
+        let mandatory = new Set(Array.apply(null, {
+            length: 21
+        }).map(Number.call, Number))
         let extra = new Set(["RFF", "RFC", "RFE", "RFR", "RA", "RD", "REC"])
         let present = new Set(this.getGrades())
         let intersect = new Set([...extra].filter(x => present.has(x))) // intersect extra with present
