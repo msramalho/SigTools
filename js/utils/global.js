@@ -1,4 +1,5 @@
-"use strict";
+// README: DO NOT "use strict"; because the eval used in parseStrFormat must use the `var` to have a scope out of the for-loop so that the eval inside the try-catch can access the variables without appending event.X to the str (which would limit the code inside ${} not to use ${})
+
 /**
  * Parses a string that represents a format for event's title and description
  * @param {object} event this variable is used in eval so DO NOT remove because of unused warning
@@ -6,7 +7,14 @@
  * @param {bool} isHTML used for conversions like "\n" -> "<br/>"
  */
 function parseStrFormat(event, str, isHTML) {
-    let res = "`" + str.replace(/\${(.*?)}/gm, "${event.$1}") + "`";
+    let p = getProperties(event);
+    for (let i = 0; i < p.length; i++) {
+        eval(`var ${p[i]} = event.${p[i]};`)
+
+    }
+
+    // let res = "`" + str.replace(/\${(.[\w\.]*?)}/gm, "${event.$1}") + "`";
+    let res = "`" + str + "`";
 
     if (isHTML) res = res.replace('\n', "<br/>");
 
@@ -63,7 +71,7 @@ jQuery.fn.selfText = function() {
  */
 function getProperties(obj) {
     let props = []
-    for (var property in obj)
+    for (let property in obj)
         if (obj.hasOwnProperty(property))
             props.push(property);
     return props;
@@ -82,19 +90,47 @@ function download(contents, filename) {
  * Convert JSON object to CSV string
  */
 function jsonToCsv(objArray) {
-    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    var str = '';
+    let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    let str = '';
 
-    for (var i = 0; i < array.length; i++) {
-        var line = '';
-        for (var index in array[i]) {
+    for (let i = 0; i < array.length; i++) {
+        let line = '';
+        for (let index in array[i]) {
             if (line != '') line += ','
-
             line += array[i][index];
         }
-
         str += line + '\r\n';
     }
 
     return str;
+}
+
+//----------Dropdown functions
+
+/**
+ * unbind and rebind the listeners for the dropdown buttons
+ */
+function setDropdownListeners() {
+    $(".dropBtn").unbind();
+    $(".dropBtn").click(toggleDropdown);
+}
+
+/**
+ * Toggle dropdown buttons
+ */
+function toggleDropdown(btn) {
+    document.getElementById($(btn.target).attr("target")).classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside
+window.onclick = function(event) {
+    if (!event.target.matches('.dropBtn')) {
+        let dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
 }
