@@ -77,8 +77,8 @@ a#sig_downloadIcs {
     background-color: #e3e3e396;
 }
 
-.noBorder{
-    border:none;
+.noBorder {
+    border: none;
 }
 
 .calendarLink {
@@ -127,6 +127,12 @@ calendarIconMoodle:hover {
 
 .gradeMetrics table {
     width: 100%;
+}
+
+img.sigLoading {
+    margin: auto;
+    display: block;
+    width: 100px;
 }
 
 /* Dropdown styles */

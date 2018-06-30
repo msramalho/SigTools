@@ -40,6 +40,10 @@
         "matches": ["https://*.up.pt/*exa_geral.exame_view*", "https://*.up.pt/*EXA_GERAL.EXAME_VIEW*"],
         "js": ["js/extractors/single_exam.js"],
         "run_at": "document_end"
+    }, {
+        "matches": ["https://*.up.pt/*fest_geral.fest_list*", "https://*.up.pt/*FEST_GERAL.FEST_LIST*"],
+        "js": ["js/extractors/infinite_scroll.js"],
+        "run_at": "document_end"
     }],
     "permissions": [
         "https://*.up.pt/*",
