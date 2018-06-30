@@ -36,6 +36,39 @@ class Grades extends Extractor {
         // return if table not found
         if (!this.originalTable.length) return
 
+        this.originalTable.prepend($(`<thead>${this.originalTable.find("tr").html()}</thead>`))
+        this.originalTable.find("tbody tr:has(> th)").remove()
+        // sorting guide: https://www.datatables.net/plug-ins/sorting/
+        $("table.dadossz").dataTable({
+            paging: false,
+            columnDefs: [{
+                type: "nepali-numbers"
+            }],
+            "order": [],
+            dom: 'Bfrtip',
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+            "bProcessing": true,
+            "bServerSide": true,
+            "fnServerData": function(sSource, aoData, fnCallback, oSettings) {
+                console.log(sSource);
+                console.log(aoData);
+                console.log(fnCallback);
+                console.log(oSettings);
+                oSettings.jqXHR = $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource+"testttt",
+                    "data": aoData,
+                    "success": function(){
+                        console.log("done");
+                    },
+                    "error": function(){
+                        console.log("fucked");
+                    }
+                });
+            }
+        });
+
         // append the main div
         this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2>SigToCa</h2></div>`)
 
