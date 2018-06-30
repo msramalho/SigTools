@@ -77,6 +77,10 @@ a#sig_downloadIcs {
     background-color: #e3e3e396;
 }
 
+.noBorder{
+    border:none;
+}
+
 .calendarLink {
     float: right;
     cursor: pointer;
@@ -170,4 +174,21 @@ div.dropdown.right {
 
 .dropdown.right .dropdown-content {
     right: 0;
+}
+
+/* datatables */
+
+.dataTables_filter input[type="search"] {
+    margin-left: 10px
+}
+
+.dt-button {
+    background-color: #2196F3;
+    background-image: none;
+    color: #ffffff;
+}
+
+.dt-button:hover {
+    background-color: #1565C0;
+    background-image: none;
 }

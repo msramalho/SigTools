@@ -36,46 +36,24 @@ class Grades extends Extractor {
         // return if table not found
         if (!this.originalTable.length) return
 
+
+        this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2 class="noBorder" style="margin-top:0;">SigToCa Grade Analysis</h2></div>`)
+
+        // attach modules (order of invocation matters)
+        this.attachCharts()
+        this.attachMetrics()
+
+
+        this.originalTable.prev().after($(`<h2 class="noBorder">SigToCa Dynamic Tables</h2>`))
         this.originalTable.prepend($(`<thead>${this.originalTable.find("tr").html()}</thead>`))
         this.originalTable.find("tbody tr:has(> th)").remove()
         // sorting guide: https://www.datatables.net/plug-ins/sorting/
         $("table.dadossz").dataTable({
             paging: false,
-            columnDefs: [{
-                type: "nepali-numbers"
-            }],
-            "order": [],
+            order: [],
             dom: 'Bfrtip',
-            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-            "bProcessing": true,
-            "bServerSide": true,
-            "fnServerData": function(sSource, aoData, fnCallback, oSettings) {
-                console.log(sSource);
-                console.log(aoData);
-                console.log(fnCallback);
-                console.log(oSettings);
-                oSettings.jqXHR = $.ajax({
-                    "dataType": 'json',
-                    "type": "POST",
-                    "url": sSource+"testttt",
-                    "data": aoData,
-                    "success": function(){
-                        console.log("done");
-                    },
-                    "error": function(){
-                        console.log("fucked");
-                    }
-                });
-            }
+            buttons: ['copy', 'csv', 'excel', 'print'],
         });
-
-        // append the main div
-        this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2>SigToCa</h2></div>`)
-
-        // attach modules (order of invocation matters)
-        this.attachDownload()
-        this.attachCharts()
-        this.attachMetrics()
     }
 
     /**
@@ -163,29 +141,6 @@ class Grades extends Extractor {
             </ul>
         {{/list.length}}`, {
             list: students
-        })
-    }
-
-    /**
-     * inject html to download the data
-     */
-    attachDownload() {
-        // read subject data
-        let t = $("table.form")
-        let subject = t.find("tr:nth-child(3) td:last-child").html()
-        let year = t.find("tr:nth-child(6) td:last-child").html().substring(0, 4)
-        let semester = t.find("tr:last-child td:last-child").html().substring(0, 1)
-
-        // JSON download
-        $("div.gradeChartDiv").append(`<a href="#" id="gradeDownloadJSON">Download JSON</a> `)
-        $("#gradeDownloadJSON").click(() => {
-            download(JSON.stringify(this.grades), subject + "_" + year + "_" + semester + ".json")
-        })
-
-        // csv download
-        $("div.gradeChartDiv").append(`<a href="#" id="gradeDownloadCsv">Download CSV</a>`)
-        $("#gradeDownloadCsv").click(() => {
-            download(jsonToCsv(this.grades), subject + "_" + year + "_" + semester + ".csv")
         })
     }
 
