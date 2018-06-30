@@ -326,7 +326,7 @@ function getOverlappingClass(html, firstSunday) {
  * @returns duration in milliseconds,
  */
 function getDurationFromUser(acronym) {
-    return Number(prompt(`An overlaping class was found and there is no information about it's duration. Please insert its duration in minutes (class ${acronym}):`, 120)) * 60 * 1000; //60 * 60 * 1000;
+    return Number(prompt(`An overlapping class was found and there is no information about it's duration. Please insert its duration in minutes (class ${acronym}):`, 120)) * 60 * 1000; //60 * 60 * 1000;
 }
 
 /**
