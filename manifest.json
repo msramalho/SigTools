@@ -17,8 +17,12 @@
         "matches": ["https://*.up.pt/*"],
         "css": ["css/content_style.css"],
         "js": ["js/lib/jquery.min.js", "js/lib/ics.deps.min.js", "js/lib/ics.min.js",
-            "js/utils/calendar.js", "js/utils/global.js", "js/utils/modal.js", "js/utils/time.js", "js/utils/settings.js", "js/extractors/extractor.js"
+            "js/utils/calendar.js", "js/utils/global.js", "js/utils/modal.js", "js/utils/time.js", "js/utils/settings.js", "js/lib/datatables.min.js", "js/extractors/extractor.js"
         ],
+        "run_at": "document_end"
+    }, {
+        "matches": ["https://sigarra.up.pt/*"],
+        "js": ["js/extractors/infinite_scroll.js", "js/extractors/datatable.js"],
         "run_at": "document_end"
     }, {
         "matches": ["https://*.up.pt/*hor_geral*", "https://*.up.pt/*HOR_GERAL*"],
@@ -34,15 +38,11 @@
         "run_at": "document_end"
     }, {
         "matches": ["https://*.up.pt/*show_pauta_resul*", "https://*.up.pt/*SHOW_PAUTA_RESUL*"],
-        "js": ["js/lib/chart.min.js", "js/lib/math.min.js", "js/lib/mustache.min.js", "js/lib/datatables.min.js", "js/extractors/grades.js"],
+        "js": ["js/lib/chart.min.js", "js/lib/math.min.js", "js/lib/mustache.min.js", "js/extractors/grades.js"],
         "run_at": "document_end"
     }, {
         "matches": ["https://*.up.pt/*exa_geral.exame_view*", "https://*.up.pt/*EXA_GERAL.EXAME_VIEW*"],
         "js": ["js/extractors/single_exam.js"],
-        "run_at": "document_end"
-    }, {
-        "matches": ["https://*.up.pt/*fest_geral.fest_list*", "https://*.up.pt/*FEST_GERAL.FEST_LIST*"],
-        "js": ["js/extractors/infinite_scroll.js"],
         "run_at": "document_end"
     }],
     "permissions": [

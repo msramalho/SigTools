@@ -26,12 +26,21 @@ class InfiniteScroll extends Extractor {
 
     attachIfPossible() {
         // return if table not found or not applied
-        if (!this.table.length) return
         if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
+        if (!this.table.length || !this.validTable()) return
 
         this.setUpLoading()
         this.readPagination()
         this.setScrollListener()
+    }
+
+    /**
+     * Check if the current table is valid for applying infinite scroll
+     */
+    validTable() {
+        let cols = this.table.find("tr:has(> th)").find("th").toArray().length
+        let first = this.table.find("tr:has(> td)").eq(0).find("td").toArray().length
+        return cols == first && $(".paginar").length
     }
 
     /**
@@ -58,7 +67,6 @@ class InfiniteScroll extends Extractor {
         this.loadingGif.hide()
         this.loading = false
     }
-
 
     /**
      * extracts the pagination information from the page, if available and saves it to this.pages
@@ -90,16 +98,18 @@ class InfiniteScroll extends Extractor {
             url: this.pages.shift(),
             type: 'GET',
             success: (res) => {
+                let callback = removeDatatableIfExists("table.dados")
                 // read the important rows from the result and append to current table
                 let rows = $(res).find("table.dados tr.i, table.dados tr.p").toArray().map(x => x.outerHTML).join("")
                 this.table.find("tbody").append(rows)
                 this.hideLoading()
+
+                // apply the callback, will only execute anything if there was a table
+                callback($('table.dados'))
             },
             fail: () => this.hideLoading()
         });
     }
-
-
 }
 
 // add an instance to the EXTRACTORS variable, and also trigger attachIfPossible due to constructor
