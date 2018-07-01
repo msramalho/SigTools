@@ -27,7 +27,7 @@ function createModal(extractor, events, repeat) {
         <li>
             <input type="checkbox" id="event_${i}" ${events[i].download?"checked":""}>
             <label for="event_${i}">${extractor.getName(events[i])}</label>
-            ${getDropdown(events[i], extractor, "dropdown_"+i)[0].outerHTML}
+            ${getDropdown(events[i], extractor, repeat, "dropdown_"+i)[0].outerHTML}
         </li>`;
     }
 

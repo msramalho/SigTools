@@ -3,11 +3,11 @@
  * @param {Event} event
  * @param {Context} context the "this" value before (must be an extractor with getName, get Description and isHTML)
  */
-function getDropdown(event, context, target) {
+function getDropdown(event, context, repeat, target) {
     target = target || "calendarDropdown"
-    let google_url = eventToGCalendar(context, event);
-    let outlook_url = eventToOutlookCalendar(context, event);
-    let yahoo_url = eventToYahooCalendar(context, event);
+    let google_url = eventToGCalendar(context, event, repeat);
+    let outlook_url = eventToOutlookCalendar(context, event, repeat);
+    let yahoo_url = eventToYahooCalendar(context, event, repeat);
     return $(`
 	<div class="dropdown right">
 		<a class="calendarBtn dropBtn" target="${target}" title="Save this exam to your Calendar">📆</a>
