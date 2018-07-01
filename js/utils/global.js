@@ -104,33 +104,3 @@ function jsonToCsv(objArray) {
 
     return str;
 }
-
-//----------Dropdown functions
-
-/**
- * unbind and rebind the listeners for the dropdown buttons
- */
-function setDropdownListeners() {
-    $(".dropBtn").unbind();
-    $(".dropBtn").click(toggleDropdown);
-}
-
-/**
- * Toggle dropdown buttons
- */
-function toggleDropdown(btn) {
-    document.getElementById($(btn.target).attr("target")).classList.toggle("show");
-}
-
-// Close the dropdown if the user clicks outside
-window.onclick = function(event) {
-    if (!event.target.matches('.dropBtn')) {
-        let dropdowns = document.getElementsByClassName("dropdown-content");
-        for (let i = 0; i < dropdowns.length; i++) {
-            let openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
-}
