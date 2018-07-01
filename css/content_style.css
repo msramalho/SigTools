@@ -81,11 +81,6 @@ a#sig_downloadIcs {
     border: none;
 }
 
-.calendarLink {
-    float: right;
-    cursor: pointer;
-}
-
 .calendarIcon,
 .dropdownIcon {
     display: list-item;
@@ -145,6 +140,7 @@ a.calendarBtn.dropBtn {
     margin-bottom: 10px;
     position: relative;
     display: inline-block;
+    clear: both;
 }
 
 .dropdown-content {
@@ -180,6 +176,17 @@ div.dropdown.right {
 
 .dropdown.right .dropdown-content {
     right: 0;
+}
+
+.sig_modalBody a.calendarBtn.dropBtn {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.sig_modalBody .dropdown {
+    margin: 0;
 }
 
 /* datatables */

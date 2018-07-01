@@ -52,21 +52,8 @@ class SingleExam extends Extractor {
         }
     }
 
-
     attachIfPossible() {
-        let event = this.getEvent()
-        let google_url = eventToGCalendar(this, event);
-        let outlook_url = eventToOutlookCalendar(this, event);
-        let saveBtn = $(`
-        <div class="dropdown right">
-            <a class="calendarBtn dropBtn" target="calendarDropdown" title="Save this exam to your Calendar">📆</a>
-            <div id="calendarDropdown" class="dropdown-content">
-                ${generateOneClickDOM("", "dropdownIcon", "google", google_url, this.isHTML, "Google").outerHTML}
-                ${generateOneClickDOM("", "dropdownIcon", "outlook", outlook_url, this.isHTML, "Outlook").outerHTML}
-            </div>
-        </div>`);
-
-        $("table").before(saveBtn)
+        $("table").before(getDropdown(this.getEvent(), this))
         setDropdownListeners();
     }
 

@@ -21,14 +21,13 @@ function handleEvents(extractor, events, from, to) {
 function createModal(extractor, events, repeat) {
     let eventsHtml = "";
     for (let i = 0; i < events.length; i++) {
-        var google_url = eventToGCalendar(extractor, events[i], repeat);
-        var outlook_url = eventToOutlookCalendar(extractor, events[i], repeat);
+        // var google_url = eventToGCalendar(extractor, events[i], repeat);
+        // var outlook_url = eventToOutlookCalendar(extractor, events[i], repeat);
         eventsHtml += `
         <li>
             <input type="checkbox" id="event_${i}" ${events[i].download?"checked":""}>
             <label for="event_${i}">${extractor.getName(events[i])}</label>
-            <span class="calendarLink">${generateOneClickDOM("", "calendarIcon", "google", google_url, extractor.isHTML).outerHTML}</span>
-            <span class="calendarLink">${generateOneClickDOM("", "calendarIcon", "outlook", outlook_url, extractor.isHTML).outerHTML}</span>
+            ${getDropdown(events[i], extractor, "dropdown_"+i)[0].outerHTML}
         </li>`;
     }
 
@@ -51,6 +50,7 @@ function createModal(extractor, events, repeat) {
         </div>`;
     modal = $(modal);
     $("head").before(modal);
+    setDropdownListeners();
     modal.find("#sig_downloadIcs").click((e) => {
         updateEvents(modal, events);
 

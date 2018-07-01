@@ -4,12 +4,12 @@
  * @param {Extractor} extractor class that implements getName and getDescription from the event
  * @param {event object} event needs to have (at least) {from, to, location, download}
  * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
+ * https://richmarr.wordpress.com/2008/01/07/adding-events-to-users-calendars-part-2-web-calendars/
  */
 function eventToGCalendar(extractor, event, repeat) {
     let recur = "";
     if (repeat) recur = `&recur=RRULE:FREQ=${repeat.freq};UNTIL=${(new Date(repeat.until)).toGCalendar()}`;
-    return (
-        `https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigToCa"}${recur}`);
+    return (`https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigToCa"}${recur}`);
 }
 
 /**
@@ -19,12 +19,35 @@ function eventToGCalendar(extractor, event, repeat) {
  * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
  */
 function eventToOutlookCalendar(extractor, event, repeat) {
-    var data = `&startdt=${event.from.toGCalendar()}&enddt=${event.to.toGCalendar()}` +
+    var data =
+        `&startdt=${event.from.toGCalendar()}&enddt=${event.to.toGCalendar()}` +
         `&subject=${extractor.getName(event, true)}` +
         `&location=${event.location}` +
         `&body=${extractor.getDescription(event, true, true)}`;
 
     return 'https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent' + data;
+}
+
+/**
+ * return a URL for adding events to Yahoo.com
+ * @param {Extractor} extractor class that implements getName and getDescription from the event
+ * @param {event object} event needs to have (at least) {from, to, location, download}
+ * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
+ * http://chris.photobooks.com/tests/calendar/Notes.html
+ */
+function eventToYahooCalendar(extractor, event, repeat) {
+    // calculate duration
+    let dMins = (event.to - event.from) / (60 * 1000) // duration in minutes
+    let dHours = Math.floor(dMins / 60) // convert to full hours
+    dMins = dMins % 60 // remaining minutes
+
+    var data =
+        `&DUR=${dHours}${dMins}&ST=${event.from.toGCalendar()}` +
+        `&TITLE=${extractor.getName(event, true)}` +
+        `&in_loc=${event.location}` +
+        `&DESC=${extractor.getDescription(event, true, true)}`;
+    // + `&REND=${}`
+    return 'http://calendar.yahoo.com/?v=60' + data;
 }
 
 /**
@@ -45,13 +68,17 @@ function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html, tit
 
     // set title and append an <img>
     if (service == "google") {
-        a.setAttribute("title", "Add this single event to your Google Calendar in One click!");
+        a.setAttribute("title", "Add this single event to your Google Calendar in one click!");
         img.setAttribute("alt", "google calendar icon");
         img.setAttribute("src", `${chrome.extension.getURL("icons/gcalendar.png")}`);
     } else if (service == "outlook") {
-        a.setAttribute("title", "Add this single event to your Outlook Calendar in One click!");
+        a.setAttribute("title", "Add this single event to your Outlook Calendar in one click!");
         img.setAttribute("alt", "outlook calendar icon");
         img.setAttribute("src", `${chrome.extension.getURL("icons/outlook.png")}`);
+    } else if (service == "yahoo") {
+        a.setAttribute("title", "Add this single event to your Yahoo Calendar in one click!");
+        img.setAttribute("alt", "yahoo calendar icon");
+        img.setAttribute("src", `${chrome.extension.getURL("icons/yahoo.png")}`);
     }
     a.appendChild(img);
 
