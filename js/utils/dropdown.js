@@ -26,9 +26,7 @@ function getDropdown(event, context, target) {
 function setDropdownListeners(extractor, repeat) {
     $(".dropBtn").unbind().click(toggleDropdown)
     $(".donwloadSingleIcs").unbind().click((e) => {
-		console.log($(e.target).attr("data"));
 		let event = JSON.parse($(e.target).attr("data"))
-		console.log(event);
         let cal = ics(); //creat ics instance
         cal.addEvent(extractor.getName(event), extractor.getDescription(event), event.location, event.from.toString(), event.to.toString(), repeat);
         if (!cal.download()) alert("No event selected for download!");
