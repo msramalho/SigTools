@@ -178,6 +178,11 @@ div.dropdown.right {
     right: 0;
 }
 
+.dropdown a {
+    display: flex;
+    align-items: center;
+}
+
 .sig_modalBody a.calendarBtn.dropBtn {
     padding: 0;
     border: none;

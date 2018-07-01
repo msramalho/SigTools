@@ -50,7 +50,7 @@ function createModal(extractor, events, repeat) {
         </div>`;
     modal = $(modal);
     $("head").before(modal);
-    setDropdownListeners();
+    setDropdownListeners(extractor, repeat);
     modal.find("#sig_downloadIcs").click((e) => {
         updateEvents(modal, events);
 

@@ -4,10 +4,10 @@
  * @param {Context} context the "this" value before (must be an extractor with getName, get Description and isHTML)
  */
 function getDropdown(event, context, target) {
-	target = target || "calendarDropdown"
+    target = target || "calendarDropdown"
     let google_url = eventToGCalendar(context, event);
     let outlook_url = eventToOutlookCalendar(context, event);
-	let yahoo_url = eventToYahooCalendar(context, event);
+    let yahoo_url = eventToYahooCalendar(context, event);
     return $(`
 	<div class="dropdown right">
 		<a class="calendarBtn dropBtn" target="${target}" title="Save this exam to your Calendar">📆</a>
@@ -15,6 +15,7 @@ function getDropdown(event, context, target) {
 		${generateOneClickDOM("", "dropdownIcon", "google", google_url, context.isHTML, "Google").outerHTML}
 		${generateOneClickDOM("", "dropdownIcon", "outlook", outlook_url, context.isHTML, "Outlook").outerHTML}
 		${generateOneClickDOM("", "dropdownIcon", "yahoo", yahoo_url, context.isHTML, "Yahoo").outerHTML}
+		<a class="donwloadSingleIcs" data='${JSON.stringify(event)}' style="background-color:#e3e3e3" title="For other calendars, download the single .ics file" href="#"><img class="dropdownIcon" alt="apple calendar icon" src="${chrome.extension.getURL("icons/apple.png")}">Others</a>
 		</div>
 	</div>`);
 }
@@ -22,9 +23,16 @@ function getDropdown(event, context, target) {
 /**
  * unbind and rebind the listeners for the dropdown buttons
  */
-function setDropdownListeners() {
-    $(".dropBtn").unbind();
-    $(".dropBtn").click(toggleDropdown);
+function setDropdownListeners(extractor, repeat) {
+    $(".dropBtn").unbind().click(toggleDropdown)
+    $(".donwloadSingleIcs").unbind().click((e) => {
+		console.log($(e.target).attr("data"));
+		let event = JSON.parse($(e.target).attr("data"))
+		console.log(event);
+        let cal = ics(); //creat ics instance
+        cal.addEvent(extractor.getName(event), extractor.getDescription(event), event.location, event.from.toString(), event.to.toString(), repeat);
+        if (!cal.download()) alert("No event selected for download!");
+    })
 }
 
 /**
