@@ -2,16 +2,16 @@
 //https://developer.chrome.com/extensions/content_scripts#run_at
 
 let template = `
-<div class="col-a1 col-b1">
-<h1>{{extractor}} format</h1>
+<div class="col-12 col-md-6 col-lg-4">
+<h2>{{extractor}} format</h2>
 <p>{{description}}</p>
-<h3>Parameters</h3>
+<h5>Parameters</h5>
 <ul>
     {{#parameters}}
     <li><strong class="parameter-code"><code>$&#123{{name}}&#125</code></strong> {{description}}</li>
     {{/parameters}}
 </ul>
-<h3>Format</h3>
+<h5>Format</h5>
 <div class="formatDiv">
     {{#storage.text}}
         <span>{{name}}</span>
