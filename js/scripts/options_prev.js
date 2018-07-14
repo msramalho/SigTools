@@ -81,6 +81,9 @@ $(document).ready(function() {
         $("#nav-tab-content").append($(Mustache.render(nav_tab_content_template, ex.structure)));
     });
 
+    // set the first tab as active
+    $('#nav-tab-' + EXTRACTORS[0].structure.extractor).tab('show');
+
     // make checkboxes with value="true" be checked
     $("input[type='checkbox'][value='true']").each(function() {
         $(this).prop('checked', true)
