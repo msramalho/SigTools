@@ -16,18 +16,29 @@ let template = `
 <h5>Format</h5>
 <div class="formatDiv">
     {{#storage.text}}
-        <span>{{name}}</span>
-        <input class="{{name}}" id="{{extractor}}_{{name}}" type="text" value="{{value}}"/>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">{{name}}</span>
+            </div>
+            <input class="form-control {{name}}" id="{{extractor}}_{{name}}" type="text" value="{{value}}">
+        </div>
     {{/storage.text}}
     {{#storage.textarea}}
-        <span>{{name}}</span>
-        <textarea class="{{name}}" id="{{extractor}}_{{name}}">{{{value}}}</textarea>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">{{name}}</span>
+            </div>
+            <textarea class="form-control" id="{{extractor}}_{{name}}">{{{value}}}</textarea>
+        </div>
     {{/storage.textarea}}
     {{#storage.color}}
         <label><input class="{{name}}" id="{{extractor}}_{{name}}" type="color" value="{{value}}"/>{{name}}</label>
     {{/storage.color}}
     {{#storage.boolean}}
-        <label><input class="{{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}"/>{{name}}</label>
+        <div class="custom-control custom-checkbox">
+            <input class="custom-control-input {{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}">
+            <label class="custom-control-label" for="{{extractor}}_{{name}}">{{name}}</label>
+        </div>
     {{/storage.boolean}}
 </div>
 </div>
