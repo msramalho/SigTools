@@ -3,7 +3,9 @@
 
 let template = `
 <div class="col-12 col-md-6 col-lg-4">
-<h2>{{extractor}} format</h2>
+<div class="card">
+<h2 class="card-header text-white bg-dark">{{extractor}} format</h2>
+<div class="card-body">
 <p>{{description}}</p>
 <h5>Parameters</h5>
 <ul>
@@ -27,7 +29,8 @@ let template = `
     {{#storage.boolean}}
         <label><input class="{{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}"/>{{name}}</label>
     {{/storage.boolean}}
-
+</div>
+</div>
 </div>
 </div>`
 
