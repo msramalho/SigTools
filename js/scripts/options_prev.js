@@ -2,7 +2,7 @@
 //https://developer.chrome.com/extensions/content_scripts#run_at
 
 let nav_tab_list_template = `
-<a class="nav-link" id="nav-tab-{{extractor}}" data-toggle="pill" href="#nav-tab-content-{{extractor}}" role="tab" aria-controls="nav-tab-content-{{extractor}}" aria-selected="false">{{extractor}}</a>
+<a class="nav-link rounded-0" id="nav-tab-{{extractor}}" data-toggle="pill" href="#nav-tab-content-{{extractor}}" role="tab" aria-controls="nav-tab-content-{{extractor}}" aria-selected="false">{{extractor}}</a>
 `
 
 let nav_tab_content_template = `
