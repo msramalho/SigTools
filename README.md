@@ -1,19 +1,20 @@
 <p align="center">
  <a href="https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme">
-  <img src="https://github.com/msramalho/SigToCa/blob/master/icons/icon-512.png" width="128"/>
+  <img src="https://github.com/msramalho/SigTools/blob/master/icons/icon-512.png" width="128"/>
  </a>
 </p>
-<h1 align="center"> <strike>SigToCa</strike> SigTools- Sigarra Tools</h1>
+<h1 align="center"> <strike>SigTools</strike> SigTools- Sigarra Tools</h1>
 
-**Sigarra on steroids**: automatically add Sigarra timetables and events (book renewal, payments, ...) to your calendar apps; export, search, filter and sort data-tables; statistical analysis on grades; library book renewal; configurable behaviour and more.
+**Sigarra on steroids**: automatically add Sigarra timetables and events (book renewal, payments, ...) to your calendar apps; export, filter and sort data-tables; statistical analysis on grades; library book renewal; configurable behaviour and more.
 
 ### Install via:
  - [WebStore](https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme)
  - [Add-on for Firefox](https://addons.mozilla.org/en-US/firefox/addon/sigarra-to-calendar/) Thanks a bunch to [@afonsobspinto](https://github.com/afonsobspinto)
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
- - From [.crx](https://github.com/msramalho/SigToCa/blob/master/extra/SigTools.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
+ - From [.crx](https://github.com/msramalho/SigTools/blob/master/extra/SigTools.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
 
-### Works on:
+### Features:
+Most features are customizable and can be turned off in the options page.
 
 #### Timetable Extractor
  - Personal schedule
@@ -29,8 +30,17 @@
  - Hover over a moodle event on the calendar and an option to add to Google Calendar (with One click) becomes available
  - Moodle already has functionality to export events in the iCal format [here](https://moodle.up.pt/calendar/export.php)
 
+#### Datatables
+Any Sigarra data-table is now:
+ - exportable (copy-paste, csv, excel, pdf)
+ - sortable by any column
+ - searchable by a query box
+ 
+#### Infinite Scroll
+ - Any page that has paginated tables now has infinite scroll (example: search for MIEIC students)
 
-### Exports to
+
+### Calendars are exported to
 [iCalendar](https://en.wikipedia.org/wiki/ICalendar) *.ics* format which means most applications handle it pretty well:
  - [Google Calendar](https://support.google.com/calendar/answer/37118?hl=en)
  - [Apple Calendar](https://support.apple.com/guide/calendar/import-or-export-calendars-icl1023/mac)
@@ -41,38 +51,23 @@
  - Lightning extension for Mozilla Thunderbird and SeaMonkey
  - [partially] by Microsoft Outlook and Novell GroupWise
 
-## Instructions
-Here's the general flow of this extension:
- 1. Navigate to any Sigarra (Moodle) page with a timetable and, if it is recognized by SigToCa, a blue button (📆) will appear next to the table
- 2. Click that button and choose, from the list of detected events, the ones you want to save
- 3. Click the Download button and an *.ics* file will be downloaded to your computer
- 4. Go to your calendar app and upload that file to any calendar and that's it!
-
-**OR**
- 1. Same but where you see the Google Calendar button (<img src="https://github.com/msramalho/SigToCa/blob/master/icons/gcalendar.png" width="24"/>) you can click it to add that event directly to your Google Calendar on the browser.
-
-**OR**
- 1. Same but where you see the Outlook.com button (<img src="https://github.com/msramalho/SigToCa/blob/master/icons/outlook.png" width="24"/>) you can click it to add that event directly to your Outlook.com Calendar on the browser.
-
-
-**Important**: This extension not only identifies the events in the page but, in the case of recurring events like classes, generates the *.ics* file in accordance to the time range specified in the page!
 
 ### Prints
 
 <h3 align="center">TimeTable</h3>
 <p align="center">
- <img  align="center" src="https://github.com/msramalho/SigToCa/blob/master/extra/imgs/print_timetable_01.png" width="80%" height="80%">
+ <img  align="center" src="https://github.com/msramalho/SigTools/blob/master/extra/imgs/print_timetable_01.png" width="80%" height="80%">
 </p>
 
 <h3 align="center">Exams</h3>
 <p align="center">
- <img  align="center" src="https://github.com/msramalho/SigToCa/blob/master/extra/imgs/print_exames_01.png" width="80%" height="80%">
+ <img  align="center" src="https://github.com/msramalho/SigTools/blob/master/extra/imgs/print_exames_01.png" width="80%" height="80%">
 </p>
 
 
 <h3 align="center">Moodle</h3>
 <p align="center">
- <img align="center" src="https://github.com/msramalho/SigToCa/blob/master/extra/imgs/print_moodle_01.png" width="35%" height="35%">
+ <img align="center" src="https://github.com/msramalho/SigTools/blob/master/extra/imgs/print_moodle_01.png" width="35%" height="35%">
 </p>
 
 
@@ -91,11 +86,11 @@ It was developed to be as non-intrusive as possible, requires no permission, onl
 For saving us a lot of time
 
 
-# Contribute
+# Contribute to SigTools
 You can contribute by:
- - Identifying and reporting [issues](https://github.com/msramalho/SigToCa/issues)
+ - Identifying and reporting [issues](https://github.com/msramalho/SigTools/issues)
  - Fixing bugs - fork + branch + pull request
- - Adding more [modules/extractors](https://github.com/msramalho/SigToCa/tree/master/js/extractors) each module should address a different calendar need
+ - Adding more [modules/extractors](https://github.com/msramalho/SigTools/tree/master/js/extractors) each module should address a different calendar need
  - Sharing this Extension
 
 ## Code structure
@@ -184,9 +179,12 @@ The `structure()` method should return an object that describes the extractor, f
     - One-click Outlook.com integration for all extractors 🎉 (only for non-beta Outlook). All props go to [@fabiodrg666](https://github.com/fabiodrg666)
     - .1 - bug fix in overlapping classes
  - V2.0
+    - ~SigToCa~ -> SigTools
     - complete refactor
     - each extractor describes itself
     - options page is dynamic and varies according to extractors
     - simplified manifest
     - better organization of scripts into folders
     - started using [mustache](https://github.com/janl/mustache.js/) templates
+    - options page
+    - changelog page when installed or updated
