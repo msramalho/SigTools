@@ -113,4 +113,12 @@ $(document).ready(function() {
             saveChanges();
         }
     });
+
+    window.addEventListener("beforeunload", function (event) {
+        if(haveSettingsChanged)
+            event.returnValue = "Are you sure you want to leave? You have unsaved settings";
+    });
 });
+
+
+  
