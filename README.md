@@ -5,13 +5,13 @@
 </p>
 <h1 align="center"> <strike>SigToCa</strike> SigTools- Sigarra Tools</h1>
 
-Automatically add Sigarra Timetables to your Calendar Apps (using *.ics* format and one-click Google Calendar Event)
+**Sigarra on steroids**: automatically add Sigarra timetables and events (book renewal, payments, ...) to your calendar apps; export, search, filter and sort data-tables; statistical analysis on grades; library book renewal; configurable behaviour and more.
 
 ### Install via:
  - [WebStore](https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme)
  - [Add-on for Firefox](https://addons.mozilla.org/en-US/firefox/addon/sigarra-to-calendar/) Thanks a bunch to [@afonsobspinto](https://github.com/afonsobspinto)
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
- - From [.crx](https://github.com/msramalho/SigToCa/blob/master/extra/SigToCa.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
+ - From [.crx](https://github.com/msramalho/SigToCa/blob/master/extra/SigTools.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
 
 ### Works on:
 
@@ -98,7 +98,7 @@ You can contribute by:
  - Adding more [modules/extractors](https://github.com/msramalho/SigToCa/tree/master/js/extractors) each module should address a different calendar need
  - Sharing this Extension
 
-# Code structure
+## Code structure
  * `extractors` for all the scripts that extract information from a page and act accordingly
  * `lib` for external scripts
  * `scripts` for the JS scripts that are atomic or that are used for an `hmtl` page
