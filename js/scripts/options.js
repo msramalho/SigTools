@@ -85,13 +85,14 @@ $(document).ready(function() {
 
         // add tab's content
         $("#nav-tab-content").append($(Mustache.render(nav_tab_content_template, ex.structure)));
+    });
 
-        $("#nav-tab-content :input").on("input", function () { 
-            if(!haveSettingsChanged) {
-                haveSettingsChanged = true;
-                $("#btn_save").prop('disabled', false);
-            }
-        })
+    // Add event listeners to all input controls upon input change and right click
+    $("#nav-tab-content :input").on("input", function () { 
+        if(!haveSettingsChanged) {
+            haveSettingsChanged = true;
+            $("#btn_save").prop('disabled', false);
+        }
     });
 
     // set the first tab as active
