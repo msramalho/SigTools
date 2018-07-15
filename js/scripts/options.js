@@ -2,7 +2,7 @@
 //https://developer.chrome.com/extensions/content_scripts#run_at
 
 let nav_tab_list_template = `
-<a class="nav-link rounded-0" id="nav-tab-{{extractor}}" data-toggle="pill" href="#nav-tab-content-{{extractor}}" role="tab" aria-controls="nav-tab-content-{{extractor}}" aria-selected="false">{{extractor}}</a>
+<a class="nav-link rounded-0" id="nav-tab-{{extractor}}" href="#nav-tab-content-{{extractor}}" role="tab" aria-controls="nav-tab-content-{{extractor}}" aria-selected="false">{{extractor}}</a>
 `
 
 let nav_tab_content_template = `
@@ -11,11 +11,11 @@ let nav_tab_content_template = `
 <h5>Parameters</h5>
 <ul>
     {{#parameters}}
-    <li><strong class="parameter-code"><code>$&#123{{name}}&#125</code></strong> {{description}}</li>
+    <li><strong style="cursor: pointer;"><code>$&#123{{name}}&#125</code></strong> {{description}}</li>
     {{/parameters}}
 </ul>
 <h5>Format</h5>
-<div class="formatDiv">
+<div>
     {{#storage.text}}
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
@@ -45,6 +45,11 @@ let nav_tab_content_template = `
 </div>
 `
 
+/**
+ * References the extractor for the current active tab
+ */
+let curr_extractor;
+
 // read user input into options and save it
 function saveChanges() {
     let settings = {}
@@ -71,11 +76,22 @@ function saveChanges() {
     alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
 }
 
+/**
+ * Populates the sidebar with page entries for each configurable extractor and generates the matching page content
+ * Adds onClick event listener for 'Save' button and intercepts 'ctrl+s' shortcut
+ */
 $(document).ready(function() {
     // generate the extractor options form according to the template
     EXTRACTORS.forEach(ex => {
         // add a tab for each extractor
-        $("#nav-tab-list").append($(Mustache.render(nav_tab_list_template, ex.structure)));
+        $("#nav-tab-list")
+            .append($(Mustache.render(nav_tab_list_template, ex.structure))
+            .click(function (e) {
+                e.preventDefault();
+                curr_extractor = ex;
+                $(this).tab('show');
+            })
+        );
 
         // add tab's content
         $("#nav-tab-content").append($(Mustache.render(nav_tab_content_template, ex.structure)));
