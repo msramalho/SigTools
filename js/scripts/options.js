@@ -15,13 +15,12 @@ let nav_tab_content_template = `
     {{/parameters}}
 </ul>
 <h5>Format</h5>
-<div class="formatDiv">
+<div>
     {{#storage.text}}
         <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">{{name}}</span>
-            </div>
+            <div class="input-group-prepend"><span class="input-group-text">{{name}}</span></div>
             <input class="form-control {{name}}" id="{{extractor}}_{{name}}" type="text" value="{{value}}">
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button">↺</button></div>
         </div>
     {{/storage.text}}
     {{#storage.textarea}}
@@ -30,15 +29,21 @@ let nav_tab_content_template = `
                 <span class="input-group-text">{{name}}</span>
             </div>
             <textarea class="form-control" id="{{extractor}}_{{name}}">{{{value}}}</textarea>
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button">↺</button></div>
         </div>
     {{/storage.textarea}}
     {{#storage.color}}
-        <label><input class="{{name}}" id="{{extractor}}_{{name}}" type="color" value="{{value}}"/>{{name}}</label>
+        <label>
+            <input class="{{name}}" id="{{extractor}}_{{name}}" type="color" value="{{value}}"/>
+            {{name}}
+            <button class="btn btn-outline-secondary btn-sm" type="button">↺</button>
+        </label>
     {{/storage.color}}
     {{#storage.boolean}}
         <div class="custom-control custom-checkbox">
             <input class="custom-control-input {{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}">
             <label class="custom-control-label" for="{{extractor}}_{{name}}">{{name}}</label>
+            <button class="btn btn-outline-secondary btn-sm" type="button">↺</button>
         </div>
     {{/storage.boolean}}
 </div>
@@ -87,7 +92,7 @@ $(document).ready(function() {
         $("#nav-tab-content").append($(Mustache.render(nav_tab_content_template, ex.structure)));
     });
 
-    // Add event listeners to all input controls upon input change and right click
+    // Add event listeners to all input controls upon input change
     $("#nav-tab-content :input").on("input", function () { 
         if(!haveSettingsChanged) {
             haveSettingsChanged = true;
@@ -119,6 +124,3 @@ $(document).ready(function() {
             event.returnValue = "Are you sure you want to leave? You have unsaved settings";
     });
 });
-
-
-  
