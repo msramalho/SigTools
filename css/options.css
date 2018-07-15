@@ -1,7 +1,33 @@
-#nav-tab-list a {
-    color: white;
+:root {
+    --nav-active: rgb(0, 99, 206);
+    --nav-hover: rgb(0, 123, 255, 1);
 }
 
-#nav-tab-list a:hover {
-    color: rgb(168, 168, 168)
+#nav-tab-list {
+    padding-left: 15px;
+    
+}
+#nav-tab-list a {
+    color: white;    
+    background-image: linear-gradient(to left,
+                                      transparent,
+                                      transparent 50%,
+                                      var(--nav-hover) 50%,
+                                      var(--nav-hover) 100%
+                                      );
+    background-size: 200% 100%;
+    background-position: 100% 0;
+}
+
+#nav-tab-list a:not(.show):hover {
+    background-position: 0 0;
+    transition: all .25s ease-in;
+}
+
+#nav-tab-list a.show{
+    background-color: var(--nav-active);
+}
+
+#sidebar {
+    box-shadow: 0 0 25px 0 grey;
 }
