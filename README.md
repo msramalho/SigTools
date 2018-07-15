@@ -56,20 +56,33 @@ Any Sigarra data-table is now:
 
 <h3 align="center">TimeTable</h3>
 <p align="center">
- <img  align="center" src="https://github.com/msramalho/SigTools/blob/master/extra/imgs/print_timetable_01.png" width="80%" height="80%">
+ <img align="center" src="https://i.imgur.com/txYvHyI.png" width="80%" height="80%">
 </p>
 
 <h3 align="center">Exams</h3>
 <p align="center">
- <img  align="center" src="https://github.com/msramalho/SigTools/blob/master/extra/imgs/print_exames_01.png" width="80%" height="80%">
+ <img align="center" src="https://i.imgur.com/nIDrtKb.png" width="80%" height="80%">
 </p>
-
 
 <h3 align="center">Moodle</h3>
 <p align="center">
- <img align="center" src="https://github.com/msramalho/SigTools/blob/master/extra/imgs/print_moodle_01.png" width="35%" height="35%">
+ <img align="center" src="https://i.imgur.com/dL5wsY7.png" width="35%" height="35%">
 </p>
 
+<h3 align="center">Datatable</h3>
+<p align="center">
+ <img align="center" src="https://i.imgur.com/nIDrtKb.png" width="80%" height="80%">
+</p>
+
+<h3 align="center">Infinite Scroll</h3>
+<p align="center">
+ <img align="center" src="https://i.imgur.com/A5okMWU.png" width="80%" height="80%">
+</p>
+
+<h3 align="center">Grades Statistics</h3>
+<p align="center">
+ <img align="center" src="https://i.imgur.com/55phyYC.png" width="80%" height="80%">
+</p>
 
 ### Performance
 It was developed to be as non-intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
