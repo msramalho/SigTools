@@ -2,6 +2,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/options.css">
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/lib/mustache.min.js"></script>
     <script src="js/utils/global.js"></script>
@@ -18,10 +19,16 @@
 </head>
 
 <body>
-    If you feel that a different format for events would be better, go ahead and set it 😄
-    <div class="container-fluid">
-        <div id="settings" class="row"></div>
+    <!-- Nav tabs -->
+    <div class="row">
+        <div class="col-3 bg-dark">
+            <h2>Options</h2>
+            <div class="nav flex-column nav-pills h-100" id="nav-tab-list" role="tablist" aria-orientation="vertical"></div>
+        </div>
+        <div class="col-9">
+            If you feel that a different format for events would be better, go ahead and set it 😄
+            <div class="tab-content" id="nav-tab-content"></div>
+            <button class="btn btn-block mt-3 align" id="btn_save">Save</button>
+        </div>
     </div>
-
-    <button id="btn_save" class="btn btn-block btn-lg mt-3">Save</button>
 </body>

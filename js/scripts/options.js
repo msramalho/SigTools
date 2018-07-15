@@ -1,11 +1,12 @@
 "use strict";
 //https://developer.chrome.com/extensions/content_scripts#run_at
 
-let template = `
-<div class="col-12 col-md-6 col-lg-4">
-<div class="card">
-<h2 class="card-header text-white bg-dark">{{extractor}} format</h2>
-<div class="card-body">
+let nav_tab_list_template = `
+<a class="nav-link rounded-0" id="nav-tab-{{extractor}}" data-toggle="pill" href="#nav-tab-content-{{extractor}}" role="tab" aria-controls="nav-tab-content-{{extractor}}" aria-selected="false">{{extractor}}</a>
+`
+
+let nav_tab_content_template = `
+<div class="tab-pane fade" id="nav-tab-content-{{extractor}}" role="tabpanel" aria-labelledby="nav-tab-{{extractor}}">
 <p>{{description}}</p>
 <h5>Parameters</h5>
 <ul>
@@ -42,9 +43,7 @@ let template = `
     {{/storage.boolean}}
 </div>
 </div>
-</div>
-</div>`
-
+`
 
 // read user input into options and save it
 function saveChanges() {
@@ -72,12 +71,18 @@ function saveChanges() {
     alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
 }
 
-
 $(document).ready(function() {
     // generate the extractor options form according to the template
     EXTRACTORS.forEach(ex => {
-        $("#settings").append($(Mustache.render(template, ex.structure)))
+        // add a tab for each extractor
+        $("#nav-tab-list").append($(Mustache.render(nav_tab_list_template, ex.structure)));
+
+        // add tab's content
+        $("#nav-tab-content").append($(Mustache.render(nav_tab_content_template, ex.structure)));
     });
+
+    // set the first tab as active
+    $('#nav-tab-' + EXTRACTORS[0].structure.extractor).tab('show');
 
     // make checkboxes with value="true" be checked
     $("input[type='checkbox'][value='true']").each(function() {
