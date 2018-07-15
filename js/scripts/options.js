@@ -44,7 +44,7 @@ let nav_tab_content_template = `
 </div>
 </div>
 `
-let hasSettingsChanged = false;
+let haveSettingsChanged = false;
 
 // read user input into options and save it
 function saveChanges() {
@@ -69,6 +69,11 @@ function saveChanges() {
     // Update chrome.storage
     chrome.storage.local.set(settings);
 
+    // Disable button and reset flag
+    haveSettingsChanged = false;
+    $("#btn_save").prop('disabled', true);
+
+    // Show confirmation
     alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
 }
 
@@ -82,8 +87,8 @@ $(document).ready(function() {
         $("#nav-tab-content").append($(Mustache.render(nav_tab_content_template, ex.structure)));
 
         $("#nav-tab-content :input").on("input", function () { 
-            if(!hasSettingsChanged) {
-                hasSettingsChanged = true;
+            if(!haveSettingsChanged) {
+                haveSettingsChanged = true;
                 $("#btn_save").prop('disabled', false);
             }
         })
