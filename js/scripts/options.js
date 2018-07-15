@@ -44,6 +44,7 @@ let nav_tab_content_template = `
 </div>
 </div>
 `
+let hasSettingsChanged = false;
 
 // read user input into options and save it
 function saveChanges() {
@@ -79,6 +80,13 @@ $(document).ready(function() {
 
         // add tab's content
         $("#nav-tab-content").append($(Mustache.render(nav_tab_content_template, ex.structure)));
+
+        $("#nav-tab-content :input").on("input", function () { 
+            if(!hasSettingsChanged) {
+                hasSettingsChanged = true;
+                $("#btn_save").prop('disabled', false);
+            }
+        })
     });
 
     // set the first tab as active
