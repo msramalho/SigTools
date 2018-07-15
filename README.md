@@ -71,7 +71,7 @@ Any Sigarra data-table is now:
 
 <h3 align="center">Datatable</h3>
 <p align="center">
- <img align="center" src="https://i.imgur.com/nIDrtKb.png" width="80%" height="80%">
+ <img align="center" src="https://i.imgur.com/OpOzlic.png" width="80%" height="80%">
 </p>
 
 <h3 align="center">Infinite Scroll</h3>
