@@ -8,8 +8,8 @@
 **Sigarra on steroids**: automatically add Sigarra timetables and events (book renewal, payments, ...) to your calendar apps; export, filter and sort data-tables; statistical analysis on grades; library book renewal; configurable behaviour and more.
 
 ### Install via:
- - [WebStore](https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme)
- - [Add-on for Firefox](https://addons.mozilla.org/en-US/firefox/addon/sigarra-to-calendar/) Thanks a bunch to [@afonsobspinto](https://github.com/afonsobspinto)
+ - [Chrome WebStore](https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme)
+ - [Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/sigarra-to-calendar/) Thanks a bunch to [@afonsobspinto](https://github.com/afonsobspinto)
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
  - From [.crx](https://github.com/msramalho/SigTools/blob/master/extra/SigTools.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
 
@@ -87,16 +87,7 @@ Any Sigarra data-table is now:
 ### Performance
 It was developed to be as non-intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
 
-
-#### A thanks to...
- - [ics.js](https://github.com/nwcell/ics.js)
- - [FileSaver.js](https://github.com/eligrey/FileSaver.js)
- - [Blob.js](https://github.com/eligrey/Blob.js)
- - [mustache](https://github.com/janl/mustache.js/)
- - [chart.js](https://github.com/chartjs/Chart.js)
- - [math.js](https://github.com/josdejong/mathjs/)
-
-For saving us a lot of time
+A thanks to...  [ics.js](https://github.com/nwcell/ics.js) | [FileSaver.js](https://github.com/eligrey/FileSaver.js) | [Blob.js](https://github.com/eligrey/Blob.js) | [mustache](https://github.com/janl/mustache.js/) | [chart.js](https://github.com/chartjs/Chart.js) | [math.js](https://github.com/josdejong/mathjs/) for saving us a lot of time!
 
 
 # Contribute to SigTools
