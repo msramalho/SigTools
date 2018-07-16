@@ -20,7 +20,7 @@ let nav_tab_content_template = `
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend"><span class="input-group-text">{{name}}</span></div>
             <input class="form-control {{name}}" id="{{extractor}}_{{name}}" type="text" value="{{value}}">
-            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button">↺</button></div>
+            <div class="input-group-append"><button class="btn btn-outline-secondary" id="resetbtn_{{extractor}}_{{name}}" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button></div>
         </div>
     {{/storage.text}}
     {{#storage.textarea}}
@@ -82,7 +82,33 @@ function saveChanges() {
     alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
 }
 
-$(document).ready(function() {
+function setDefault(event) {
+    var extractor = event.target.getAttribute("data-extractor");
+    var name = event.target.getAttribute("data-name");
+    console.log(name);
+    console.log(extractor);
+
+    EXTRACTORS.forEach(ex => {
+        if (ex.structure.extractor === extractor) {
+            // found extractor
+            getProperties(ex.structure.storage).forEach(prop => {
+                ex.structure.storage[prop].forEach(option => {
+                    if (option.name === name) {
+                        // found option
+                        
+                        var test = "#" + extractor + "_" + name;
+                        console.log(test);
+                        $(test).prop("value", option.default);
+                        console.log($(test));
+                        option.value = option.default;
+                    }
+                });
+            });
+        }
+    });
+}
+
+$(document).ready(function () {
     // generate the extractor options form according to the template
     EXTRACTORS.forEach(ex => {
         // add a tab for each extractor
@@ -93,18 +119,20 @@ $(document).ready(function() {
     });
 
     // Add event listeners to all input controls upon input change
-    $("#nav-tab-content :input").on("input", function () { 
-        if(!haveSettingsChanged) {
+    $("#nav-tab-content :input").on("input", function () {
+        if (!haveSettingsChanged) {
             haveSettingsChanged = true;
             $("#btn_save").prop('disabled', false);
         }
     });
 
+    $("#nav-tab-content :button").click(setDefault);
+
     // set the first tab as active
     $('#nav-tab-' + EXTRACTORS[0].structure.extractor).tab('show');
 
     // make checkboxes with value="true" be checked
-    $("input[type='checkbox'][value='true']").each(function() {
+    $("input[type='checkbox'][value='true']").each(function () {
         $(this).prop('checked', true)
     });
 
@@ -112,7 +140,7 @@ $(document).ready(function() {
     $("#btn_save").click(saveChanges);
 
     // intercept ctrl+s to save options
-    $(window).bind('keydown', function(event) {
+    $(window).bind('keydown', function (event) {
         if ((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase() == 's') {
             event.preventDefault();
             saveChanges();
@@ -120,7 +148,7 @@ $(document).ready(function() {
     });
 
     window.addEventListener("beforeunload", function (event) {
-        if(haveSettingsChanged)
+        if (haveSettingsChanged)
             event.returnValue = "Are you sure you want to leave? You have unsaved settings";
     });
 });
