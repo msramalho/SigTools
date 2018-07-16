@@ -29,7 +29,7 @@ let nav_tab_content_template = `
                 <span class="input-group-text">{{name}}</span>
             </div>
             <textarea class="form-control" id="{{extractor}}_{{name}}">{{{value}}}</textarea>
-            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button">↺</button></div>
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button></div>
         </div>
     {{/storage.textarea}}
     {{#storage.color}}
