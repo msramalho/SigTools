@@ -110,6 +110,9 @@ function setDefaultOption(event) {
                         // enable save button
                         haveSettingsChanged = true;
                         $("#btn_save").prop('disabled', false);
+
+                        // break iteration
+                        return;
                     }
                 });
             });
