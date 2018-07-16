@@ -43,7 +43,7 @@ let nav_tab_content_template = `
         <div class="custom-control custom-checkbox">
             <input class="custom-control-input {{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}">
             <label class="custom-control-label" for="{{extractor}}_{{name}}">{{name}}</label>
-            <button class="btn btn-outline-secondary btn-sm" type="button">↺</button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button>
         </div>
     {{/storage.boolean}}
 </div>
@@ -99,9 +99,14 @@ function setDefaultOption(event) {
                         // found the storage option to set to default
 
                         // update input value
-                        $('#' + extractor + '_' + name).prop('value', option.default);
-                        option.value = option.default;
-
+                        var id = '#' + extractor + '_' + name;
+                        if(prop === "boolean")
+                            // for checkbox and radiobuttons
+                            $(id).prop('checked', option.default);
+                        else
+                            // for other elements
+                            $(id).prop('value', option.default);
+                            
                         // enable save button
                         haveSettingsChanged = true;
                         $("#btn_save").prop('disabled', false);
