@@ -20,7 +20,7 @@ let nav_tab_content_template = `
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend"><span class="input-group-text">{{name}}</span></div>
             <input class="form-control {{name}}" id="{{extractor}}_{{name}}" type="text" value="{{value}}">
-            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button></div>
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button></div>
         </div>
     {{/storage.text}}
     {{#storage.textarea}}
@@ -29,21 +29,21 @@ let nav_tab_content_template = `
                 <span class="input-group-text">{{name}}</span>
             </div>
             <textarea class="form-control" id="{{extractor}}_{{name}}">{{{value}}}</textarea>
-            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button></div>
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button></div>
         </div>
     {{/storage.textarea}}
     {{#storage.color}}
         <label>
             <input class="{{name}}" id="{{extractor}}_{{name}}" type="color" value="{{value}}"/>
             {{name}}
-            <button class="btn btn-outline-secondary btn-sm" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button>
         </label>
     {{/storage.color}}
     {{#storage.boolean}}
         <div class="custom-control custom-checkbox">
             <input class="custom-control-input {{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}">
             <label class="custom-control-label" for="{{extractor}}_{{name}}">{{name}}</label>
-            <button class="btn btn-outline-secondary btn-sm" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button>
         </div>
     {{/storage.boolean}}
 </div>
@@ -76,7 +76,7 @@ function saveChanges() {
 
     // Disable button and reset flag
     haveSettingsChanged = false;
-    $("#btn_save").prop('disabled', true);
+    $('#btn_save').prop('disabled', true);
 
     // Show confirmation
     alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
@@ -121,14 +121,14 @@ $(document).ready(function () {
     // generate the extractor options form according to the template
     EXTRACTORS.forEach(ex => {
         // add a tab for each extractor
-        $("#nav-tab-list").append($(Mustache.render(nav_tab_list_template, ex.structure)));
+        $('#nav-tab-list').append($(Mustache.render(nav_tab_list_template, ex.structure)));
 
         // add tab's content
-        $("#nav-tab-content").append($(Mustache.render(nav_tab_content_template, ex.structure)));
+        $('#nav-tab-content').append($(Mustache.render(nav_tab_content_template, ex.structure)));
     });
 
     // Add event listeners to all input controls upon input change
-    $("#nav-tab-content :input").on("input", function () {
+    $('#nav-tab-content :input').on("input", function () {
         if (!haveSettingsChanged) {
             haveSettingsChanged = true;
             $("#btn_save").prop('disabled', false);
@@ -137,7 +137,7 @@ $(document).ready(function () {
 
     // Add event listeners to default buttons embedded on inputs
     // TODO need to improve this, selecting all buttons isn't the best approach
-    $("#nav-tab-content :button").click(setDefaultOption);
+    $('#nav-tab-content').find('[data-default-btn]').click(setDefaultOption);
 
     // set the first tab as active
     $('#nav-tab-' + EXTRACTORS[0].structure.extractor).tab('show');
@@ -148,7 +148,7 @@ $(document).ready(function () {
     });
 
     // add onclick event for 'Save' button
-    $("#btn_save").click(saveChanges);
+    $('#btn_save').click(saveChanges);
 
     // intercept ctrl+s to save options
     $(window).bind('keydown', function (event) {
