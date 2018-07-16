@@ -4,16 +4,12 @@
 }
 
 #nav-tab-list {
-    padding-left: 15px;    
+    padding-left: 15px;
 }
+
 #nav-tab-list a {
-    color: white;    
-    background-image: linear-gradient(to left,
-                                      transparent,
-                                      transparent 50%,
-                                      var(--nav-hover) 50%,
-                                      var(--nav-hover) 100%
-                                      );
+    color: white;
+    background-image: linear-gradient(to left, transparent, transparent 50%, var(--nav-hover) 50%, var(--nav-hover) 100%);
     background-size: 200% 100%;
     background-position: 100% 0;
 }
@@ -23,7 +19,7 @@
     transition: all .25s ease-in;
 }
 
-#nav-tab-list a.show{
+#nav-tab-list a.show {
     background-color: var(--nav-active);
 }
 

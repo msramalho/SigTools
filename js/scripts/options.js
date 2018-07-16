@@ -20,7 +20,7 @@ let nav_tab_content_template = `
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend"><span class="input-group-text">{{name}}</span></div>
             <input class="form-control {{name}}" id="{{extractor}}_{{name}}" type="text" value="{{value}}">
-            <div class="input-group-append"><button class="btn btn-outline-secondary" id="resetbtn_{{extractor}}_{{name}}" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button></div>
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button></div>
         </div>
     {{/storage.text}}
     {{#storage.textarea}}
@@ -82,11 +82,13 @@ function saveChanges() {
     alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
 }
 
-function setDefault(event) {
+/**
+ * Click event handler for default buttons inline with input elements
+ * @param {*} event An instance of Event interface
+ */
+function setDefaultOption(event) {
     var extractor = event.target.getAttribute("data-extractor");
     var name = event.target.getAttribute("data-name");
-    console.log(name);
-    console.log(extractor);
 
     EXTRACTORS.forEach(ex => {
         if (ex.structure.extractor === extractor) {
@@ -94,13 +96,15 @@ function setDefault(event) {
             getProperties(ex.structure.storage).forEach(prop => {
                 ex.structure.storage[prop].forEach(option => {
                     if (option.name === name) {
-                        // found option
-                        
-                        var test = "#" + extractor + "_" + name;
-                        console.log(test);
-                        $(test).prop("value", option.default);
-                        console.log($(test));
+                        // found the storage option to set to default
+
+                        // update input value
+                        $('#' + extractor + '_' + name).prop('value', option.default);
                         option.value = option.default;
+
+                        // enable save button
+                        haveSettingsChanged = true;
+                        $("#btn_save").prop('disabled', false);
                     }
                 });
             });
@@ -126,7 +130,9 @@ $(document).ready(function () {
         }
     });
 
-    $("#nav-tab-content :button").click(setDefault);
+    // Add event listeners to default buttons embedded on inputs
+    // TODO need to improve this, selecting all buttons isn't the best approach
+    $("#nav-tab-content :button").click(setDefaultOption);
 
     // set the first tab as active
     $('#nav-tab-' + EXTRACTORS[0].structure.extractor).tab('show');
