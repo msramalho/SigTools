@@ -28,6 +28,10 @@
     resize: none;
 }
 
+.parameter-code {
+    cursor: pointer;
+}
+
 #sidebar {
     box-shadow: 0 0 25px 0 grey;
 }
