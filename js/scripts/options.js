@@ -50,6 +50,7 @@ let nav_tab_content_template = `
 </div>
 `
 let haveSettingsChanged = false;
+let previousFocusedInput;
 
 // read user input into options and save it
 function saveChanges() {
@@ -138,6 +139,17 @@ $(document).ready(function () {
         }
     });
 
+    // Add focus event handler for text inputs. 
+    // The goal is to keep track of the focused element
+    // This is needed for clickable parameters feature
+    $('#nav-tab-content textarea').focus(function(event) {
+        previousFocusedInput = $(event.target).attr('id');
+    });
+
+    $('#nav-tab-content [type=text]').focus(function(event) {
+        previousFocusedInput = $(event.target).attr('id');
+    });
+
     // Add event listeners to default buttons embedded on inputs
     $('#nav-tab-content').find('[data-default-btn]').click(setDefaultOption);
 
@@ -145,9 +157,6 @@ $(document).ready(function () {
     $("input[type='checkbox'][value='true']").each(function () {
         $(this).prop('checked', true)
     });
-
-    // set the first tab as active
-    $('#nav-tab-' + EXTRACTORS[0].structure.extractor).tab('show');
 
     // add onclick event for 'Save' button
     $('#btn_save').click(saveChanges);
@@ -160,14 +169,37 @@ $(document).ready(function () {
         }
     });
 
-    window.addEventListener("beforeunload", function (event) {
-        if (haveSettingsChanged)
-            event.returnValue = "Are you sure you want to leave? You have unsaved settings";
-    });
-
     // Make all textareas auto resizable (height)
     $('#nav-tab-content').find('textarea').on("change input focus", function (event) {
         // first set height to zero to compute the scroll height, the new height
         $(event.target).height(0).height(event.target.scrollHeight);
     });
+
+    // Make parameters be clickable
+    $('.parameter-code code').click( function (event) {
+        // the clicked parameter DOM
+        var el = event.target;
+
+        // The previous focused text input
+        var $txtEl = $('#' + previousFocusedInput);
+        
+        // focus previous input
+        $txtEl.focus();
+        
+        // insert text
+        var caretPos = $txtEl.prop('selectionStart');
+        var currVal = $txtEl.val();
+        var newVal = currVal.substring(0, caretPos) + el.innerText + currVal.substring(caretPos, currVal.length);
+        $txtEl.val(newVal);
+        $txtEl.prop('selectionStart', caretPos);
+        $txtEl.prop('selectionEnd', caretPos + el.innerText.length);
+    });
+
+    window.addEventListener("beforeunload", function (event) {
+        if (haveSettingsChanged)
+            event.returnValue = "Are you sure you want to leave? You have unsaved settings";
+    });
+
+    // set the first tab as active
+    $('#nav-tab-' + EXTRACTORS[0].structure.extractor).tab('show');
 });
