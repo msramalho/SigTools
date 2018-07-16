@@ -29,7 +29,7 @@ function setDropdownListeners(extractor, repeat) {
 		let event = JSON.parse($(e.target).attr("data"))
         let cal = ics(); //creat ics instance
         cal.addEvent(extractor.getName(event), extractor.getDescription(event), event.location, event.from.toString(), event.to.toString(), repeat);
-        if (!cal.download()) alert("No event selected for download!");
+        if (!cal.download()) swal("No event selected for download!", "You need to select at least one event", "warning", {buttons:false});
     })
 }
 

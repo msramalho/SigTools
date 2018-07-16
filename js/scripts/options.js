@@ -79,7 +79,10 @@ function saveChanges() {
     $('#btn_save').prop('disabled', true);
 
     // Show confirmation
-    alert('Saved!\nPlease, refresh the corresponding pages to apply the changes.');
+    swal("Saved!", "Please, refresh the corresponding pages to apply the changes.", "success", {
+        timer: 2000,
+        buttons: false
+    });
 }
 
 /**
@@ -120,7 +123,7 @@ function setDefaultOption(event) {
     });
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     // generate the extractor options form according to the template
     EXTRACTORS.forEach(ex => {
         // add a tab for each extractor
@@ -131,7 +134,7 @@ $(document).ready(function () {
     });
 
     // Add event listeners to all input controls upon input change
-    $('#nav-tab-content :input').on("input", function (event) {
+    $('#nav-tab-content :input').on("input", function(event) {
         if (!haveSettingsChanged) {
             haveSettingsChanged = true;
             $("#btn_save").prop('disabled', false);
@@ -142,7 +145,7 @@ $(document).ready(function () {
     $('#nav-tab-content').find('[data-default-btn]').click(setDefaultOption);
 
     // make checkboxes with value="true" be checked
-    $("input[type='checkbox'][value='true']").each(function () {
+    $("input[type='checkbox'][value='true']").each(function() {
         $(this).prop('checked', true)
     });
 
@@ -153,20 +156,20 @@ $(document).ready(function () {
     $('#btn_save').click(saveChanges);
 
     // intercept ctrl+s to save options
-    $(window).bind('keydown', function (event) {
+    $(window).bind('keydown', function(event) {
         if ((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase() == 's') {
             event.preventDefault();
             saveChanges();
         }
     });
 
-    window.addEventListener("beforeunload", function (event) {
+    window.addEventListener("beforeunload", function(event) {
         if (haveSettingsChanged)
             event.returnValue = "Are you sure you want to leave? You have unsaved settings";
     });
 
     // Make all textareas auto resizable (height)
-    $('#nav-tab-content').find('textarea').on("change input focus", function (event) {
+    $('#nav-tab-content').find('textarea').on("change input focus", function(event) {
         // first set height to zero to compute the scroll height, the new height
         $(event.target).height(0).height(event.target.scrollHeight);
     });

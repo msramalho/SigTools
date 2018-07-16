@@ -63,7 +63,9 @@ function createModal(extractor, events, repeat) {
 
         //donwloas .ics file
         if (!cal.download())
-            alert("No event selected for download!");
+            swal("No event selected for download!", "", "warning", {
+                buttons: false
+            })
         else
             clearModal();
     });
