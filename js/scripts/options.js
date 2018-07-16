@@ -177,21 +177,30 @@ $(document).ready(function () {
 
     // Make parameters be clickable
     $('.parameter-code code').click( function (event) {
+
+        if(previousFocusedInput === undefined)
+            return;
+
         // the clicked parameter DOM
         var el = event.target;
 
-        // The previous focused text input
+        // The previous focused text input. Focus it
         var $txtEl = $('#' + previousFocusedInput);
-        
-        // focus previous input
         $txtEl.focus();
         
         // insert text
         var caretPos = $txtEl.prop('selectionStart');
+        var selectionLength = $txtEl.prop('selectionEnd') - caretPos;
         var currVal = $txtEl.val();
-        var newVal = currVal.substring(0, caretPos) + el.innerText + currVal.substring(caretPos, currVal.length);
-        $txtEl.val(newVal);
-        $txtEl.prop('selectionStart', caretPos);
+        
+        if(selectionLength === 0) {
+            // no selected text, insert value at caret position
+            $txtEl.val(currVal.slice(0, caretPos) + el.innerText + currVal.slice(caretPos));
+        } else {
+            // replace selected text with new text
+            $txtEl.val(currVal.slice(0, caretPos) + el.innerText + currVal.slice(caretPos + selectionLength));
+        }
+
         $txtEl.prop('selectionEnd', caretPos + el.innerText.length);
     });
 
