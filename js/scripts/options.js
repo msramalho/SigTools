@@ -202,6 +202,7 @@ $(document).ready(function () {
         }
 
         $txtEl.prop('selectionEnd', caretPos + el.innerText.length);
+        $txtEl.trigger('input');
     });
 
     window.addEventListener("beforeunload", function (event) {
