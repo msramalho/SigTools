@@ -100,7 +100,7 @@ function setDefaultOption(event) {
 
                         // update input value
                         var id = '#' + extractor + '_' + name;
-                        if(prop === "boolean")
+                        if (prop === "boolean")
                             // for checkbox and radiobuttons
                             $(id).prop('checked', option.default);
                         else
@@ -131,7 +131,7 @@ $(document).ready(function () {
     });
 
     // Add event listeners to all input controls upon input change
-    $('#nav-tab-content :input').on("input", function () {
+    $('#nav-tab-content :input').on("input", function (event) {
         if (!haveSettingsChanged) {
             haveSettingsChanged = true;
             $("#btn_save").prop('disabled', false);
@@ -139,16 +139,15 @@ $(document).ready(function () {
     });
 
     // Add event listeners to default buttons embedded on inputs
-    // TODO need to improve this, selecting all buttons isn't the best approach
     $('#nav-tab-content').find('[data-default-btn]').click(setDefaultOption);
-
-    // set the first tab as active
-    $('#nav-tab-' + EXTRACTORS[0].structure.extractor).tab('show');
 
     // make checkboxes with value="true" be checked
     $("input[type='checkbox'][value='true']").each(function () {
         $(this).prop('checked', true)
     });
+
+    // set the first tab as active
+    $('#nav-tab-' + EXTRACTORS[0].structure.extractor).tab('show');
 
     // add onclick event for 'Save' button
     $('#btn_save').click(saveChanges);
@@ -164,5 +163,11 @@ $(document).ready(function () {
     window.addEventListener("beforeunload", function (event) {
         if (haveSettingsChanged)
             event.returnValue = "Are you sure you want to leave? You have unsaved settings";
+    });
+
+    // Make all textareas auto resizable (height)
+    $('#nav-tab-content').find('textarea').on("change input focus", function (event) {
+        // first set height to zero to compute the scroll height, the new height
+        $(event.target).height(0).height(event.target.scrollHeight);
     });
 });

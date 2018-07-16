@@ -23,6 +23,11 @@
     background-color: var(--nav-active);
 }
 
+#nav-tab-content textarea {
+    overflow: hidden;
+    resize: none;
+}
+
 #sidebar {
     box-shadow: 0 0 25px 0 grey;
 }
