@@ -36,7 +36,7 @@ let nav_tab_content_template = `
         <label>
             <input class="{{name}}" id="{{extractor}}_{{name}}" type="color" value="{{value}}"/>
             {{name}}
-            <button class="btn btn-outline-secondary btn-sm" type="button">↺</button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-extractor="{{extractor}}" data-name="{{name}}">↺</button>
         </label>
     {{/storage.color}}
     {{#storage.boolean}}
@@ -106,7 +106,7 @@ function setDefaultOption(event) {
                         else
                             // for other elements
                             $(id).prop('value', option.default);
-                            
+
                         // enable save button
                         haveSettingsChanged = true;
                         $("#btn_save").prop('disabled', false);
