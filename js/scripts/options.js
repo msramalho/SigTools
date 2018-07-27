@@ -132,7 +132,6 @@ $(document).ready(function() {
         // add a tab for each extractor
         // the new field hasParameters it's used on Mustache template, providing the choice to not render that section
         ex.structure.hasParameters = (ex.structure.parameters != undefined);
-        console.log(ex.structure);
         $('#nav-tab-list').append(
             $(Mustache.render(nav_tab_list_template, ex.structure)).click(function(event) {
                 event.preventDefault();
