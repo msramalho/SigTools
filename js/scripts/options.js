@@ -8,12 +8,14 @@ let nav_tab_list_template = `
 let nav_tab_content_template = `
 <div class="tab-pane fade" id="nav-tab-content-{{extractor}}" role="tabpanel" aria-labelledby="nav-tab-{{extractor}}">
 <p>{{description}}</p>
+{{#hasParameters}}
 <h5>Parameters</h5>
 <ul>
     {{#parameters}}
     <li><strong class="parameter-code"><code>$&#123{{name}}&#125</code></strong> {{description}}</li>
     {{/parameters}}
 </ul>
+{{/hasParameters}}
 <h5>Format</h5>
 <div>
     {{#storage.text}}
@@ -128,6 +130,9 @@ $(document).ready(function() {
     // generate the extractor options form according to the template
     EXTRACTORS.forEach(ex => {
         // add a tab for each extractor
+        // the new field hasParameters it's used on Mustache template, providing the choice to not render that section
+        ex.structure.hasParameters = (ex.structure.parameters != undefined);
+        console.log(ex.structure);
         $('#nav-tab-list').append(
             $(Mustache.render(nav_tab_list_template, ex.structure)).click(function(event) {
                 event.preventDefault();
