@@ -20,7 +20,7 @@ let nav_tab_content_template = `
         <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend"><span class="input-group-text">{{name}}</span></div>
             <input class="form-control {{name}}" id="{{extractor}}_{{name}}" type="text" value="{{value}}">
-            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button></div>
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" title="Reset to default value" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button></div>
         </div>
     {{/storage.text}}
     {{#storage.textarea}}
@@ -29,21 +29,21 @@ let nav_tab_content_template = `
                 <span class="input-group-text">{{name}}</span>
             </div>
             <textarea class="form-control" id="{{extractor}}_{{name}}">{{{value}}}</textarea>
-            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button></div>
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" title="Reset to default value" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button></div>
         </div>
     {{/storage.textarea}}
     {{#storage.color}}
         <label>
             <input class="{{name}}" id="{{extractor}}_{{name}}" type="color" value="{{value}}"/>
             {{name}}
-            <button class="btn btn-outline-secondary btn-sm" type="button" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" title="Reset to default color" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button>
         </label>
     {{/storage.color}}
     {{#storage.boolean}}
         <div class="custom-control custom-checkbox">
             <input class="custom-control-input {{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}">
             <label class="custom-control-label" for="{{extractor}}_{{name}}">{{name}}</label>
-            <button class="btn btn-outline-secondary btn-sm" type="button" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" title="Reset to default value" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button>
         </div>
     {{/storage.boolean}}
 </div>
