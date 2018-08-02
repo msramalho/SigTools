@@ -26,6 +26,7 @@
         "run_at": "document_end"
     }, {
         "matches": ["https://sigarra.up.pt/*"],
+        "css": ["css/datatables.min.css"],
         "js": ["js/extractors/infinite_scroll.js", "js/extractors/datatable.js"],
         "run_at": "document_end"
     }, {

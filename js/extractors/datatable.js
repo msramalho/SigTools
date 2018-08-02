@@ -28,10 +28,15 @@ class DataTable extends Extractor {
         if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
         if (!this.table.length || !this.validTable()) return
 
+        // remove sigarra stuff that is useless
+        $("#ordenacao").remove()
+        $("th a").remove()
+
         // inject dynamic tables
         this.table.prev().after($(`<h2 class="noBorder">SigToCa Dynamic Tables</h2>`))
         this.table.prepend($(`<thead>${this.table.find("tr").html()}</thead>`))
         this.table.find("tbody tr:has(> th)").remove()
+
         // sorting guide: https://www.datatables.net/plug-ins/sorting/
         this.table.dataTable(DataTable.datatableOptions);
     }
