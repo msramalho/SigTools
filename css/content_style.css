@@ -183,11 +183,16 @@ div.dropdown.right {
     align-items: center;
 }
 
-.sig_modalBody a.calendarBtn.dropBtn {
+.sig_modalBody a.calendarBtn.dropBtn,
+td.td1 a.calendarBtn.dropBtn {
     padding: 0;
     border: none;
     background-color: transparent;
     box-shadow: none;
+}
+
+td.td1 div.dropdown.right {
+    margin: 0;
 }
 
 .sig_modalBody .dropdown {

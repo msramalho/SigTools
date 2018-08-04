@@ -56,6 +56,18 @@ function textToDate2(text) {
 }
 
 /**
+ * convert day/Portuguese3LetterMonth/year string into a date variable
+ * @param {string} text format: day/Portuguese3LetterMonth/year
+ * @returns new date after operation
+ */
+function textToDate3(text) {
+    let m = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"] // TODO: test all, tested so far: ["Set"]
+    let t = text.split("/")
+    console.log(text);
+    return new Date(`${m.indexOf(t[1])+1}/${t[0]}/${t[2]}`);
+}
+
+/**
  * return the difference (in days) between two dates
  * @param {Date} first date 1
  * @param {Date} second date 2

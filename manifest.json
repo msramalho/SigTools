@@ -49,6 +49,10 @@
         "matches": ["https://*.up.pt/*exa_geral.exame_view*", "https://*.up.pt/*EXA_GERAL.EXAME_VIEW*"],
         "js": ["js/extractors/single_exam.js"],
         "run_at": "document_end"
+    }, {
+        "matches": ["https://catalogo.up.pt/F/?func=bor-loan*"],
+        "js": ["js/extractors/library.js"],
+        "run_at": "document_end"
     }],
     "permissions": [
         "https://*.up.pt/*",
