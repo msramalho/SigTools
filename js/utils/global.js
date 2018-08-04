@@ -8,10 +8,8 @@
  */
 function parseStrFormat(event, str, isHTML) {
     let p = getProperties(event);
-    for (let i = 0; i < p.length; i++) {
+    for (let i = 0; i < p.length; i++)
         eval(`var ${p[i]} = event.${p[i]};`)
-
-    }
 
     // let res = "`" + str.replace(/\${(.[\w\.]*?)}/gm, "${event.$1}") + "`";
     let res = "`" + str + "`";
