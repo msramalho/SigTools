@@ -10,7 +10,7 @@ function getDropdown(event, context, repeat, target) {
     let yahoo_url = eventToYahooCalendar(context, event, repeat);
     return $(`
 	<div class="dropdown right">
-		<a class="calendarBtn dropBtn" target="${target}" title="Save this exam to your Calendar">📆</a>
+		<a class="calendarBtn dropBtn" target="${target}" title="Save this event to your Calendar">📆</a>
 		<div id="${target}" class="dropdown-content">
 		${generateOneClickDOM("", "dropdownIcon", "google", google_url, context.isHTML, "Google").outerHTML}
 		${generateOneClickDOM("", "dropdownIcon", "outlook", outlook_url, context.isHTML, "Outlook").outerHTML}
