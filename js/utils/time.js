@@ -63,7 +63,6 @@ function textToDate2(text) {
 function textToDate3(text) {
     let m = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"] // TODO: test all, tested so far: ["Set"]
     let t = text.split("/")
-    console.log(text);
     return new Date(`${m.indexOf(t[1])+1}/${t[0]}/${t[2]}`);
 }
 
