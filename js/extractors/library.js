@@ -47,27 +47,48 @@ class LibraryExtractor extends Extractor {
         }
     }
 
-
-    /**
-     * In order for this attach to work, some css code was inserted to format the dropdown button (td.td1 a.calendarBtn.dropBtn, td.td1 div.dropdown.right) which was not the best practice, ...
-     */
     attachIfPossible() {
         let table = $("p>table tr.tr1").closest("table") // get the table with the books
-        table.find("tr:not(.tr1):not(:last-child)").each((i, e) => { //iterate over each book (table row)
-            e = $(e)
-            let day = textToDate3(e.find("td:nth-child(3)").text())
+        if (table.length) { // we are in the page with a list of all the books
+            table.find("tr:not(.tr1):not(:last-child)").each((i, e) => { //iterate over each book (table row)
+                e = $(e)
+                let day = textToDate3(e.find("td:nth-child(3)").text())
+                let event = {
+                    book: table.find("td:nth-child(2)").text(),
+                    library: table.find("td:nth-child(6)").text(),
+                    shelf: table.find("td:nth-child(7)").text(),
+                    fine: table.find("td:nth-child(5)").text(),
+                    from: day,
+                    to: day
+                }
+                event.location = `Library ${event.library} - ${event.shelf}`
+                table.find("td:nth-child(2):not(:last-child)").append(getDropdown(event, this, false, {
+                    target: `dropdown_${i}`,
+                    divClass: "dropdown removeFrame"
+                }))
+            })
+        } else { //we are in the page that has the details of a single book
+            table = $("div.title ~ br ~ table td.td1").closest("table") // get the table with the books
+            // query helper: line, column, index of table (first[0] or second[1]), returns the text in the cell
+            // if the row does not exist in table 0, then i=0 means the second table, example barcode: q(7,0)
+            let q = (l, i, c = 2) => table.find(`tr:nth-child(${l}) td:nth-child(${c})`).eq(i).text()
+            let day = textToDate3(q(2, 0))
             let event = {
-                book: table.find("td:nth-child(2)").text(),
-                library: table.find("td:nth-child(6)").text(),
-                shelf: table.find("td:nth-child(7)").text(),
-                fine: table.find("td:nth-child(5)").text(),
+                book: `${q(3,1)} (${q(7,0)})`,
+                library: q(1, 1),
+                shelf: q(3, 1),
+                fine: q(4, 0),
+                renew_link: table.find("a").get(0).href,
                 from: day,
-                to: day,
-                download: true
+                to: day
             }
+            console.log(event);
             event.location = `Library ${event.library} - ${event.shelf}`
-            table.find("td:nth-child(2):not(:last-child)").append(getDropdown(event, this, false, `dropdown_${i}`))
-        })
+            table.eq(0).prev().before(getDropdown(event, this, false, {
+                divClass: "dropdown",
+                divStyle: "margin-left:5%;margin-top:15px;"
+            }))
+        }
         setDropdownListeners();
 
     }
