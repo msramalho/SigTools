@@ -50,7 +50,7 @@
         "js": ["js/extractors/single_exam.js"],
         "run_at": "document_end"
     }, {
-        "matches": ["https://catalogo.up.pt/F/?func=bor-loan*"],
+        "matches": ["https://catalogo.up.pt/F/?func=bor-loan*", "https://catalogo.up.pt/F/?func=BOR-LOAN*"],
         "js": ["js/extractors/library.js"],
         "run_at": "document_end"
     }],
