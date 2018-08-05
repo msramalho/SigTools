@@ -66,7 +66,7 @@ class LibraryExtractor extends Extractor {
                 download: true
             }
             event.location = `Library ${event.library} - ${event.shelf}`
-            table.find("td:nth-child(3)").append(getDropdown(event, this, false, `dropdown_${i}`))
+            table.find("td:nth-child(2):not(:last-child)").append(getDropdown(event, this, false, `dropdown_${i}`))
         })
         setDropdownListeners();
 
