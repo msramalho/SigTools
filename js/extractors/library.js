@@ -23,6 +23,9 @@ class LibraryExtractor extends Extractor {
             }, {
                 name: "fine",
                 description: "eg: 0.5€"
+            }, {
+                name: "renew_link",
+                description: "a url to click for renewing the book, eg: https://...?func=BOR_LOAN_RENEW&doc_number=123456..."
             }],
             storage: {
                 text: [{
@@ -31,7 +34,7 @@ class LibraryExtractor extends Extractor {
                 }],
                 textarea: [{
                     name: "description",
-                    default: "<h1>${book}</h1><br>Return to ${library} and to shelf ${shelf} (current fine: ${fine})"
+                    default: "<h1>${book}</h1><br>Return to ${library} and to shelf ${shelf} (current fine: ${fine})<br><a href='${renew_link}'>Renew book</a>"
                 }],
                 boolean: [ //variables that should be displayed and edited in <input type="checkbox">
                     {
@@ -48,6 +51,7 @@ class LibraryExtractor extends Extractor {
     }
 
     attachIfPossible() {
+        console.log(this.description);
         let table = $("p>table tr.tr1").closest("table") // get the table with the books
         if (table.length) { // we are in the page with a list of all the books
             table.find("tr:not(.tr1):not(:last-child)").each((i, e) => { //iterate over each book (table row)
@@ -82,7 +86,6 @@ class LibraryExtractor extends Extractor {
                 from: day,
                 to: day
             }
-            console.log(event);
             event.location = `Library ${event.library} - ${event.shelf}`
             table.eq(0).prev().before(getDropdown(event, this, false, {
                 divClass: "dropdown",
@@ -99,6 +102,7 @@ class LibraryExtractor extends Extractor {
         event.library = encodeURIComponent(event.library);
         event.shelf = encodeURIComponent(event.shelf);
         event.fine = encodeURIComponent(event.fine);
+        event.renew_link = encodeURIComponent(event.renew_link);
         return event;
     }
 
