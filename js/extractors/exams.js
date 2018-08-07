@@ -20,29 +20,26 @@ class Exams extends Extractor {
                 {
                     name: "subject.acronym",
                     description: "eg: PLOG"
-                },{
+                }, {
                     name: "subject.url",
                     description: "link to the exam page on sigarra"
-                },{
+                }, {
                     name: "info",
                     description: "eg: Normal, Recurso, ..."
-                },{
+                }, {
                     name: "location",
                     description: "list of rooms, if available"
                 }
             ],
             storage: {
                 text: [{
-                        name: "title",
-                        default: "Exam [${subject.acronym}] - ${location}"
-                    }
-                ],
-                textarea: [
-                    {
-                        name: "description",
-                        default: "Exam: ${subject.name} [${subject.acronym}]\nExam page: <a href=\"${subject.url}\">${subject.name}</a>\nInformation:${info}"
-                    }
-                ],
+                    name: "title",
+                    default: "Exam [${subject.acronym}] - ${location}"
+                }],
+                textarea: [{
+                    name: "description",
+                    default: "Exam: ${subject.name} [${subject.acronym}]\nExam page: <a href=\"${subject.url}\">${subject.name}</a>\nInformation:${info}"
+                }],
                 boolean: [{
                     name: "isHTML",
                     default: true
