@@ -60,7 +60,7 @@ class Exams extends Extractor {
                 if (this.exams[index].events.length != 0) {
                     let saveBtn = $('<a class="calendarBtn" title="Save exams to your Calendar">📆</a>');
                     table.before(saveBtn);
-                    saveBtn.click((e) => {
+                    saveBtn.click(() => {
                         handleEvents(this, this.exams[index].events);
                     });
                 }
