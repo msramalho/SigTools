@@ -52,8 +52,7 @@ class Moodle extends Extractor {
         }
     }
 
-    convertToURI(original) {
-        let event = jQuery.extend(true, {}, original);
+    convertToURI(event) {
         event.url = encodeURIComponent(event.url);
         return event;
     }

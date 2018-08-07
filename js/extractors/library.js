@@ -9,7 +9,7 @@ class LibraryExtractor extends Extractor {
 
     structure() {
         return {
-            extractor: "library", // must be unique among extractors
+            extractor: "library",
             description: "Allows users to save book renewal events to their calendars",
             parameters: [{
                 name: "book",
@@ -96,8 +96,7 @@ class LibraryExtractor extends Extractor {
 
     }
 
-    convertToURI(original) {
-        let event = jQuery.extend(true, {}, original);
+    convertToURI(event) {
         event.book = encodeURIComponent(event.book);
         event.library = encodeURIComponent(event.library);
         event.shelf = encodeURIComponent(event.shelf);

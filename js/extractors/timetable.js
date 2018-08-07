@@ -109,8 +109,7 @@ class Timetable extends Extractor {
         };
     }
 
-    convertToURI(original) {
-        let event = jQuery.extend(true, {}, original);
+    convertToURI(event) {
         event.name = encodeURIComponent(event.name);
         event.teacher.name = encodeURIComponent(event.teacher.name);
         event.teacher.url = encodeURIComponent(event.teacher.url);

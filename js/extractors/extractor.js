@@ -66,16 +66,21 @@ class Extractor {
      * function that receives an event and returns its name in the desired format
      */
     getName(event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
-        return parseStrFormat(event, this.title, this.isHTML);
+        if (forUrl) event = this._getConvertedToUri(event)
+        return parseStrFormat(event, this.title, this.isHTML)
     }
 
     /**
      * function that receives an event and returns its description in the desired format
      */
     getDescription(event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
-        return parseStrFormat(event, this.description, this.isHTML);
+        if (forUrl) event = this._getConvertedToUri(event)
+        return parseStrFormat(event, this.description, this.isHTML)
+    }
+
+    _getConvertedToUri(original) {
+        let event = jQuery.extend(true, {}, original)
+        return this.convertToURI(event)
     }
 }
 

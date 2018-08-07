@@ -57,8 +57,7 @@ class SingleExam extends Extractor {
         setDropdownListeners();
     }
 
-    convertToURI(original) {
-        let event = jQuery.extend(true, {}, original);
+    convertToURI(event) {
         event.subject.name = encodeURIComponent(event.subject.name);
         event.info = encodeURIComponent(event.info);
         event.subject.url = encodeURIComponent(event.subject.url);
