@@ -26,7 +26,7 @@ function createModal(extractor, events, repeat) {
         eventsHtml += `
         <li>
             <input type="checkbox" id="event_${i}" ${events[i].download?"checked":""}>
-            <label for="event_${i}">${extractor.getName(events[i])}</label>
+            <label for="event_${i}" title="${events[i].from.toLocaleDateString("en-uk")} to ${events[i].to.toLocaleDateString("en-uk")}">${extractor.getName(events[i])}</label>
             ${getDropdown(events[i], extractor, repeat, {target: "dropdown_"+i, divClass:"dropdown right removeFrame"})[0].outerHTML}
         </li>`;
     }
