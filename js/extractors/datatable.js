@@ -33,7 +33,7 @@ class DataTable extends Extractor {
         $("th a").remove()
 
         // inject dynamic tables
-        this.table.prev().after($(`<h2 class="noBorder">SigToCa Dynamic Tables</h2>`))
+        this.table.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`))
         this.table.prepend($(`<thead>${this.table.find("tr").html()}</thead>`))
         this.table.find("tbody tr:has(> th)").remove()
 

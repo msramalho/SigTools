@@ -19,7 +19,7 @@ function parseStrFormat(event, str, isHTML) {
     try {
         res = eval(res).replace("undefined", "n/a");
     } catch (error) {
-        swal("Ups!", `There was an error parsing the event format for:\n${res}\n\nPlease check the options page for SigToCa to check if you have a typo in your format options`, "warning");
+        swal("Ups!", `There was an error parsing the event format for:\n${res}\n\nPlease check the options page for SigTools to check if you have a typo in your format options`, "warning");
     }
 
     return res;
