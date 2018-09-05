@@ -3,15 +3,13 @@
   <img src="icons/icon-512.png" width="128"/>
  </a>
 </p>
-<h1 align="center"> <strike>SigTools</strike> SigTools- Sigarra Tools</h1>
-
-Sigarra Tools - Sigarra on Steroids: Export Calendar Events, Infinite Scroll, DataTables, and more (SigToCa's heir)
+<h1 align="center"> <strike>SigToCa</strike> SigTools- Sigarra Tools</h1>
 
 **Sigarra on Steroids**: export calendar events (timetables, events, book renewal, payments, ...); infinite scroll; export, filter and sort data-tables; statistical analysis on grades; library book renewal; configurable behaviour and more. *SigToCa's heir*
 
 ### Install via:
  - [Chrome WebStore](https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme)
- - [Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/sigarra-to-calendar/) Thanks a bunch to [@afonsobspinto](https://github.com/afonsobspinto)
+ - [Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/sigtools/) Thanks a bunch to [@afonsobspinto](https://github.com/afonsobspinto)
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
  - From [.crx](https://github.com/msramalho/SigTools/blob/master/extra/SigTools.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
 
