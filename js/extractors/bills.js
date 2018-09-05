@@ -18,7 +18,7 @@ class Bill extends Extractor {
                 }, {
                     name: "amount",
                     description: "The amount to pay e.g. 99,90€"
-                } 
+                }
             ],
             storage: {
                 text: [{
@@ -60,8 +60,8 @@ class Bill extends Extractor {
             date: dueDate,
             from: dueDate,
             to: dueDate,
-            location: undefined,
-            download: undefined
+            location: "",
+            download: false
         }
     }
 }
