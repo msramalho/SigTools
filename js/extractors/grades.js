@@ -38,13 +38,13 @@ class Grades extends Extractor {
         if (!this.apply) return console.info("Grades extractor is not applied. To apply go to options. ")
 
         // create div for attaching modules
-        this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2 class="noBorder" style="margin-top:0;">SigToCa Grade Analysis</h2></div>`)
+        this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2 class="noBorder" style="margin-top:0;">SigTools Grade Analysis</h2></div>`)
         // attach modules (order of invocation matters)
         this.attachCharts()
         this.attachMetrics()
 
         // inject dynamic tables
-        this.originalTable.prev().after($(`<h2 class="noBorder">SigToCa Dynamic Tables</h2>`))
+        this.originalTable.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`))
         this.originalTable.prepend($(`<thead>${this.originalTable.find("tr").html()}</thead>`))
         this.originalTable.find("tbody tr:has(> th)").remove()
         // sorting guide: https://www.datatables.net/plug-ins/sorting/

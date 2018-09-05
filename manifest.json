@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Sigarra To Calendar",
-    "short_name": "SigToCa",
+    "short_name": "SigTools",
     "version": "1.8.1",
     "description": "Sigarra To Calendar - Automatically add Sigarra Timetables to your Calendar Apps",
     "icons": {
@@ -10,7 +10,7 @@
         "128": "icons/icon-128.png"
     },
     "browser_action": {
-        "default_title": "SigToCa",
+        "default_title": "SigTools",
         "default_icon": "icons/icon-48.png"
     },
     "background": {
@@ -64,6 +64,6 @@
     ],
     "web_accessible_resources": ["icons/*"],
     "content_security_policy": "script-src 'self'; object-src 'self'",
-    "homepage_url": "https://github.com/msramalho/SigToCa",
+    "homepage_url": "https://github.com/msramalho/SigTools",
     "options_page": "options.html"
 }

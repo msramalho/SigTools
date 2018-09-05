@@ -9,7 +9,7 @@
 function eventToGCalendar(extractor, event, repeat) {
     let recur = "";
     if (repeat) recur = `&recur=RRULE:FREQ=${repeat.freq};UNTIL=${(new Date(repeat.until)).toGCalendar()}`;
-    return (`https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigToCa"}${recur}`);
+    return (`https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigTools"}${recur}`);
 }
 
 /**
