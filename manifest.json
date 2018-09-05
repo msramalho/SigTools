@@ -65,5 +65,8 @@
     "web_accessible_resources": ["icons/*"],
     "content_security_policy": "script-src 'self'; object-src 'self'",
     "homepage_url": "https://github.com/msramalho/SigTools",
-    "options_page": "options.html"
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": true
+    }
 }
