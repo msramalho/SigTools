@@ -35,3 +35,8 @@
 #sidebar {
     box-shadow: 0 0 25px 0 grey;
 }
+
+.options-help {
+    display: block;
+    margin-bottom: 15px;
+}
