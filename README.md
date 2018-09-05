@@ -5,7 +5,9 @@
 </p>
 <h1 align="center"> <strike>SigTools</strike> SigTools- Sigarra Tools</h1>
 
-**Sigarra on steroids**: automatically add Sigarra timetables and events (book renewal, payments, ...) to your calendar apps; export, filter and sort data-tables; statistical analysis on grades; library book renewal; configurable behaviour and more.
+Sigarra Tools - Sigarra on Steroids: Export Calendar Events, Infinite Scroll, DataTables, and more (SigToCa's heir)
+
+**Sigarra on Steroids**: export calendar events (timetables, events, book renewal, payments, ...); infinite scroll; export, filter and sort data-tables; statistical analysis on grades; library book renewal; configurable behaviour and more. *SigToCa's heir*
 
 ### Install via:
  - [Chrome WebStore](https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme)
@@ -35,7 +37,7 @@ Any Sigarra data-table is now:
  - exportable (copy-paste, csv, excel, pdf)
  - sortable by any column
  - searchable by a query box
- 
+
 #### Infinite Scroll
  - Any page that has paginated tables now has infinite scroll (example: search for MIEIC students)
 
