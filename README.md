@@ -5,8 +5,6 @@
 </p>
 <h1 align="center"> <strike>SigToCa</strike> SigTools- Sigarra Tools</h1>
 
-Sigarra Tools - Sigarra on Steroids: Export Calendar Events, Infinite Scroll, DataTables, and more (SigToCa's heir)
-
 **Sigarra on Steroids**: export calendar events (timetables, events, book renewal, payments, ...); infinite scroll; export, filter and sort data-tables; statistical analysis on grades; library book renewal; configurable behaviour and more. *SigToCa's heir*
 
 ### Install via:
