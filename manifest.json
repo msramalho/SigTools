@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "Sigarra Tools",
-    "short_name": "SigTools",
+    "name": "SigTools",
+    "short_name": "Sigarra Tools",
     "version": "2.0.0",
     "description": "Sigarra Tools - Sigarra on Steroids: Export Calendar Events, Infinite Scroll, DataTables, and more (SigToCa's heir)",
     "icons": {
