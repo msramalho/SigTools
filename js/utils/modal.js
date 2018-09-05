@@ -2,14 +2,14 @@
 
 /**
  * display list of events to present to the user and the download interface
- * @param {Extractor} extractor a BaseExtractor descendant that handled the events
+ * @param {Extractor} extractor a Extractor descendant that handled the events
  * @param {Date} from for recurring events when do they start [optional]
  * @param {Date} to for recurring events when do they end [optional]
  * @param {Array} events list of objects that need to have (at least) {from, to, location, download}
  */
 function handleEvents(extractor, events, from, to) {
     let repeat = undefined;
-    if (from && to && daydiff(from, to) > 6) {
+    if (from && to && dayDiff(from, to) > 6) {
         repeat = {
             freq: "WEEKLY",
             until: to.toString()
@@ -21,19 +21,20 @@ function handleEvents(extractor, events, from, to) {
 function createModal(extractor, events, repeat) {
     let eventsHtml = "";
     for (let i = 0; i < events.length; i++) {
+        // var google_url = eventToGCalendar(extractor, events[i], repeat);
+        // var outlook_url = eventToOutlookCalendar(extractor, events[i], repeat);
         eventsHtml += `
         <li>
             <input type="checkbox" id="event_${i}" ${events[i].download?"checked":""}>
-            <label for="event_${i}">${extractor.getName(events[i])}</label>
-            <span class="calendarLink"><a class="oneClickGoogle" title="Add this single event to your Google Calendar in One click!" ><img class="calendarIcon" src="${chrome.extension.getURL("icons/gcalendar.png")}"></a></span>
-            <span class="calendarLink"><a class="oneClickOutlook" title="Add this single event to your Outlook.com Calendar in One click!" ><img class="calendarIcon" src="${chrome.extension.getURL("icons/outlook.png")}"></a></span>
+            <label for="event_${i}" title="${events[i].from.toLocaleDateString("en-uk")} to ${events[i].to.toLocaleDateString("en-uk")}">${extractor.getName(events[i])}</label>
+            ${getDropdown(events[i], extractor, repeat, {target: "dropdown_"+i, divClass:"dropdown right removeFrame"})[0].outerHTML}
         </li>`;
     }
 
     let modal =
         `<div id="sig_eventsModal">
             <div class="sig_modalBody">
-                <h1>SigToCa</h1>
+                <h1>SigTools</h1>
                 <h2>Select the events you want to download:</h2>
                 <ul class="sig_eventsList">
                     ${eventsHtml}
@@ -42,13 +43,14 @@ function createModal(extractor, events, repeat) {
                 <hr>
                 <div>
                     <a id="sig_downloadIcs" class="calendarBtn"
-                        title="Save this To your Calendar">📆 Download .ics</a>
+                        title="Save this to your Calendar">📆 Download .ics</a>
                 </div>
             </div>
             <div class="sig_overlay"></div>
         </div>`;
     modal = $(modal);
     $("head").before(modal);
+    setDropdownListeners(extractor, repeat);
     modal.find("#sig_downloadIcs").click((e) => {
         updateEvents(modal, events);
 
@@ -61,25 +63,15 @@ function createModal(extractor, events, repeat) {
 
         //donwloas .ics file
         if (!cal.download())
-            alert("No event selected for download!");
+            swal("No event selected for download!", "You need to select at least one event", "warning", {
+                buttons: false
+            })
         else
             clearModal();
     });
     modal.find(".sig_overlay").click(() => {
         updateEvents(modal, events);
         clearModal();
-    });
-    modal.find(".sig_eventsList li a.oneClickGoogle").each((index, a) => {
-        $(a).click((e)=>{
-            e.preventDefault();
-            window.open((eventToGCalendar(extractor, events[index], repeat)).replace(/\s/g, "%20"), "_blank");
-        });
-    });
-    modal.find(".sig_eventsList li a.oneClickOutlook").each((index, a) => {
-        $(a).click((e)=>{
-            e.preventDefault();
-            window.open((eventToOutlookCalendar(extractor, events[index], repeat)).replace(/\s/g, "%20"), "_blank");
-        });
     });
 
 }

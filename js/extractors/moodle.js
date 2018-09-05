@@ -1,47 +1,77 @@
 "use strict";
-class MoodleEvent {
+
+class Moodle extends Extractor {
+
     constructor() {
+        super();
+        this.ready();
+    }
+
+    attachIfPossible() {
         $(".hasevent").each((index, td) => {
             let popupContent = $(`<div>${$(td).attr("data-core_calendar-popupcontent")}</div>`);
             let newPopupContent = "";
             popupContent.find("div").each((index, div) => {
                 div = $(div);
-                newPopupContent += MoodleEvent.getNewDiv(div, MoodleEvent.getEvent(div));
+                newPopupContent += this.getNewDiv(div, Moodle.getEvent(div));
             });
             $(td).attr("data-core_calendar-popupcontent", newPopupContent);
         });
     }
 
-    static convertToURI(original) {
-        let event = jQuery.extend(true, {}, original);
+    structure() {
+        return {
+            extractor: "moodle",
+            description: "Extracts moodle calendar events",
+            parameters: [{
+                    name: "name",
+                    description: "eg: Minitest Compilers"
+                },
+                {
+                    name: "type",
+                    description: "eg: Submission"
+                }, {
+                    name: "url",
+                    description: "link to the event page in moodle"
+                }
+            ],
+            storage: {
+                text: [{
+                    name: "title",
+                    default: "${name}"
+                }],
+                textarea: [{
+                    name: "description",
+                    default: "Type:${type}\nLink: <a href=\"${url}\">${name}</a>"
+                }],
+                boolean: [{
+                    name: "isHTML",
+                    default: true
+                }]
+            }
+        }
+    }
+
+    convertToURI(event) {
         event.url = encodeURIComponent(event.url);
         return event;
     }
 
-    static getName(event, forUrl) {
-        if (forUrl) event = this.convertToURI(event);
-        return `${event.name} (${event.type})`;
-    }
-
     /**
-     * 
-     * @param {*} event 
-     * @param {*} forUrl 
-     * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted 
+     *
+     * @param {*} event
+     * @param {*} forUrl
+     * @param {*} noHTML If true, returns the description in plain text. Otherwise, returns the description HTML formatted
      */
-    static getDescription(event, forUrl, noHTML) {
-        if (forUrl) event = this.convertToURI(event);
-        if(noHTML) 
-            return `${event.name} (${event.type})%0ALink:${event.url}`; //%0A is a new line encoded
-        else 
-            return `<h3>${event.name} (${event.type})</h3>${getAnchor("Link:", event.url, "moodle")}`;
-    }
+    getNewDiv(div, event) {
+        var google_url = eventToGCalendar(this, event);
+        var outlook_url = eventToOutlookCalendar(this, event);
 
-    static getNewDiv(div, event) {
+        // Browsers ignore newlines on the URLs, they are ommited. Therefore, I encode all newlines if formats are plain text
         return `
         ${div.find("img")[0].outerHTML}
-        <a class="sig_moodleCalendar" href="#" onclick="window.open(decodeURI('${encodeURI(eventToGCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}'));" title="Add this single event to your Google Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="google calendar icon" src="${chrome.extension.getURL("icons/gcalendar.png")}"/></a>
-        <a class="sig_moodleCalendar" href="#" onclick="window.open(decodeURI('${encodeURI(eventToOutlookCalendar(MoodleEvent, event)).replace(/\s/g, "%20")}'));" title="Add this single event to your Outlook.com Calendar in One click!"><img class="calendarIconMoodle smallicon" alt="outlook calendar icon" src="${chrome.extension.getURL("icons/outlook.png")}"/></a>
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, Moodle.isHTML).outerHTML}
+        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, Moodle.isHTML).outerHTML}
         ${div.find("a")[0].outerHTML}`;
     }
 
@@ -60,7 +90,6 @@ class MoodleEvent {
         };
     }
 }
-Object.setPrototypeOf(MoodleEvent.prototype, BaseExtractor);
 
-//init on include
-let extractorMoodleEvent = new MoodleEvent();
+// add an instance to the EXTRACTORS variable, and also trigger attachIfPossible due to constructor
+EXTRACTORS.push(new Moodle());

@@ -1,0 +1,1 @@
+$(".version").toArray().forEach(s => s.innerHTML = `V ${chrome.runtime.getManifest().version}`)

@@ -1,0 +1,42 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/options.css">
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/utils/global.js"></script>
+    <script src="js/extractors/extractor.js"></script>
+    <script src="js/extractors/exams.js"></script>
+    <script src="js/extractors/moodle.js"></script>
+    <script src="js/extractors/timetable.js"></script>
+    <script src="js/extractors/grades.js"></script>
+    <script src="js/extractors/single_exam.js"></script>
+    <script src="js/extractors/infinite_scroll.js"></script>
+    <script src="js/extractors/datatable.js"></script>
+    <script src="js/extractors/library.js"></script>
+    <script src="js/extractors/bills.js"></script>
+    <script src="js/scripts/options.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/lib/sweetalert.min.js"></script>
+</head>
+
+<body>
+    <!-- Nav tabs -->
+    <div class="row">
+        <div class="col-auto col-sm-3 col-lg-2 bg-dark p-0" id="sidebar">
+            <h1 class="text-white mt-1 mb-3 text-center">Options</h1>
+            <div class="nav flex-column h-100" id="nav-tab-list" role="tablist" aria-orientation="vertical"></div>
+        </div>
+        <div class="col col-sm-9 col-lg-10">
+            <span class="options-help text-center text-info">If you feel that a different format for events would be better, go ahead and set it 😄
+                <br>
+                <small class="text-sm">Pros, you can use JS inside the format options like <code>${location.toUpperCase()}</code></small>
+            </span>
+            <div class="tab-content" id="nav-tab-content"></div>
+            <button class="btn mt-3 align" id="btn_save" disabled>Save all</button>
+            <button class="btn mt-3 align" disabled>Reset all</button>
+            <button class="btn mt-3 align" disabled>Reset all {{extractor}}</button>
+        </div>
+    </div>
+</body>
