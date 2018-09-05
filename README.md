@@ -3,7 +3,7 @@
   <img src="icons/icon-512.png" width="128"/>
  </a>
 </p>
-<h1 align="center"> <strike>SigTools</strike> SigTools- Sigarra Tools</h1>
+<h1 align="center"> <strike>SigToCa</strike> SigTools- Sigarra Tools</h1>
 
 Sigarra Tools - Sigarra on Steroids: Export Calendar Events, Infinite Scroll, DataTables, and more (SigToCa's heir)
 
