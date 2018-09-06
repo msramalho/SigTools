@@ -36,7 +36,9 @@ class Extractor {
      * simple wrapper that waits for init and then calls attachIfPossible, should be called in constructor of implementing classes
      */
     ready() {
-        this.init().then(() => this.attachIfPossible())
+        this.init().then(() => {
+            if(String(window.location.href).indexOf('options.html') === -1) this.attachIfPossible();
+        });
     }
 
     /**
