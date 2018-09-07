@@ -87,8 +87,11 @@ Any Sigarra data-table is now:
 ### Performance
 It was developed to be as non-intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
 
+### Credits
+
 A thanks to...  [ics.js](https://github.com/nwcell/ics.js) | [FileSaver.js](https://github.com/eligrey/FileSaver.js) | [Blob.js](https://github.com/eligrey/Blob.js) | [mustache](https://github.com/janl/mustache.js/) | [chart.js](https://github.com/chartjs/Chart.js) | [math.js](https://github.com/josdejong/mathjs/) for saving us a lot of time!
 
+Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for the flat calendar icon! ![](icons/calendar.svg)
 
 # Contribute to SigTools
 You can contribute by:
