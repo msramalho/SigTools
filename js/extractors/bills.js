@@ -23,11 +23,15 @@ class Bill extends Extractor {
             storage: {
                 text: [{
                     name: "title",
-                    default: "${description}]"
+                    default: "${description}"
                 }],
                 textarea: [{
                     name: "description",
                     default: "Due: ${date}\nAmount: ${amount}"
+                }],
+                boolean: [{
+                    name: "isHTML",
+                    default: true
                 }]
             }
         }
@@ -53,7 +57,13 @@ class Bill extends Extractor {
     }
 
     _parsePendingBill(billEl) {
-        let dueDate = new Date($(billEl).children(':nth(4)').text());
+        let dueDateTxt = $(billEl).children(':nth(4)').text();
+        let dueDate;
+        if (dueDateTxt === '')
+            dueDate = undefined;
+        else
+            dueDate = new Date(dueDateTxt);
+
         return {
             description: $(billEl).children(':nth(2)').text(),
             amount: $(billEl).children(':nth(7)').text(),
