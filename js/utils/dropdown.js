@@ -35,7 +35,7 @@ function setDropdownListeners(extractor, repeat) {
     $(".donwloadSingleIcs").unbind().click((e) => {
         let event = JSON.parse($(e.target).attr("data"))
         let cal = ics(); //creat ics instance
-        cal.addEvent(extractor.getName(event), extractor.getDescription(event), event.location, event.from.toString(), event.to.toString(), repeat);
+        cal.addEvent(extractor.getName(event), extractor.getDescription(event), event.location, event.from.toString() || Date(), event.to.toString() || Date(), repeat);
         if (!cal.download()) swal("No event selected for download!", "You need to select at least one event", "warning", {
             buttons: false
         });
