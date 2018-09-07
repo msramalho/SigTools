@@ -88,7 +88,7 @@ function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html, tit
 
     // add event listener
     if (html)
-        a.setAttribute("onclick", `window.open(decodeURI('${encodeURI(url)}').replace(/\\s/g, "%20"));`);
+        a.setAttribute("onclick", `window.open(decodeURI('${encodeURI(url.replace("'","\""))}').replace(/\\s/g, "%20"));`);
     else
         a.setAttribute("onclick", `window.open('${url.replace(/\n/g, '%0A')}');`);
 
