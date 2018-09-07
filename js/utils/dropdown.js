@@ -17,7 +17,7 @@ function getDropdown(event, context, repeat, style) {
 
     return $(`
 	<div class="${style.divClass}" style="${style.divStyle}">
-		<a class="${style.aClass}" target="${style.target}" title="Save this event to your Calendar"><img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>
+		<a class="${style.aClass}" target="${style.target}" title="Save this event to your Calendar"><img target="${style.target}" src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>
 		<div id="${style.target}" class="dropdown-content">
 		${generateOneClickDOM("", "dropdownIcon", "google", google_url, context.isHTML, "Google").outerHTML}
 		${generateOneClickDOM("", "dropdownIcon", "outlook", outlook_url, context.isHTML, "Outlook").outerHTML}
@@ -31,7 +31,7 @@ function getDropdown(event, context, repeat, style) {
  * unbind and rebind the listeners for the dropdown buttons
  */
 function setDropdownListeners(extractor, repeat) {
-    $(".dropBtn").unbind().click(toggleDropdown)
+    $(".dropBtn > img").unbind().click(toggleDropdown)
     $(".donwloadSingleIcs").unbind().click((e) => {
         let event = JSON.parse($(e.target).attr("data"))
         let cal = ics(); //creat ics instance
@@ -51,7 +51,7 @@ function toggleDropdown(btn) {
 
 // Close the dropdown if the user clicks outside
 window.onclick = function(event) {
-    if (!event.target.matches('.dropBtn')) {
+    if (!event.target.matches('.dropBtn > img')) {
         let dropdowns = document.getElementsByClassName("dropdown-content");
         for (let i = 0; i < dropdowns.length; i++) {
             let openDropdown = dropdowns[i];
