@@ -51,7 +51,6 @@ class LibraryExtractor extends Extractor {
     }
 
     attachIfPossible() {
-        console.log(this.description);
         let table = $("p>table tr.tr1").closest("table") // get the table with the books
         if (table.length) { // we are in the page with a list of all the books
             table.find("tr:not(.tr1):not(:last-child)").each((i, e) => { //iterate over each book (table row)
