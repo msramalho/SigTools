@@ -60,7 +60,7 @@ class Bill extends Extractor {
         let dueDateTxt = $(billEl).children(':nth(4)').text();
         let dueDate;
         if (dueDateTxt === '')
-            dueDate = undefined;
+            dueDate = '';
         else
             dueDate = new Date(dueDateTxt);
 
@@ -72,7 +72,7 @@ class Bill extends Extractor {
             to: dueDate,
             location: "",
             download: false
-        }
+        };
     }
 }
 

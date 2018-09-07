@@ -9,7 +9,13 @@
 function eventToGCalendar(extractor, event, repeat) {
     let recur = "";
     if (repeat) recur = `&recur=RRULE:FREQ=${repeat.freq};UNTIL=${(new Date(repeat.until)).toGCalendar()}`;
-    return (`https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigTools"}${recur}`);
+
+    let dates = '';
+    if(event.from && event.to)
+        dates = `&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}`;
+    
+    if(event)
+    return (`https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigTools"}${recur}${dates}`);
 }
 
 /**
@@ -19,11 +25,12 @@ function eventToGCalendar(extractor, event, repeat) {
  * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
  */
 function eventToOutlookCalendar(extractor, event, repeat) {
-    var data =
-        `&startdt=${event.from.toGCalendar()}&enddt=${event.to.toGCalendar()}` +
-        `&subject=${extractor.getName(event, true)}` +
-        `&location=${event.location}` +
-        `&body=${extractor.getDescription(event, true, true)}`;
+    let data = `&subject=${extractor.getName(event, true)}` +
+		`&location=${event.location}` +
+		`&body=${extractor.getDescription(event, true, true)}`;
+
+    if(event.from) data += `&startdt=${event.from.toGCalendar()}`;
+    if(event.to) data += `&enddt=${event.to.toGCalendar()}`;
 
     return 'https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent' + data;
 }
@@ -41,11 +48,13 @@ function eventToYahooCalendar(extractor, event, repeat) {
     let dHours = Math.floor(dMins / 60) // convert to full hours
     dMins = dMins % 60 // remaining minutes
 
-    var data =
-        `&DUR=${dHours}${dMins}&ST=${event.from.toGCalendar()}` +
+    let data =
+        `&DUR=${dHours}${dMins}` +
         `&TITLE=${extractor.getName(event, true)}` +
         `&in_loc=${event.location}` +
         `&DESC=${extractor.getDescription(event, true, true)}`;
+    
+    if(event.from) data += `&ST=${event.from.toGCalendar()}`;
     // + `&REND=${}`
     return 'http://calendar.yahoo.com/?v=60' + data;
 }
