@@ -55,7 +55,7 @@ class Exams extends Extractor {
                 table = $(table);
                 this.exams[index] = this.exams[index] == undefined ? this.getEvents(index) : this.exams[index];
                 if (this.exams[index].events.length != 0) {
-                    let saveBtn = $('<a class="calendarBtn" title="Save exams to your Calendar">📆</a>');
+                    let saveBtn = $(`<a class="calendarBtn" title="Save exams to your Calendar"><img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>`);
                     table.before(saveBtn);
                     saveBtn.click(() => {
                         handleEvents(this, this.exams[index].events);

@@ -17,7 +17,7 @@ function getDropdown(event, context, repeat, style) {
 
     return $(`
 	<div class="${style.divClass}" style="${style.divStyle}">
-		<a class="${style.aClass}" target="${style.target}" title="Save this event to your Calendar">📆</a>
+		<a class="${style.aClass}" target="${style.target}" title="Save this event to your Calendar"><img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>
 		<div id="${style.target}" class="dropdown-content">
 		${generateOneClickDOM("", "dropdownIcon", "google", google_url, context.isHTML, "Google").outerHTML}
 		${generateOneClickDOM("", "dropdownIcon", "outlook", outlook_url, context.isHTML, "Outlook").outerHTML}
