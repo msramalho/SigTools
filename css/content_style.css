@@ -139,6 +139,11 @@ img.sigLoading {
 
 a.calendarBtn.dropBtn {
     margin: 0px;
+    font-size: 16px;
+}
+
+a.calendarBtn.dropBtn > img {
+    height: 1.3em;
 }
 
 .dropdown {
