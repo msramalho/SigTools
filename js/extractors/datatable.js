@@ -27,6 +27,7 @@ class DataTable extends Extractor {
         // return if table not found or not applied
         if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
         if (!this.table.length || !this.validTable()) return
+        if (!this.table.find("tr").toArray().length) return //if table is empty
 
         // remove sigarra stuff that is useless
         $("#ordenacao").remove()
@@ -42,7 +43,7 @@ class DataTable extends Extractor {
     }
 
     /**
-     * Check if the current table is valid for applying infinite scroll
+     * Check if the current table is valid for applying datatables
      */
     validTable() {
         let cols = this.table.find("tr:has(> th)").find("th").toArray().length
