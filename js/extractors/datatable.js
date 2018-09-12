@@ -3,7 +3,7 @@
 class DataTable extends Extractor {
     constructor() {
         super();
-        this.table = $("table.dados");
+        this.table = $("table.dados,table.dadossz");
         this.loading = false // indicates when there is an ongoing ajax request
         this.ready();
     }
@@ -15,9 +15,14 @@ class DataTable extends Extractor {
             // parameters: [],
             storage: {
                 boolean: [{
-                    name: "apply",
-                    default: true
-                }]
+                        name: "apply",
+                        default: true
+                    },
+                    {
+                        name: "disable_one_row",
+                        default: true
+                    }
+                ]
             }
         }
     }
@@ -28,6 +33,7 @@ class DataTable extends Extractor {
         if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
         if (!this.table.length || !this.validTable()) return
         if (!this.table.find("tr").toArray().length) return //if table is empty
+        if (this.disable_one_row && this.table.find("tr").toArray().length==2) return //if table only has header and one row
 
         // remove sigarra stuff that is useless
         $("#ordenacao").remove()
