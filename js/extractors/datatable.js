@@ -58,7 +58,7 @@ class DataTable extends Extractor {
     validTable(table) {
         let cols = table.find("tr:has(> th)").find("th").toArray().length
         let first = table.find("tr:has(> td)").eq(0).find("td").toArray().length
-        return cols == first
+        return cols == first && table.find("td[rowspan],td[colspan]").length == 0
     }
 }
 
