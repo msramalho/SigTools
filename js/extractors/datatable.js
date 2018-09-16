@@ -83,8 +83,8 @@ DataTable.datatableOptions = {
  * @param {string} selector
  */
 function removeDatatableIfExists(selector) {
-    if ($.fn.dataTable.isDataTable('table.dados')) {
-        let table = $('table.dados').DataTable()
+    if ($.fn.dataTable.isDataTable(selector)) {
+        let table = $(selector).DataTable()
         table.destroy()
         return el => el.dataTable(DataTable.datatableOptions)
     }
