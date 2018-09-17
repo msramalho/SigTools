@@ -19,6 +19,7 @@ a.calendarBtn:hover {
 }
 
 div.sig_modalBody {
+    overflow-y: scroll;
     position: fixed;
     width: 500px;
     height: auto;
