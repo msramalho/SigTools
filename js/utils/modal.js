@@ -8,7 +8,10 @@
  * @param {Array} events list of objects that need to have (at least) {from, to, location, download}
  */
 function handleEvents(extractor, events, from, to) {
-    createModal(extractor, events, getRepeat(from, to), from.addDays(1), to.addDays(1));
+    if(from === undefined || to === undefined)
+        createModal(extractor, events, getRepeat(from, to));
+    else
+        createModal(extractor, events, getRepeat(from, to), from.addDays(1), to.addDays(1));
 }
 
 function createModal(extractor, events, repeat, from, to) {
@@ -33,10 +36,12 @@ function createModal(extractor, events, repeat, from, to) {
                     ${eventsHtml}
                     <br>
                 </ul>
-
-                <h3>If you want to change the start and end periods (only for the .ics file)</h3>
-                From <input type="date" id="repeat_from" value="${from.toISOString().split('T')[0]}">
-                to <input type="date" id="repeat_to" value="${to.toISOString().split('T')[0]}">
+                ${
+                    (from === undefined || to === undefined) ? '': 
+                    `<h3>If you want to change the start and end periods (only for the .ics file)</h3>
+                    From <input type="date" id="repeat_from" value="${from.toISOString().split('T')[0]}">
+                    to <input type="date" id="repeat_to" value="${to.toISOString().split('T')[0]}">`
+                }
                 <hr>
                 <div>
                     <a id="sig_downloadIcs" class="calendarBtn"
@@ -82,7 +87,7 @@ function getRepeat(from, to) {
             until: to.toString()
         };
     }
-    return repeat
+    return repeat;
 }
 
 function clearModal() {
