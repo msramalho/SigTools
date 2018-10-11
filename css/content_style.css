@@ -52,7 +52,12 @@ ul.sig_eventsList {
 }
 
 ul.sig_eventsList li {
+    padding: 0.3em;
     overflow: hidden;
+}
+
+ul.sig_eventsList li:nth-child(odd) {
+    background-color: rgb(245, 245, 245);
 }
 
 ul.sig_eventsList li label {
@@ -61,6 +66,7 @@ ul.sig_eventsList li label {
 
 ul.sig_eventsList input[type="checkbox"] {
     transform: scale(1.3);
+    vertical-align: middle;
 }
 
 a#sig_downloadIcs {
