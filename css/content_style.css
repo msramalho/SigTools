@@ -51,12 +51,22 @@ ul.sig_eventsList {
     padding-right: 10px;
 }
 
+ul.sig_eventsList li {
+    padding: 0.3em;
+    overflow: hidden;
+}
+
+ul.sig_eventsList li:nth-child(odd) {
+    background-color: rgb(245, 245, 245);
+}
+
 ul.sig_eventsList li label {
     font-size: 16px;
 }
 
 ul.sig_eventsList input[type="checkbox"] {
     transform: scale(1.3);
+    vertical-align: middle;
 }
 
 a#sig_downloadIcs {
@@ -143,7 +153,7 @@ a.calendarBtn.dropBtn {
     font-size: 16px;
 }
 
-a.calendarBtn.dropBtn > img {
+a.calendarBtn.dropBtn>img {
     height: 1.3em;
 }
 
