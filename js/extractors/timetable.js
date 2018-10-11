@@ -138,10 +138,8 @@ $.prototype.parseTable = function(dupCols, dupRows, textMode) {
 
             if (textMode === true) content = $(col).text().trim() || "";
 
-            let x = 0,
-                y = 0;
-            for (x = 0; x < rowspan; x++) {
-                for (y = 0; y < colspan; y++) {
+            for (let x = 0; x < rowspan; x++) {
+                for (let y = 0; y < colspan; y++) {
                     if (columns[curr_y + y] === undefined)
                         columns[curr_y + y] = []
 
@@ -161,7 +159,6 @@ $.prototype.parseTable = function(dupCols, dupRows, textMode) {
         });
         curr_x += 1;
     });
-
     return columns;
 };
 
