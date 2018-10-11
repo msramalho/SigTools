@@ -51,6 +51,10 @@ ul.sig_eventsList {
     padding-right: 10px;
 }
 
+ul.sig_eventsList li {
+    overflow: hidden;
+}
+
 ul.sig_eventsList li label {
     font-size: 16px;
 }
@@ -143,7 +147,7 @@ a.calendarBtn.dropBtn {
     font-size: 16px;
 }
 
-a.calendarBtn.dropBtn > img {
+a.calendarBtn.dropBtn>img {
     height: 1.3em;
 }
 
