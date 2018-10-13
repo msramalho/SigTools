@@ -3,7 +3,7 @@
   <img src="icons/icon-512.png" width="128"/>
  </a>
 </p>
-<h1 align="center"> <strike>SigToCa</strike> SigTools- Sigarra Tools</h1>
+<h1 align="center">SigTools- Sigarra Tools</h1>
 
 **Sigarra on Steroids**: export calendar events (timetables, events, book renewal, payments, ...); infinite scroll; export, filter and sort data-tables; statistical analysis on grades; library book renewal; configurable behaviour and more. *SigToCa's heir*
 
