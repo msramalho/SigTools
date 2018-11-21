@@ -79,7 +79,7 @@ DataTable.datatableOptions = {
 }
 
 /**
- * if a datatble exists, remove it and return a callback to apply it again
+ * if a datatable exists, remove it and return a callback to apply it again
  * @param {string} selector
  */
 function removeDatatableIfExists(selector) {
