@@ -48,12 +48,12 @@ class Grades extends Extractor {
         this.originalTable.prepend($(`<thead>${this.originalTable.find("tr").html()}</thead>`))
         this.originalTable.find("tbody tr:has(> th)").remove()
         // sorting guide: https://www.datatables.net/plug-ins/sorting/
-        $("table.dadossz").dataTable({
-            paging: false,
-            order: [],
-            dom: 'Bfrtip',
-            buttons: ['copy', 'csv', 'excel', 'print'],
-        });
+        // $("table.dadossz").dataTable({
+        //     paging: false,
+        //     order: [],
+        //     dom: 'Bfrtip',
+        //     buttons: ['copy', 'csv', 'excel', 'print'],
+        // });
     }
 
     /**
