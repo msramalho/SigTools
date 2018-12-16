@@ -6,8 +6,8 @@ function updatejQueryContext(url) {
     return new Promise((resolve) => {
         $.get(url, function(html) {
             jQuery.noConflict();
-            $ = function(selector, _) {
-                return new jQuery.fn.init(selector, new DOMParser().parseFromString(html, 'text/html'));
+            $ = function(selector, context) {
+                return new jQuery.fn.init(selector, context || new DOMParser().parseFromString(html, 'text/html'));
             };
             $.fn = $.prototype = jQuery.fn;
             jQuery.extend($, jQuery);
