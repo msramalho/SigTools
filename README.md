@@ -88,7 +88,11 @@ Any Sigarra data-table is now:
 It was developed to be as non-intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
 
 ### Tests
-Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [tests](tests/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js). To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for evey test with jquery selectors) you can do:
+Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [tests](tests/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js).
+
+To run tests open the [tests.html](tests.html) file on the browser, this was the only way as chrome extensions cannot be fully developed as ES6 modules, as of now. This system works fairly well.
+
+To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for evey test with jquery selectors) you can do:
 ```javascript
 describe('what the test is about', function() {
     it('should return some results', function(done) {
@@ -114,6 +118,7 @@ describe('what the test is about', function() {
 })
 describe(...
 ```
+
 
 
 ### Credits
