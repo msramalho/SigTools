@@ -3,13 +3,16 @@
  * @param {URI} url
  */
 function updatejQueryContext(url) {
-    return $.get(url, function(html) {
-        jQuery.noConflict();
-        $ = function(selector, _) {
-            return new jQuery.fn.init(selector, new DOMParser().parseFromString(html, 'text/html'));
-        };
-        $.fn = $.prototype = jQuery.fn;
-        jQuery.extend($, jQuery);
+    return new Promise((resolve) => {
+        $.get(url, function(html) {
+            jQuery.noConflict();
+            $ = function(selector, _) {
+                return new jQuery.fn.init(selector, new DOMParser().parseFromString(html, 'text/html'));
+            };
+            $.fn = $.prototype = jQuery.fn;
+            jQuery.extend($, jQuery);
+			resolve();
+        })
     });
 }
 
@@ -22,3 +25,7 @@ chrome = {
         }
     }
 }
+
+// Alias for chai.expect as expect, since we cannot do modules
+expect = chai.expect
+should = chai.should() // actually call the function
