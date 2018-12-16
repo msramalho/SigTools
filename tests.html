@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link href="https://unpkg.com/mocha@4.0.1/mocha.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div id="mocha"></div>
+
+    <!-- Testing framework setup must come first -->
+    <script src="https://unpkg.com/chai@4.1.2/chai.js"></script>
+    <script src="https://unpkg.com/mocha@4.0.1/mocha.js"></script>
+    <script>
+        mocha.setup('bdd')
+    </script>
+
+    <!-- Local Tests setup -->
+    <script src="test/setup.js"></script>
+
+    <!-- Libs -->
+    <script src="js/lib/jquery.min.js"></script>
+
+    <!-- Utils -->
+    <script src="js/utils/global.js"></script>
+    <script src="js/utils/time.js"></script>
+    <script src="js/utils/calendar.js"></script>
+
+    <!-- Source code files -->
+    <script src="js/extractors/extractor.js"></script>
+    <script src="js/extractors/timetable.js"></script>
+
+    <!-- Test files -->
+    <script src="test/extractors/timetable.js"></script>
+
+    <script>
+        mocha.checkLeaks();
+        mocha.run();
+    </script>
+</body>
+
+</html>
