@@ -1,29 +1,29 @@
-before(() => {
-    return new Promise((resolve) => {
-        updatejQueryContext("test/pages/timetable_rcom.html").then(resolve)
-    })
-})
-
-let t;
 describe('Timetable extractor', function() {
+    before(() => {
+        return new Promise((resolve) => {
+            updatejQueryContext("test/pages/timetable_rcom.html").then(resolve)
+        })
+    })
+    let e;
+
     it('should create a valid extractor', function(done) {
-        t = new Timetable()
-        t.structure.should.contain.all.keys("description", "extractor", "parameters", "storage")
-        t.structure.extractor.should.equal("timetable")
+        e = new Timetable()
+        e.structure.should.contain.all.keys("description", "extractor", "parameters", "storage")
+        e.structure.extractor.should.equal("timetable")
         done()
     })
 
     it('should return list of events', function(done) {
-        t.timetable = t.getEvents()
-        t.timetable.should.be.an('object')
-        t.timetable.events.should.have.length(8)
-        t.timetable.events.forEach(event => {
+        e.timetable = e.getEvents()
+        e.timetable.should.be.an('object')
+        e.timetable.events.should.have.length(8)
+        e.timetable.events.forEach(event => {
             event.should.contain.all.keys("acronym", "download", "from", "klass", "location", "name", "room", "teacher", "to", "type")
             event.name.should.eql("Redes de Computadores")
             event.download.should.be.true
             event.acronym.should.eql("RCOM")
         })
-        let first = t.timetable.events[0]
+        let first = e.timetable.events[0]
         first.type.should.be.eql("TP")
         first.teacher.name.should.be.eql("Manuel Pereira Ricardo")
         first.teacher.acronym.should.be.eql("MPR")
@@ -38,8 +38,8 @@ describe('Timetable extractor', function() {
     }).timeout(5000)
 
     it('should return correct dates for RCOM', function(done) {
-        t.timetable.from.should.eql(new Date("2017-09-16 24:00"))
-        t.timetable.to.should.eql(new Date("2017-09-22 24:00"))
+        e.timetable.from.should.eql(new Date("2017-09-16 24:00"))
+        e.timetable.to.should.eql(new Date("2017-09-22 24:00"))
         done()
     })
 })
