@@ -8,14 +8,14 @@ let nav_tab_list_template = `
 let nav_tab_content_template = `
 <div class="tab-pane fade" id="nav-tab-content-{{extractor}}" role="tabpanel" aria-labelledby="nav-tab-{{extractor}}">
 <p>{{description}}</p>
-{{#hasParameters}}
+{{#parameters.0}}
 <h5>Parameters</h5>
 <ul>
     {{#parameters}}
     <li><strong class="parameter-code"><code>$&#123{{name}}&#125</code></strong> {{description}}</li>
     {{/parameters}}
 </ul>
-{{/hasParameters}}
+{{/parameters.0}}
 <h5>Format</h5>
 <div>
     {{#storage.text}}
