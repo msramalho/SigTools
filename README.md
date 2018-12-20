@@ -13,35 +13,62 @@
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
  - From [.crx](https://github.com/msramalho/SigTools/blob/master/extra/SigTools.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
 
-### Features:
+### Features
 Most features are customizable and can be turned off in the options page.
 
-#### Timetable Extractor
+<p align="center"><img  src="https://i.imgur.com/To7F74T.gif" height="300px"></p>
+
+<details>
+<summary>Timetable Extractor</summary>
+<p>
  - Personal schedule
  - Teacher schedule, try ... [Ademar](https://sigarra.up.pt/feup/pt/hor_geral.docentes_view?pv_doc_codigo=231081)
  - Subject schedule, try ... [RCOM](https://sigarra.up.pt/feup/pt/hor_geral.ucurr_view?pv_ocorrencia_id=399898)
  - Any other schedule (from sigarra, not just feup) that respects the major formats found
+</p>
+</details>
 
-#### Exams Extractor
+<details>
+<summary>Exams Extractor</summary>
+<p>
  - Exams page, try ... [MIEIC](https://sigarra.up.pt/feup/pt/exa_geral.mapa_de_exames?p_curso_id=741)
  - Any other exams page (from sigarra, not just feup) that respects the major formats found
+</p>
+</details>
 
-#### Moodle Extractor
+<details>
+<summary>Moodle Extractor</summary>
+<p>
  - Hover over a moodle event on the calendar and an option to add to Google Calendar (with One click) becomes available
  - Moodle already has functionality to export events in the iCal format [here](https://moodle.up.pt/calendar/export.php)
+</p>
+</details>
 
-#### Datatables
+<details>
+<summary>Datatables</summary>
+<p>
 Any Sigarra data-table is now:
  - exportable (copy-paste, csv, excel, pdf)
  - sortable by any column
  - searchable by a query box
+</p>
+</details>
 
-#### Infinite Scroll
+<details>
+<summary>Infinite Scroll</summary>
+<p>
  - Any page that has paginated tables now has infinite scroll (example: search for MIEIC students)
+</p>
+</details>
 
 
-### Calendars are exported to
-[iCalendar](https://en.wikipedia.org/wiki/ICalendar) *.ics* format which means most applications handle it pretty well:
+
+### Exporting Calendar Events
+SigTools exports to [iCalendar](https://en.wikipedia.org/wiki/ICalendar) *.ics* format which means most applications handle it pretty well, namely
+<details>
+<summary>Compatible Calendar Apps</summary>
+<p>
+
  - [Google Calendar](https://support.google.com/calendar/answer/37118?hl=en)
  - [Apple Calendar](https://support.apple.com/guide/calendar/import-or-export-calendars-icl1023/mac)
  - IBM Lotus Notes
@@ -50,82 +77,13 @@ Any Sigarra data-table is now:
  - eM Client
  - Lightning extension for Mozilla Thunderbird and SeaMonkey
  - [partially] by Microsoft Outlook and Novell GroupWise
-
-
-### Prints
-
-<h3 align="center">TimeTable</h3>
-<p align="center">
- <img align="center" src="https://i.imgur.com/txYvHyI.png" width="80%" height="80%">
 </p>
+</details>
 
-<h3 align="center">Exams</h3>
-<p align="center">
- <img align="center" src="https://i.imgur.com/nIDrtKb.png" width="80%" height="80%">
-</p>
-
-<h3 align="center">Moodle</h3>
-<p align="center">
- <img align="center" src="https://i.imgur.com/dL5wsY7.png" width="35%" height="35%">
-</p>
-
-<h3 align="center">Datatable</h3>
-<p align="center">
- <img align="center" src="https://i.imgur.com/OpOzlic.png" width="80%" height="80%">
-</p>
-
-<h3 align="center">Infinite Scroll</h3>
-<p align="center">
- <img align="center" src="https://i.imgur.com/A5okMWU.png" width="80%" height="80%">
-</p>
-
-<h3 align="center">Grades Statistics</h3>
-<p align="center">
- <img align="center" src="https://i.imgur.com/55phyYC.png" width="80%" height="80%">
-</p>
 
 ### Performance
 It was developed to be as non-intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
 
-### Tests
-Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [tests](tests/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js).
-
-To run tests open the [tests.html](tests.html) file on the browser, this was the only way as chrome extensions cannot be fully developed as ES6 modules, as of now. This system works fairly well.
-
-To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for evey test with jquery selectors) you can do:
-```javascript
-describe('what the test is about', function() {
-    it('should return some results', function(done) {
-        updatejQueryContext("new_context.html").then(() => {
-            // your tests
-            done()
-        }).catch(done)
-    })
-})
-```
-or, for the context to be global:
-
-```javascript
-before(() => {
-    return new Promise((resolve)=>{
-        updatejQueryContext("new_context.html").then(resolve)
-    })
-})
-describe('what the test is about', function() {
-    it('should return some results', function(done) {
-        // your tests
-    })
-})
-describe(...
-```
-
-
-
-### Credits
-
-A thanks to...  [ics.js](https://github.com/nwcell/ics.js) | [FileSaver.js](https://github.com/eligrey/FileSaver.js) | [Blob.js](https://github.com/eligrey/Blob.js) | [mustache](https://github.com/janl/mustache.js/) | [chart.js](https://github.com/chartjs/Chart.js) | [math.js](https://github.com/josdejong/mathjs/) for saving us a lot of time!
-
-Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for the flat calendar icon! ![](icons/calendar.svg)
 
 # Contribute to SigTools
 You can contribute by:
@@ -133,6 +91,11 @@ You can contribute by:
  - Fixing bugs - fork + branch + pull request
  - Adding more [modules/extractors](https://github.com/msramalho/SigTools/tree/master/js/extractors) each module should address a different calendar need
  - Sharing this Extension
+
+<details>
+<summary>Contribution guide</summary>
+<p>
+
 
 ## Code structure
  * `extractors` for all the scripts that extract information from a page and act accordingly
@@ -193,6 +156,48 @@ The `structure()` method should return an object that describes the extractor, f
 }
 ```
 
+### Tests
+Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [tests](tests/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js).
+
+To run tests open the [tests.html](tests.html) file on the browser, this was the only way as chrome extensions cannot be fully developed as ES6 modules, as of now. This system works fairly well.
+
+To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for evey test with jquery selectors) you can do:
+```javascript
+describe('what the test is about', function() {
+    it('should return some results', function(done) {
+        updatejQueryContext("new_context.html").then(() => {
+            // your tests
+            done()
+        }).catch(done)
+    })
+})
+```
+or, for the context to be global:
+
+```javascript
+describe('what the test is about', function() {
+    before(() => {
+        return new Promise((resolve)=>{
+            updatejQueryContext("new_context.html").then(resolve)
+        })
+    })
+    it('should return some results', function(done) {
+        // your tests
+    })
+})
+describe(...
+```
+</p>
+</details>
+
+
+### Credits
+
+A thanks to...  [ics.js](https://github.com/nwcell/ics.js) | [FileSaver.js](https://github.com/eligrey/FileSaver.js) | [Blob.js](https://github.com/eligrey/Blob.js) | [mustache](https://github.com/janl/mustache.js/) | [chart.js](https://github.com/chartjs/Chart.js) | [math.js](https://github.com/josdejong/mathjs/) for saving us a lot of time!
+
+Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for the flat calendar icon! ![](icons/calendar.svg)
+
+
 # Changelog
  - V1.0
     - MVP, timetable + exams + mooodle
@@ -229,3 +234,9 @@ The `structure()` method should return an object that describes the extractor, f
     - started using [mustache](https://github.com/janl/mustache.js/) templates
     - options page
     - changelog page when installed or updated
+- V3.0
+    - improved Readme and contribution instructions
+    - started Unit Testing
+    - fixed ui bugs
+    - fixed non-minified JS files for mozilla chrome extension
+    -
