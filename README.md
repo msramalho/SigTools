@@ -87,6 +87,40 @@ Any Sigarra data-table is now:
 ### Performance
 It was developed to be as non-intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
 
+### Tests
+Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [tests](tests/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js).
+
+To run tests open the [tests.html](tests.html) file on the browser, this was the only way as chrome extensions cannot be fully developed as ES6 modules, as of now. This system works fairly well.
+
+To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for evey test with jquery selectors) you can do:
+```javascript
+describe('what the test is about', function() {
+    it('should return some results', function(done) {
+        updatejQueryContext("new_context.html").then(() => {
+            // your tests
+            done()
+        }).catch(done)
+    })
+})
+```
+or, for the context to be global:
+
+```javascript
+before(() => {
+    return new Promise((resolve)=>{
+        updatejQueryContext("new_context.html").then(resolve)
+    })
+})
+describe('what the test is about', function() {
+    it('should return some results', function(done) {
+        // your tests
+    })
+})
+describe(...
+```
+
+
+
 ### Credits
 
 A thanks to...  [ics.js](https://github.com/nwcell/ics.js) | [FileSaver.js](https://github.com/eligrey/FileSaver.js) | [Blob.js](https://github.com/eligrey/Blob.js) | [mustache](https://github.com/janl/mustache.js/) | [chart.js](https://github.com/chartjs/Chart.js) | [math.js](https://github.com/josdejong/mathjs/) for saving us a lot of time!

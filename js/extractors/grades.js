@@ -13,7 +13,7 @@ class Grades extends Extractor {
         return {
             extractor: "grades",
             description: "Produces a histogram and some statistics on the global grades page",
-            //parameters: [],
+            parameters: [],
             storage: {
                 text: [{
                     name: "chart_min_width",
