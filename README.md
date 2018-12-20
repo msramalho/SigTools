@@ -21,26 +21,34 @@ Most features are customizable and can be turned off in the options page.
 <details>
 <summary>Timetable Extractor</summary>
 <p>
- - Personal schedule
- - Teacher schedule, try ... [Ademar](https://sigarra.up.pt/feup/pt/hor_geral.docentes_view?pv_doc_codigo=231081)
- - Subject schedule, try ... [RCOM](https://sigarra.up.pt/feup/pt/hor_geral.ucurr_view?pv_ocorrencia_id=399898)
- - Any other schedule (from sigarra, not just feup) that respects the major formats found
+<ul>
+    <li>Personal schedule</li>
+    <li>Teacher schedule, try ... <a href="https://sigarra.up.pt/feup/pt/hor_geral.docentes_view?pv_doc_codigo=231081">Ademar</a></li>
+    <li>Subject schedule, try ... <a href="(https://sigarra.up.pt/feup/pt/hor_geral.ucurr_view?pv_ocorrencia_id=399898">RCOM</a></li>
+    <li>Any other schedule (from sigarra, not just feup) that respects the major formats found</li>
+</ul>
 </p>
 </details>
 
 <details>
 <summary>Exams Extractor</summary>
 <p>
- - Exams page, try ... [MIEIC](https://sigarra.up.pt/feup/pt/exa_geral.mapa_de_exames?p_curso_id=741)
- - Any other exams page (from sigarra, not just feup) that respects the major formats found
+<ul>
+    <li>Exams page, try ... <a href="https://sigarra.up.pt/feup/pt/exa_geral.mapa_de_exames?p_curso_id=741">MIEIC</a></li>
+    <li>Any other exams page (from sigarra, not just feup) that respects the major formats found</li>
+</ul>
 </p>
 </details>
 
 <details>
 <summary>Moodle Extractor</summary>
 <p>
- - Hover over a moodle event on the calendar and an option to add to Google Calendar (with One click) becomes available
- - Moodle already has functionality to export events in the iCal format [here](https://moodle.up.pt/calendar/export.php)
+<ul>
+    <li>Hover over a moodle event on the calendar and an option to add to Google Calendar (with One click) becomes available</li>
+    <li>Moodle already has functionality to export events in the iCal format <a href="https://moodle.up.pt/calendar/export.php">here</a></li>
+</ul>
+ -
+ -
 </p>
 </details>
 
@@ -48,16 +56,20 @@ Most features are customizable and can be turned off in the options page.
 <summary>Datatables</summary>
 <p>
 Any Sigarra data-table is now:
- - exportable (copy-paste, csv, excel, pdf)
- - sortable by any column
- - searchable by a query box
+<ul>
+    <li>exportable (copy-paste, csv, excel, pdf)</li>
+    <li>sortable by any column</li>
+    <li>searchable by a query box</li>
+</ul>
 </p>
 </details>
 
 <details>
 <summary>Infinite Scroll</summary>
 <p>
- - Any page that has paginated tables now has infinite scroll (example: search for MIEIC students)
+<ul>
+    <li>Any page that has paginated tables now has infinite scroll (example: search for MIEIC students)</li>
+</ul>
 </p>
 </details>
 
@@ -68,15 +80,16 @@ SigTools exports to [iCalendar](https://en.wikipedia.org/wiki/ICalendar) *.ics* 
 <details>
 <summary>Compatible Calendar Apps</summary>
 <p>
-
- - [Google Calendar](https://support.google.com/calendar/answer/37118?hl=en)
- - [Apple Calendar](https://support.apple.com/guide/calendar/import-or-export-calendars-icl1023/mac)
- - IBM Lotus Notes
- - Yahoo! Calendar
- - Evolution (software)
- - eM Client
- - Lightning extension for Mozilla Thunderbird and SeaMonkey
- - [partially] by Microsoft Outlook and Novell GroupWise
+<ul>
+    <li><a href="https://support.google.com/calendar/answer/37118?hl=en">Google Calendar</a></li>
+    <li><a href="https://support.apple.com/guide/calendar/import-or-export-calendars-icl1023/mac">Apple Calendar</a></li>
+    <li>IBM Lotus Notes</li>
+    <li>Yahoo! Calendar</li>
+    <li>Evolution (software)</li>
+    <li>eM Client</li>
+    <li>Lightning extension for Mozilla Thunderbird and SeaMonkey</li>
+    <li>[partially] by Microsoft Outlook and Novell GroupWise</li>
+</ul>
 </p>
 </details>
 
