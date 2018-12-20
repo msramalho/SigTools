@@ -11,14 +11,14 @@ function getDropdown(event, context, repeat, style) {
 
     style = style || {}
     style.target = style.target || "calendarDropdown"
-    style.divClass = style.divClass || "dropdown right"
-    style.divStyle = style.divStyle || ""
+    style.divClass = style.divClass || "dropdown right "
+    style.divStyle = style.divStyle || "position:initial;"
     style.aClass = style.aClass || "calendarBtn dropBtn"
 
     return $(`
 	<div class="${style.divClass}" style="${style.divStyle}">
 		<a class="${style.aClass}" target="${style.target}" title="Save this event to your Calendar"><img target="${style.target}" src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>
-        <div id="${style.target}" class="dropdown-content">
+        <div id="${style.target}" class="dropdown-content" style="margin-right:6%;">
         ${generateOneClickDOM("", "dropdownIcon", "google", google_url, context.isHTML, "Google").outerHTML}
         ${generateOneClickDOM("", "dropdownIcon", "outlook", outlook_url, context.isHTML, "Outlook").outerHTML}
         ${generateOneClickDOM("", "dropdownIcon", "yahoo", yahoo_url, context.isHTML, "Yahoo").outerHTML}
@@ -46,18 +46,17 @@ function setDropdownListeners(extractor, repeat) {
  * Toggle dropdown buttons
  */
 function toggleDropdown(btn) {
+    $(`.dropdown-content:not(#${$(btn.target).attr("target")})`).each((_, dropdown) => {
+        dropdown.classList.remove('show')
+    })
     document.getElementById($(btn.target).attr("target")).classList.toggle("show");
 }
 
 // Close the dropdown if the user clicks outside
 window.onclick = function(event) {
     if (!event.target.matches('.dropBtn > img')) {
-        let dropdowns = document.getElementsByClassName("dropdown-content");
-        for (let i = 0; i < dropdowns.length; i++) {
-            let openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
+        $(".dropdown-content").each((_, dropdown) => {
+            dropdown.classList.remove('show')
+        })
     }
 }
