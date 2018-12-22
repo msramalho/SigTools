@@ -8,7 +8,18 @@ class Extractor {
      * Initialize variables: this.structure object, init, and attachIfPossible
      */
     constructor() {
-        this.structure = this.structure()
+        this.structure = this.structure() || {}
+        this.structure.storage = this.structure.storage || {}
+        this.structure.storage.boolean = this.structure.storage.boolean || []
+        this.structure.storage.boolean.push({
+            name: "apply",
+            default: true
+        })
+        this.structure.storage.text = this.structure.storage.text || []
+        this.structure.storage.text.push({ // any url in this list will not have the specific extractor applied
+            name: "exclude_urls_csv",
+            default: "coop_candidatura_geral.editar_candidatura"
+        })
     }
 
     /**
