@@ -39,10 +39,6 @@ class Exams extends Extractor {
                 textarea: [{
                     name: "description",
                     default: "Exam: ${subject.name} [${subject.acronym}]\nExam page: <a href=\"${subject.url}\">${subject.name}</a>\nInformation:${info}"
-                }],
-                boolean: [{
-                    name: "isHTML",
-                    default: true
                 }]
             }
         }
