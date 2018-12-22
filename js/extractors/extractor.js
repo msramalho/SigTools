@@ -9,6 +9,7 @@ class Extractor {
      */
     constructor() {
         this.structure = this.structure() || {}
+        // implement default properties, that each extractor can override at own risk
         this.structure.storage = this.structure.storage || {}
         this.structure.storage.boolean = this.structure.storage.boolean || []
         this.structure.storage.boolean.push({
@@ -16,7 +17,7 @@ class Extractor {
             default: true
         })
         this.structure.storage.text = this.structure.storage.text || []
-        this.structure.storage.text.push({ // any url in this list will not have the specific extractor applied
+        this.structure.storage.text.push({
             name: "exclude_urls_csv",
             default: "coop_candidatura_geral.editar_candidatura"
         })
@@ -48,8 +49,21 @@ class Extractor {
      */
     ready() {
         this.init().then(() => {
-            if (String(window.location.href).indexOf('options.html') === -1) this.attachIfPossible();
+            if (this.applyToPage()) this.attachIfPossible();
+            else console.warn(`Extractor ${this.structure.extractor} was not applied to this page due to it being either the options page or in your blacklist of pages`);
         });
+    }
+
+    /**
+     * check if the current page is the options.html paget -> do not include extractor
+     * OR
+     * if this page is in one of the excluded urls
+     */
+    applyToPage() {
+        let url = window.location.href.toLowerCase()
+        let excluded_page = this.exclude_urls_csv.split(",").some(e => url.includes(e.toLowerCase()))
+        let options_page = url.indexOf('options.html') != -1
+        return !options_page && !excluded_page
     }
 
     /**
