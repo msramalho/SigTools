@@ -91,6 +91,15 @@ Any Sigarra data-table is now:
 </p>
 </details>
 
+<details>
+<summary>Book Renewal</summary>
+<p>
+<ul>
+    <li>Never forget to return books again, by going to [catalogo.up.pt](https://catalogo.up.pt) and checking that you are not late on those, as it costs 0.50€ per day...</li>
+</ul>
+</p>
+</details>
+
 
 
 ### Exporting Calendar Events
