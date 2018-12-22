@@ -71,10 +71,11 @@ class InfiniteScroll extends Extractor {
         this.pages = []
         let m = $("p.paginar-registos").text().match(/(\d+) a (\d+) de (\d+)/) // regex on "Registos de (m[1]) a (m[2]) de (m[3])"
         let npages = Math.round(m[3] / (m[2] - m[1] + 1)) // how many pages in total
-        let page = $(".paginar-paginas-posteriores a").toArray()[0].href // get the url of page 2
-        let startPage = /pv_num_pag=(\d+)/gm.exec(page)[1]
-        for (let i = startPage; i <= npages; i++) this.pages.push(page.replace(/(.*pv_num_pag=)\d+(.*)/gm, `$1${i}$2`))
-        // $(".paginar-paginas-posteriores a").toArray().forEach(a => this.pages.push($(a)[0].href))
+        try {
+            let page = $(".paginar-paginas-posteriores a").toArray()[0].href // get the url of page 2
+            let startPage = /pv_num_pag=(\d+)/gm.exec(page)[1]
+            for (let i = startPage; i <= npages; i++) this.pages.push(page.replace(/(.*pv_num_pag=)\d+(.*)/gm, `$1${i}$2`))
+        } catch (error) {}
         $(".paginar").remove()
     }
 
