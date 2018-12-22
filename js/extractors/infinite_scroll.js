@@ -14,13 +14,8 @@ class InfiniteScroll extends Extractor {
         return {
             extractor: "infinite_scroll",
             description: "Makes annoying pagination in sigarra tables be in infinite scroll mode",
-            // parameters: [],
-            storage: {
-                boolean: [{
-                    name: "apply",
-                    default: true
-                }]
-            }
+            parameters: [],
+            storage: {}
         }
     }
 
