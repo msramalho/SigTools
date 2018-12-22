@@ -50,7 +50,6 @@ class Extractor {
     ready() {
         this.init().then(() => {
             if (this.applyToPage()) this.attachIfPossible();
-            else console.warn(`Extractor ${this.structure.extractor} was not applied to this page due to it being either the options page or in your blacklist of pages`);
         });
     }
 
@@ -63,7 +62,9 @@ class Extractor {
         let url = window.location.href.toLowerCase()
         let excluded_page = this.exclude_urls_csv.split(",").some(e => url.includes(e.toLowerCase()))
         let options_page = url.indexOf('options.html') != -1
-        return !options_page && !excluded_page
+        if (excluded_page) console.warn(`Extractor ${this.structure.extractor} was NOT APPLIED to this page as it is blacklisted`);
+        if (!this.apply) console.warn(`Extractor ${this.structure.extractor} was NOT APPLIED to this page, you have disabled it in the options page (${chrome.extension.getURL('options.html')})`);
+        return !options_page && !excluded_page && this.apply
     }
 
     /**
