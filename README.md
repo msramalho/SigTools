@@ -82,6 +82,15 @@ Any Sigarra data-table is now:
 </p>
 </details>
 
+<details>
+<summary>Bills</summary>
+<p>
+<ul>
+    <li>If you are fast enough, you can go to your 🏃running 💸account (Conta Corrente) and add those debts with their deadline to your calendar, so you don't forget to pay what you own (pagar o que deves)</li>
+</ul>
+</p>
+</details>
+
 
 
 ### Exporting Calendar Events
