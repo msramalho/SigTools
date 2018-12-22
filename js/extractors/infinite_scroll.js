@@ -22,7 +22,6 @@ class InfiniteScroll extends Extractor {
 
     attachIfPossible() {
         // return if table not found or not applied
-        if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
         if (!this.table.length || !this.validTable()) return
 
         this.setUpLoading()

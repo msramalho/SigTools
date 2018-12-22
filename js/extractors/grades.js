@@ -31,7 +31,6 @@ class Grades extends Extractor {
     attachIfPossible() {
         // return if table not found or not applied
         if (!this.originalTable.length) return
-        if (!this.apply) return console.info("Grades extractor is not applied. To apply go to options. ")
 
         // create div for attaching modules
         this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2 class="noBorder" style="margin-top:0;">SigTools Grade Analysis</h2></div>`)

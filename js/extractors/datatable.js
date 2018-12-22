@@ -29,7 +29,6 @@ class DataTable extends Extractor {
 
     attachTableIfPossible(table) {
         // return if table not found or not applied
-        if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
         if (!table.length || !this.validTable(table)) return
         if (!table.find("tr").toArray().length) return //if table is empty
         if (this.disable_one_row && table.find("tr").toArray().length == 2) return //if table only has header and one row
