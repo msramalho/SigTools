@@ -19,7 +19,7 @@ class Extractor {
         this.structure.storage.text = this.structure.storage.text || []
         this.structure.storage.text.push({
             name: "exclude_urls_csv",
-            default: "coop_candidatura_geral.editar_candidatura"
+            default: ""
         })
     }
 

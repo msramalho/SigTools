@@ -17,6 +17,10 @@ class DataTable extends Extractor {
                 boolean: [{
                     name: "disable_one_row",
                     default: true
+                }],
+                text: [{
+                    name: "exclude_urls_csv",
+                    default: "coop_candidatura_geral.editar_candidatura"
                 }]
             }
         }
