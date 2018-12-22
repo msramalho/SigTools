@@ -11,18 +11,13 @@ class DataTable extends Extractor {
     structure() {
         return {
             extractor: "datatable",
-            description: "Makes tables that are typically static be sortable, searchable and exportable in copy-paste, csv, excel and print mode",
-            // parameters: [],
+            description: "Makes tables that are typically static become sortable, searchable and exportable in copy-paste, csv, excel and print mode",
+            parameters: [],
             storage: {
                 boolean: [{
-                        name: "apply",
-                        default: true
-                    },
-                    {
-                        name: "disable_one_row",
-                        default: true
-                    }
-                ]
+                    name: "disable_one_row",
+                    default: true
+                }]
             }
         }
     }
