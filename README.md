@@ -135,6 +135,8 @@ class NewExtractor extends Extractor{
 // belong to the class definition should follow the above line
 ...
 ```
+By default, each extractor that inherits from `Extractor` already has the `storage.boolean.apply` and `storage.text.exclude_urls_csv` options.
+
 The `structure()` method should return an object that describes the extractor, following this stub:
 ```javascript
 {
@@ -168,6 +170,9 @@ The `structure()` method should return an object that describes the extractor, f
     }
 }
 ```
+After developing a new extractor, it should be added to the [options.html](options.html) page as `<script src="js/extractors/NAME.js"></script>` next to the ones already there.
+
+<!-- same for tests and <script></script> -->
 
 ### Tests
 Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [tests](tests/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js).
@@ -202,6 +207,8 @@ describe(...
 ```
 </p>
 </details>
+After developing a new test, it should be added to the [options.html](options.html) page as `<script src="test/extractors/NAME.js"></script>` next to the ones already there.
+
 
 
 ### Credits
