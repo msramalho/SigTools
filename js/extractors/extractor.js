@@ -37,7 +37,7 @@ class Extractor {
      */
     ready() {
         this.init().then(() => {
-            if(String(window.location.href).indexOf('options.html') === -1) this.attachIfPossible();
+            if (String(window.location.href).indexOf('options.html') === -1) this.attachIfPossible();
         });
     }
 
