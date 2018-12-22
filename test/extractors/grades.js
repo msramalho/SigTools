@@ -37,7 +37,7 @@ describe('Grades extractor', function() {
         l.should.eql(["RFF", "RFC", "RFE", "RFR", "RA", "RD", "REC", "16", "16", "18", "16", "16", "16", "15", "17", "17", "16", "17", "16", "16", "15", "17", "17", "15", "17", "17", "18", "18", "18", "17", "18", "16", "15", "16", "15", "16", "17", "18", "18", "15", "18", "18", "16"])
         done()
     })
-    it('should create a valid extractor', function(done) {
+    it('should have a function to generate students html list items', function(done) {
 		e._getHtmlStudentList().should.eql("\n")
 		let l = e._getHtmlStudentList([{
             id: "201403027",
