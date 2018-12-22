@@ -22,10 +22,6 @@ class Grades extends Extractor {
                 color: [{
                     name: "chart_color",
                     default: "#009688"
-                }],
-                boolean: [{
-                    name: "apply",
-                    default: true
                 }]
             }
         }
