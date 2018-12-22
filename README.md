@@ -73,6 +73,15 @@ Any Sigarra data-table is now:
 </p>
 </details>
 
+<details>
+<summary>Grades</summary>
+<p>
+<ul>
+    <li>Every time a teacher releases grades for a subject, you can go to that page and check statistics over your grades and how they compare with the rest of the students.</li>
+</ul>
+</p>
+</details>
+
 
 
 ### Exporting Calendar Events
