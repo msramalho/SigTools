@@ -11,18 +11,13 @@ class DataTable extends Extractor {
     structure() {
         return {
             extractor: "datatable",
-            description: "Makes tables that are typically static be sortable, searchable and exportable in copy-paste, csv, excel and print mode",
-            // parameters: [],
+            description: "Makes tables that are typically static become sortable, searchable and exportable in copy-paste, csv, excel and print mode",
+            parameters: [],
             storage: {
                 boolean: [{
-                        name: "apply",
-                        default: true
-                    },
-                    {
-                        name: "disable_one_row",
-                        default: true
-                    }
-                ]
+                    name: "disable_one_row",
+                    default: true
+                }]
             }
         }
     }
@@ -34,7 +29,6 @@ class DataTable extends Extractor {
 
     attachTableIfPossible(table) {
         // return if table not found or not applied
-        if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
         if (!table.length || !this.validTable(table)) return
         if (!table.find("tr").toArray().length) return //if table is empty
         if (this.disable_one_row && table.find("tr").toArray().length == 2) return //if table only has header and one row

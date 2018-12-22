@@ -14,20 +14,14 @@ class InfiniteScroll extends Extractor {
         return {
             extractor: "infinite_scroll",
             description: "Makes annoying pagination in sigarra tables be in infinite scroll mode",
-            // parameters: [],
-            storage: {
-                boolean: [{
-                    name: "apply",
-                    default: true
-                }]
-            }
+            parameters: [],
+            storage: {}
         }
     }
 
 
     attachIfPossible() {
         // return if table not found or not applied
-        if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
         if (!this.table.length || !this.validTable()) return
 
         this.setUpLoading()

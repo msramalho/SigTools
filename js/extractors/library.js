@@ -36,11 +36,7 @@ class LibraryExtractor extends Extractor {
                     name: "description",
                     default: "<h1>${book}</h1><br>Return to ${library} and to shelf ${shelf} (current fine: ${fine})<br><a href='${renew_link}'>Renew book</a>"
                 }],
-                boolean: [ //variables that should be displayed and edited in <input type="checkbox">
-                    {
-                        name: "apply",
-                        default: true
-                    },
+                boolean: [
                     {
                         name: "isHTML",
                         default: true
