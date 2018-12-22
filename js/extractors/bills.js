@@ -28,10 +28,6 @@ class Bill extends Extractor {
                 textarea: [{
                     name: "description",
                     default: "Due: ${date}\nAmount: ${amount}"
-                }],
-                boolean: [{
-                    name: "isHTML",
-                    default: true
                 }]
             }
         }
