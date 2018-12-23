@@ -17,10 +17,14 @@ class Extractor {
             default: true
         })
         this.structure.storage.text = this.structure.storage.text || []
-        this.structure.storage.text.push({
-            name: "exclude_urls_csv",
-            default: ""
-        })
+        console.log(this.structure.storage.text);
+        let has_exclude_urls = this.structure.storage.text.some((setting) => setting.name == "exclude_urls_csv")
+        if (!has_exclude_urls) {
+            this.structure.storage.text.push({
+                name: "exclude_urls_csv",
+                default: ""
+            })
+        }
         // load default properties
         this.url = window.location.href.toLowerCase()
     }
