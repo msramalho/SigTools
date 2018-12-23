@@ -232,10 +232,11 @@ describe('what the test is about', function() {
 })
 describe(...
 ```
-</p>
-</details>
+
 After developing a new test, it should be added to the [options.html](options.html) page as `<script src="test/extractors/NAME.js"></script>` next to the ones already there.
 
+</p>
+</details>
 
 
 ### Credits
