@@ -4,11 +4,37 @@ class Moodle extends Extractor {
 
     constructor() {
         super();
-        this.ready();
+        this.waitForEvents().then(() => {
+            this.ready()
+        }).catch(() => {
+            console.warn("No event detected in asynchronous page");
+        })
+    }
+
+    /**
+     * Polls the page for .hasevent for a max of 10s
+     */
+    waitForEvents() {
+        return new Promise((resolve, reject) => {
+            let counter = 0;
+            let interval = setInterval((a) => {
+                if ($(".hasevent").length) {
+                    clearInterval(interval)
+                    resolve()
+                }
+                if (counter++ == 40) { // 40 * 250 = 10000
+                    clearInterval(interval)
+                    reject()
+                }
+            }, 250);
+        })
     }
 
     attachIfPossible() {
+        console.log("attaching");
+        console.log($(".hasevent"));
         $(".hasevent").each((index, td) => {
+            console.log(td);
             let popupContent = $(`<div>${$(td).attr("data-core_calendar-popupcontent")}</div>`);
             let newPopupContent = "";
             popupContent.find("div").each((index, div) => {
