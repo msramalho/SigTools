@@ -49,6 +49,7 @@ ul.sig_eventsList {
     overflow-x: hidden;
     max-height: 350px;
     padding-right: 10px;
+    display: table;
 }
 
 ul.sig_eventsList li {
@@ -159,14 +160,18 @@ a.calendarBtn.dropBtn>img {
 
 .dropdown {
     margin-bottom: 10px;
-    position: relative;
+    position: absolute !important;
     display: inline-block;
     clear: both;
 }
 
+.dropdown>a {
+    float: right;
+}
+
 .dropdown-content {
     display: none;
-    position: absolute;
+    position: relative;
     background-color: #f1f1f1;
     min-width: 160px;
     overflow: auto;
@@ -192,6 +197,7 @@ a.calendarBtn.dropBtn>img {
 }
 
 div.dropdown.right {
+    right: 7%;
     float: right;
 }
 
