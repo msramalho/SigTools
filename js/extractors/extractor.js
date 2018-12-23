@@ -21,6 +21,8 @@ class Extractor {
             name: "exclude_urls_csv",
             default: ""
         })
+        // load default properties
+        this.url = window.location.href.toLowerCase()
     }
 
     /**
@@ -59,9 +61,8 @@ class Extractor {
      * if this page is in one of the excluded urls
      */
     applyToPage() {
-        let url = window.location.href.toLowerCase()
-        let excluded_page = this.exclude_urls_csv.split(",").some(e => url.includes(e.toLowerCase()))
-        let options_page = url.indexOf('options.html') != -1
+        let excluded_page = this.exclude_urls_csv.split(",").some(e => this.url.includes(e.toLowerCase()))
+        let options_page = this.url.indexOf('options.html') != -1
         if (excluded_page) console.warn(`Extractor ${this.structure.extractor} was NOT APPLIED to this page as it is blacklisted`);
         if (!this.apply) console.warn(`Extractor ${this.structure.extractor} was NOT APPLIED to this page, you have disabled it in the options page (${chrome.extension.getURL('options.html')})`);
         return !options_page && !excluded_page && this.apply
