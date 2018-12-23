@@ -17,7 +17,7 @@ class Moodle extends Extractor {
     waitForEvents() {
         return new Promise((resolve, reject) => {
             let counter = 0;
-            let interval = setInterval((a) => {
+            let interval = setInterval(() => {
                 if ($(".hasevent").length) {
                     clearInterval(interval)
                     resolve()
