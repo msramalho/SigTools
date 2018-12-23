@@ -65,26 +65,33 @@ class Moodle extends Extractor {
     }
 
     attachIfPossible() {
-        $(".hasevent").each((index, td) => {
+        // create and place button
+        this.saveBtn = $(`<a title="Save Moodle events to your Calendar" href="#"><img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>`)
+        let header = $(".block_calendar_month > div.header > div.title > div.block_action")
+        header.append(this.saveBtn)
+        // load initial events
+        this.refreshEvents()
+
+        this.saveBtn.click(() => {
+            this.refreshEvents()
+            handleEvents(this, this.events)
+        })
+    }
+
+    refreshEvents() {
+        $(".hasevent").each((_, td) => {
             let popupContent = $(`<div>${$(td).attr("data-core_calendar-popupcontent")}</div>`);
             let newPopupContent = "";
-            popupContent.find("div").each((index, div) => {
+            popupContent.find("div").each((_, div) => {
                 div = $(div);
                 newPopupContent += this.getNewDiv(div, Moodle.getEvent(div));
             });
             $(td).attr("data-core_calendar-popupcontent", newPopupContent);
         });
-        let events = []
+        this.events = []
         $(".hasevent").each((_, e) => {
-            events = [...events, ...Moodle.getDayEvents($(e))]
+            this.events = [...this.events, ...Moodle.getDayEvents($(e))]
         })
-
-        let saveBtn = $(`<a title="Save Moodle events to your Calendar" href="#"><img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>`)
-        let header = $(".block_calendar_month > div.header > div.title > div.block_action")
-        header.append(saveBtn)
-        saveBtn.click(() => {
-            handleEvents(this, events)
-        });
     }
 
 
