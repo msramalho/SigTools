@@ -67,11 +67,10 @@ class Moodle extends Extractor {
     attachIfPossible() {
         // create and place button
         this.saveBtn = $(`<a title="Save Moodle events to your Calendar" href="#"><img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>`)
-        let header = $(".block_calendar_month > div.header > div.title > div.block_action")
+        let header = $(".block_calendar_month > div.header > div.title > div.block_action,.block.block_fake > div.header > div.title > div.block_action").last()
         header.append(this.saveBtn)
         // load initial events
         this.refreshEvents()
-
         this.saveBtn.click(() => {
             this.refreshEvents()
             handleEvents(this, this.events)
@@ -130,7 +129,8 @@ class Moodle extends Extractor {
                 url: anchor[0].href,
                 from: d,
                 to: d,
-                location: "Moodle"
+                location: "Moodle",
+                download: true
             };
         })
     }
