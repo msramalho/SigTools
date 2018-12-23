@@ -11,7 +11,7 @@
  - [Chrome WebStore](https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme)
  - [Firefox Addons](https://addons.mozilla.org/en-US/firefox/addon/sigtools/) Thanks a bunch to [@afonsobspinto](https://github.com/afonsobspinto)
  - [Source code](https://developer.chrome.com/extensions/getstarted#unpacked) in this repo
- - From [.crx](https://github.com/msramalho/SigTools/blob/master/extra/SigTools.crx) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome) (not necessarily blocked as the link says)
+ - From [.crx](https://github.com/msramalho/SigTools/releases/) see how [here](https://www.wikihow.com/Add-Blocked-Extensions-in-Google-Chrome)
 
 ### Features
 Most features are customizable and can be turned off in the options page.
