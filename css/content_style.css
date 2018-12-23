@@ -118,7 +118,7 @@ a#sig_downloadIcs {
 }
 
 .calendarIcon:hover,
-calendarIconMoodle:hover {
+.calendarIconMoodle:hover {
     transform: scale(1.4);
 }
 
