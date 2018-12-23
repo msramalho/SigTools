@@ -274,17 +274,23 @@ Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for
     - .1 - bug fix in overlapping classes
  - V2.0
     - ~SigToCa~ -> SigTools
-    - complete refactor
-    - each extractor describes itself
-    - options page is dynamic and varies according to extractors
-    - simplified manifest
-    - better organization of scripts into folders
-    - started using [mustache](https://github.com/janl/mustache.js/) templates
-    - options page
-    - changelog page when installed or updated
+    - Complete refactor
+    - Each extractor describes itself
+    - Options page is dynamic and varies according to extractors
+    - Simplified manifest
+    - Better organization of scripts into folders
+    - Started using [mustache](https://github.com/janl/mustache.js/) templates
+    - Options page
+    - Changelog page when installed or updated
 - V3.0
-    - improved Readme and contribution instructions
-    - started Unit Testing
-    - fixed ui bugs
-    - fixed non-minified JS files for mozilla chrome extension
-    -
+    - Improved Readme and contribution instructions
+    - Started Unit Testing
+    - Fixed UI bugs
+    - Fixed non-minified JS files for mozilla chrome extension
+    - Moodle 2019 is alive
+    - Erasmus Datatables are working
+    - Every extractor has "exclude pages" for custom pages where you don't want it
+    - Every extractor has "apply" setting by default (boolean defaults to true)
+    - Improved Contribution guidelines (extractors, tests, ...)
+    - Mozilla problem with minified files
+
