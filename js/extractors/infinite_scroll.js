@@ -4,7 +4,8 @@ class InfiniteScroll extends Extractor {
 
     constructor() {
         super();
-        this.table = $("table.dados");
+        this.table = $(this.selector = "table.dados");
+        if (!this.apply) this.table = $(this.selector = "table.dadossz");
         this.loading = false // indicates when there is an ongoing ajax request
         this.ready();
     }
@@ -13,20 +14,14 @@ class InfiniteScroll extends Extractor {
         return {
             extractor: "infinite_scroll",
             description: "Makes annoying pagination in sigarra tables be in infinite scroll mode",
-            // parameters: [],
-            storage: {
-                boolean: [{
-                    name: "apply",
-                    default: true
-                }]
-            }
+            parameters: [],
+            storage: {}
         }
     }
 
 
     attachIfPossible() {
         // return if table not found or not applied
-        if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
         if (!this.table.length || !this.validTable()) return
 
         this.setUpLoading()
@@ -76,10 +71,11 @@ class InfiniteScroll extends Extractor {
         this.pages = []
         let m = $("p.paginar-registos").text().match(/(\d+) a (\d+) de (\d+)/) // regex on "Registos de (m[1]) a (m[2]) de (m[3])"
         let npages = Math.round(m[3] / (m[2] - m[1] + 1)) // how many pages in total
-        let page = $(".paginar-paginas-posteriores a").toArray()[0].href // get the url of page 2
-        let startPage = /pv_num_pag=(\d+)/gm.exec(page)[1]
-        for (let i = startPage; i <= npages; i++) this.pages.push(page.replace(/(.*pv_num_pag=)\d+(.*)/gm, `$1${i}$2`))
-        // $(".paginar-paginas-posteriores a").toArray().forEach(a => this.pages.push($(a)[0].href))
+        try {
+            let page = $(".paginar-paginas-posteriores a").toArray()[0].href // get the url of page 2
+            let startPage = /pv_num_pag=(\d+)/gm.exec(page)[1]
+            for (let i = startPage; i <= npages; i++) this.pages.push(page.replace(/(.*pv_num_pag=)\d+(.*)/gm, `$1${i}$2`))
+        } catch (error) {}
         $(".paginar").remove()
     }
 
@@ -103,14 +99,14 @@ class InfiniteScroll extends Extractor {
             url: this.pages.shift(),
             type: 'GET',
             success: (res) => {
-                let callback = removeDatatableIfExists("table.dados")
+                let callback = removeDatatableIfExists(this.selector)
                 // read the important rows from the result and append to current table
-                let rows = $(res).find("table.dados tr.i, table.dados tr.p").toArray().map(x => x.outerHTML).join("")
+                let rows = $(res).find(`${this.selector} tr.i, ${this.selector} tr.p`).toArray().map(x => x.outerHTML).join("")
                 this.table.find("tbody").append(rows)
                 this.hideLoading()
 
                 // apply the callback, will only execute anything if there was a table
-                callback($('table.dados'))
+                callback($(this.selector))
             },
             fail: () => this.hideLoading()
         });

@@ -8,7 +8,21 @@ class Extractor {
      * Initialize variables: this.structure object, init, and attachIfPossible
      */
     constructor() {
-        this.structure = this.structure()
+        this.structure = this.structure() || {}
+        // implement default properties, that each extractor can override at own risk
+        this.structure.storage = this.structure.storage || {}
+        this.structure.storage.boolean = this.structure.storage.boolean || []
+        this.structure.storage.boolean.push({
+            name: "apply",
+            default: true
+        })
+        this.structure.storage.text = this.structure.storage.text || []
+        this.structure.storage.text.push({
+            name: "exclude_urls_csv",
+            default: ""
+        })
+        // load default properties
+        this.url = window.location.href.toLowerCase()
     }
 
     /**
@@ -36,7 +50,22 @@ class Extractor {
      * simple wrapper that waits for init and then calls attachIfPossible, should be called in constructor of implementing classes
      */
     ready() {
-        this.init().then(() => this.attachIfPossible())
+        this.init().then(() => {
+            if (this.applyToPage()) this.attachIfPossible();
+        });
+    }
+
+    /**
+     * check if the current page is the options.html paget -> do not include extractor
+     * OR
+     * if this page is in one of the excluded urls
+     */
+    applyToPage() {
+        let excluded_page = this.exclude_urls_csv.split(",").some(e => this.url.includes(e.toLowerCase()))
+        let options_page = this.url.indexOf('options.html') != -1
+        if (excluded_page) console.warn(`Extractor ${this.structure.extractor} was NOT APPLIED to this page as it is blacklisted`);
+        if (!this.apply) console.warn(`Extractor ${this.structure.extractor} was NOT APPLIED to this page, you have disabled it in the options page (${chrome.extension.getURL('options.html')})`);
+        return !options_page && !excluded_page && this.apply
     }
 
     /**

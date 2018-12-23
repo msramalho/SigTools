@@ -8,14 +8,14 @@ let nav_tab_list_template = `
 let nav_tab_content_template = `
 <div class="tab-pane fade" id="nav-tab-content-{{extractor}}" role="tabpanel" aria-labelledby="nav-tab-{{extractor}}">
 <p>{{description}}</p>
-{{#hasParameters}}
+{{#parameters.0}}
 <h5>Parameters</h5>
 <ul>
     {{#parameters}}
     <li><strong class="parameter-code"><code>$&#123{{name}}&#125</code></strong> {{description}}</li>
     {{/parameters}}
 </ul>
-{{/hasParameters}}
+{{/parameters.0}}
 <h5>Format</h5>
 <div>
     {{#storage.text}}
@@ -152,7 +152,7 @@ $(document).ready(function() {
         }
     });
 
-    // Add focus event handler for text inputs. 
+    // Add focus event handler for text inputs.
     // The goal is to keep track of the focused element
     // This is needed for clickable parameters feature
     $('#nav-tab-content textarea').focus(function(event) {
@@ -183,15 +183,15 @@ $(document).ready(function() {
     });
 
     // Make all textareas auto resizable (height)
-    $('#nav-tab-content').find('textarea').on("change input focus", function (event) {
+    $('#nav-tab-content').find('textarea').on("change input focus", function(event) {
         // first set height to zero to compute the scroll height, the new height
         $(event.target).height(0).height(event.target.scrollHeight);
     });
 
     // Make parameters be clickable
-    $('.parameter-code code').click( function (event) {
+    $('.parameter-code code').click(function(event) {
 
-        if(previousFocusedInput === undefined)
+        if (previousFocusedInput === undefined)
             return;
 
         // the clicked parameter DOM
@@ -200,13 +200,13 @@ $(document).ready(function() {
         // The previous focused text input. Focus it
         var $txtEl = $('#' + previousFocusedInput);
         $txtEl.focus();
-        
+
         // insert text
         var caretPos = $txtEl.prop('selectionStart');
         var selectionLength = $txtEl.prop('selectionEnd') - caretPos;
         var currVal = $txtEl.val();
-        
-        if(selectionLength === 0) {
+
+        if (selectionLength === 0) {
             // no selected text, insert value at caret position
             $txtEl.val(currVal.slice(0, caretPos) + el.innerText + currVal.slice(caretPos));
         } else {
@@ -218,7 +218,7 @@ $(document).ready(function() {
         $txtEl.trigger('input');
     });
 
-    window.addEventListener("beforeunload", function (event) {
+    window.addEventListener("beforeunload", function(event) {
         if (haveSettingsChanged)
             event.returnValue = "Are you sure you want to leave? You have unsaved settings";
     });

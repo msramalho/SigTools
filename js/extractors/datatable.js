@@ -3,7 +3,7 @@
 class DataTable extends Extractor {
     constructor() {
         super();
-        this.table = $("table.dados");
+        this.tables = $("table.dados,table.dadossz,table.tabela:has( tr.i)").toArray();
         this.loading = false // indicates when there is an ongoing ajax request
         this.ready();
     }
@@ -11,12 +11,16 @@ class DataTable extends Extractor {
     structure() {
         return {
             extractor: "datatable",
-            description: "Makes tables that are typically static be sortable, searchable and exportable in copy-paste, csv, excel and print mode",
-            // parameters: [],
+            description: "Makes tables that are typically static become sortable, searchable and exportable in copy-paste, csv, excel and print mode",
+            parameters: [],
             storage: {
                 boolean: [{
-                    name: "apply",
+                    name: "disable_one_row",
                     default: true
+                }],
+                text: [{
+                    name: "exclude_urls_csv",
+                    default: "coop_candidatura_geral.editar_candidatura"
                 }]
             }
         }
@@ -24,30 +28,55 @@ class DataTable extends Extractor {
 
 
     attachIfPossible() {
+        $.each(this.tables, (_, t) => this.attachTableIfPossible($(t)))
+    }
+
+    attachTableIfPossible(table) {
+        console.log(table);
         // return if table not found or not applied
-        if (!this.apply) return console.info("Infinite scroll not applied. To apply go to options. ")
-        if (!this.table.length || !this.validTable()) return
+        if (!table.length || !this.validTable(table)) return
+        if (!table.find("tr").toArray().length) return //if table is empty
+        if (this.disable_one_row && table.find("tr").toArray().length == 2) return //if table only has header and one row
 
         // remove sigarra stuff that is useless
         $("#ordenacao").remove()
         $("th a").remove()
 
         // inject dynamic tables
-        this.table.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`))
-        this.table.prepend($(`<thead>${this.table.find("tr").html()}</thead>`))
-        this.table.find("tbody tr:has(> th)").remove()
+        table.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`))
+        table.prepend($(`<thead>${table.find("tr").html()}</thead>`))
+        table.find("tbody tr:has(> th)").remove()
 
         // sorting guide: https://www.datatables.net/plug-ins/sorting/
-        this.table.dataTable(DataTable.datatableOptions);
+        table.dataTable(DataTable.datatableOptions);
     }
 
     /**
-     * Check if the current table is valid for applying infinite scroll
+     * Check if the current table is valid for applying datatables
      */
-    validTable() {
-        let cols = this.table.find("tr:has(> th)").find("th").toArray().length
-        let first = this.table.find("tr:has(> td)").eq(0).find("td").toArray().length
-        return cols == first
+    validTable(table) {
+        this.performCustomValidation(table)
+        let cols = table.find("tr:has(> th)").find("th").toArray().length
+        let first = table.find("tr:has(> td)").eq(0).find("td").toArray().length
+        console.log(cols+ " - " + first);
+        return cols == first && table.find("td[rowspan],td[colspan]").length == 0
+    }
+
+    /**
+     * Call specific functions for specific pages with strange tables
+     */
+    performCustomValidation(table) {
+        if(this.url.includes("coop_candidatura_geral.ver_colocacoes_aluno")) this.transformErasmus(table)
+    }
+
+    /**
+     * Fix table for the erasmus listings page
+     * @param {Table} table
+     */
+    transformErasmus(table){
+        $(table.find("tr:first-child th[colspan=2]").replaceWith(table.find("tr:nth-child(2)").html()))
+        table.find("tr:nth-child(2)").remove()
+        table.find('th[rowspan=2]').attr('rowspan', '1');
     }
 }
 
@@ -68,12 +97,12 @@ DataTable.datatableOptions = {
 }
 
 /**
- * if a datatble exists, remove it and return a callback to apply it again
+ * if a datatable exists, remove it and return a callback to apply it again
  * @param {string} selector
  */
 function removeDatatableIfExists(selector) {
-    if ($.fn.dataTable.isDataTable('table.dados')) {
-        let table = $('table.dados').DataTable()
+    if ($.fn.dataTable.isDataTable(selector)) {
+        let table = $(selector).DataTable()
         table.destroy()
         return el => el.dataTable(DataTable.datatableOptions)
     }

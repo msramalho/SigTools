@@ -8,22 +8,20 @@ class Bill extends Extractor {
         return {
             extractor: "bills",
             description: "Extracts all pending bills from sigarra",
-            parameters: [
-                {
-                    name: "description",
-                    description: "eg: Propinas - Mestrado Integrado em Engenharia Informática e Computação - Prestação 1"
-                }, {
-                    name: "date",
-                    description: "The payment deadline eg: 2019-03-31"
-                }, {
-                    name: "amount",
-                    description: "The amount to pay e.g. 99,90€"
-                }
-            ],
+            parameters: [{
+                name: "description",
+                description: "eg: Propinas - Mestrado Integrado em Engenharia Informática e Computação - Prestação 1"
+            }, {
+                name: "date",
+                description: "The payment deadline eg: 2019-03-31"
+            }, {
+                name: "amount",
+                description: "The amount to pay e.g. 99,90€"
+            }],
             storage: {
                 text: [{
                     name: "title",
-                    default: "${description}]"
+                    default: "${description}"
                 }],
                 textarea: [{
                     name: "description",
@@ -34,12 +32,12 @@ class Bill extends Extractor {
     }
 
     attachIfPossible() {
-        let _billsDOM = $('#tab0 > table > tbody > tr'); // array-like object
-        _billsDOM = Array.prototype.slice.call(_billsDOM, 1); // array object, removing header row
-        let i = 0;
-        _billsDOM.forEach(element => {
+        this._getBills().forEach((element, index) => {
             let event = this._parsePendingBill(element);
-            let drop = getDropdown(event, this, undefined, {target: "dropdown_" + (++i), divClass:"dropdown right removeFrame"});
+            let drop = getDropdown(event, this, undefined, {
+                target: "dropdown_" + index,
+                divClass: "dropdown right removeFrame"
+            });
             $('<td></td>').appendTo(element).append(drop[0]);
         }, this);
 
@@ -52,17 +50,27 @@ class Bill extends Extractor {
         return event;
     }
 
+    _getBills() {
+        let _billsDOM = $('#tab0 > table > tbody > tr'); // array-like object
+        return Array.prototype.slice.call(_billsDOM, 1); // array object, removing header row
+    }
+
     _parsePendingBill(billEl) {
-        let dueDate = new Date($(billEl).children(':nth(4)').text());
+        let startDate = Bill._getDateOrUndefined($(billEl).children(':nth(3)').text())
+        let endDate = Bill._getDateOrUndefined($(billEl).children(':nth(4)').text())
         return {
             description: $(billEl).children(':nth(2)').text(),
             amount: $(billEl).children(':nth(7)').text(),
-            date: dueDate,
-            from: dueDate,
-            to: dueDate,
+            from: startDate,
+            to: endDate,
+            date: endDate,
             location: "",
             download: false
-        }
+        };
+    }
+
+    static _getDateOrUndefined(dateString){
+        return dateString?new Date(dateString):undefined
     }
 }
 

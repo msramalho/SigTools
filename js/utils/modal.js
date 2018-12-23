@@ -8,17 +8,13 @@
  * @param {Array} events list of objects that need to have (at least) {from, to, location, download}
  */
 function handleEvents(extractor, events, from, to) {
-    let repeat = undefined;
-    if (from && to && dayDiff(from, to) > 6) {
-        repeat = {
-            freq: "WEEKLY",
-            until: to.toString()
-        };
-    }
-    createModal(extractor, events, repeat);
+    if (from === undefined || to === undefined)
+        createModal(extractor, events, getRepeat(from, to));
+    else
+        createModal(extractor, events, getRepeat(from, to), from.addDays(1), to.addDays(1));
 }
 
-function createModal(extractor, events, repeat) {
+function createModal(extractor, events, repeat, from, to) {
     let eventsHtml = "";
     for (let i = 0; i < events.length; i++) {
         // var google_url = eventToGCalendar(extractor, events[i], repeat);
@@ -40,10 +36,16 @@ function createModal(extractor, events, repeat) {
                     ${eventsHtml}
                     <br>
                 </ul>
+                ${
+                    (from === undefined || to === undefined) ? '':
+                    `<h3>If you want to change the start and end periods (only for the .ics file)</h3>
+                    From <input type="date" id="repeat_from" value="${from.toISOString().split('T')[0]}">
+                    to <input type="date" id="repeat_to" value="${to.toISOString().split('T')[0]}">`
+                }
                 <hr>
                 <div>
                     <a id="sig_downloadIcs" class="calendarBtn"
-                        title="Save this to your Calendar">📆 Download .ics</a>
+                        title="Save this to your Calendar"><img src="${chrome.extension.getURL("icons/calendar.svg")}"/> Download .ics</a>
                 </div>
             </div>
             <div class="sig_overlay"></div>
@@ -52,16 +54,17 @@ function createModal(extractor, events, repeat) {
     $("head").before(modal);
     setDropdownListeners(extractor, repeat);
     modal.find("#sig_downloadIcs").click((e) => {
-        updateEvents(modal, events);
+        repeat = getRepeat(new Date($("#repeat_from").val()), new Date($("#repeat_to").val())) // if user updates from and to dates in modal, the repetition changes
+        updateEvents(modal, events)
 
-        //decide wether to add as single or recurring events (based on the start and end dates supplied)
+        //decide whether to add as single or recurring events (based on the start and end dates supplied)
         let cal = ics(); //creat ics instance
         events.forEach(event => { //iterate events
             if (event.download) //if this event was selected by user -> add it
                 cal.addEvent(extractor.getName(event), extractor.getDescription(event), event.location, event.from.toString(), event.to.toString(), repeat);
         }, extractor);
 
-        //donwloas .ics file
+        //donwloads .ics file
         if (!cal.download())
             swal("No event selected for download!", "You need to select at least one event", "warning", {
                 buttons: false
@@ -74,6 +77,17 @@ function createModal(extractor, events, repeat) {
         clearModal();
     });
 
+}
+
+function getRepeat(from, to) {
+    let repeat = undefined
+    if (from && to && dayDiff(from, to) > 6) {
+        repeat = {
+            freq: "WEEKLY",
+            until: to.toString()
+        };
+    }
+    return repeat;
 }
 
 function clearModal() {

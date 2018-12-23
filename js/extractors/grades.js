@@ -13,7 +13,7 @@ class Grades extends Extractor {
         return {
             extractor: "grades",
             description: "Produces a histogram and some statistics on the global grades page",
-            //parameters: [],
+            parameters: [],
             storage: {
                 text: [{
                     name: "chart_min_width",
@@ -22,10 +22,6 @@ class Grades extends Extractor {
                 color: [{
                     name: "chart_color",
                     default: "#009688"
-                }],
-                boolean: [{
-                    name: "apply",
-                    default: true
                 }]
             }
         }
@@ -35,7 +31,6 @@ class Grades extends Extractor {
     attachIfPossible() {
         // return if table not found or not applied
         if (!this.originalTable.length) return
-        if (!this.apply) return console.info("Grades extractor is not applied. To apply go to options. ")
 
         // create div for attaching modules
         this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2 class="noBorder" style="margin-top:0;">SigTools Grade Analysis</h2></div>`)
@@ -48,12 +43,12 @@ class Grades extends Extractor {
         this.originalTable.prepend($(`<thead>${this.originalTable.find("tr").html()}</thead>`))
         this.originalTable.find("tbody tr:has(> th)").remove()
         // sorting guide: https://www.datatables.net/plug-ins/sorting/
-        $("table.dadossz").dataTable({
-            paging: false,
-            order: [],
-            dom: 'Bfrtip',
-            buttons: ['copy', 'csv', 'excel', 'print'],
-        });
+        // $("table.dadossz").dataTable({
+        //     paging: false,
+        //     order: [],
+        //     dom: 'Bfrtip',
+        //     buttons: ['copy', 'csv', 'excel', 'print'],
+        // });
     }
 
     /**

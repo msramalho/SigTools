@@ -36,22 +36,15 @@ class LibraryExtractor extends Extractor {
                     name: "description",
                     default: "<h1>${book}</h1><br>Return to ${library} and to shelf ${shelf} (current fine: ${fine})<br><a href='${renew_link}'>Renew book</a>"
                 }],
-                boolean: [ //variables that should be displayed and edited in <input type="checkbox">
-                    {
-                        name: "apply",
-                        default: true
-                    },
-                    {
-                        name: "isHTML",
-                        default: true
-                    }
-                ]
+                boolean: [{
+                    name: "isHTML",
+                    default: true
+                }]
             }
         }
     }
 
     attachIfPossible() {
-        console.log(this.description);
         let table = $("p>table tr.tr1").closest("table") // get the table with the books
         if (table.length) { // we are in the page with a list of all the books
             table.find("tr:not(.tr1):not(:last-child)").each((i, e) => { //iterate over each book (table row)
@@ -87,9 +80,8 @@ class LibraryExtractor extends Extractor {
                 to: day
             }
             event.location = `Library ${event.library} - ${event.shelf}`
-            table.eq(0).prev().before(getDropdown(event, this, false, {
-                divClass: "dropdown",
-                divStyle: "margin-left:5%;margin-top:15px;"
+            $(".title").eq(0).append(getDropdown(event, this, false, {
+                divClass: "dropdown removeFrame"
             }))
         }
         setDropdownListeners();
