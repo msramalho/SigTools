@@ -40,6 +40,7 @@ div.sig_modalBody {
 div.sig_modalBody h1,
 div.sig_modalBody h2 {
     text-align: center;
+    font-size: 20px;
 }
 
 ul.sig_eventsList {
@@ -48,8 +49,11 @@ ul.sig_eventsList {
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 350px;
-    padding-right: 10px;
+    /* padding-right: 10px; */
     display: table;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
 ul.sig_eventsList li {
@@ -62,6 +66,7 @@ ul.sig_eventsList li:nth-child(odd) {
 }
 
 ul.sig_eventsList li label {
+    padding-right: 10px;
     font-size: 16px;
 }
 
@@ -202,7 +207,8 @@ div.dropdown.right {
 }
 
 .dropdown.right .dropdown-content {
-    right: 0;
+    margin-top: 11%;
+    right: -10%;
 }
 
 .dropdown a {
