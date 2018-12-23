@@ -32,6 +32,7 @@ class DataTable extends Extractor {
     }
 
     attachTableIfPossible(table) {
+        console.log(table);
         // return if table not found or not applied
         if (!table.length || !this.validTable(table)) return
         if (!table.find("tr").toArray().length) return //if table is empty
@@ -54,9 +55,28 @@ class DataTable extends Extractor {
      * Check if the current table is valid for applying datatables
      */
     validTable(table) {
+        this.performCustomValidation(table)
         let cols = table.find("tr:has(> th)").find("th").toArray().length
         let first = table.find("tr:has(> td)").eq(0).find("td").toArray().length
+        console.log(cols+ " - " + first);
         return cols == first && table.find("td[rowspan],td[colspan]").length == 0
+    }
+
+    /**
+     * Call specific functions for specific pages with strange tables
+     */
+    performCustomValidation(table) {
+        if(this.url.includes("coop_candidatura_geral.ver_colocacoes_aluno")) this.transformErasmus(table)
+    }
+
+    /**
+     * Fix table for the erasmus listings page
+     * @param {Table} table
+     */
+    transformErasmus(table){
+        $(table.find("tr:first-child th[colspan=2]").replaceWith(table.find("tr:nth-child(2)").html()))
+        table.find("tr:nth-child(2)").remove()
+        table.find('th[rowspan=2]').attr('rowspan', '1');
     }
 }
 
