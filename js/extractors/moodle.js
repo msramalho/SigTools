@@ -11,39 +11,6 @@ class Moodle extends Extractor {
         })
     }
 
-    /**
-     * Polls the page for .hasevent for a max of 10s
-     */
-    waitForEvents() {
-        return new Promise((resolve, reject) => {
-            let counter = 0;
-            let interval = setInterval(() => {
-                if ($(".hasevent").length) {
-                    clearInterval(interval)
-                    resolve()
-                }
-                if (counter++ == 40) { // 40 * 250 = 10000
-                    clearInterval(interval)
-                    reject()
-                }
-            }, 250);
-        })
-    }
-
-    attachIfPossible() {
-        console.log("attaching");
-        console.log($(".hasevent"));
-        $(".hasevent").each((index, td) => {
-            console.log(td);
-            let popupContent = $(`<div>${$(td).attr("data-core_calendar-popupcontent")}</div>`);
-            let newPopupContent = "";
-            popupContent.find("div").each((index, div) => {
-                div = $(div);
-                newPopupContent += this.getNewDiv(div, Moodle.getEvent(div));
-            });
-            $(td).attr("data-core_calendar-popupcontent", newPopupContent);
-        });
-    }
 
     structure() {
         return {
@@ -78,6 +45,49 @@ class Moodle extends Extractor {
         }
     }
 
+    /**
+     * Polls the page for .hasevent for a max of 10s
+     */
+    waitForEvents() {
+        return new Promise((resolve, reject) => {
+            let counter = 0;
+            let interval = setInterval(() => {
+                if ($(".hasevent").length) {
+                    clearInterval(interval)
+                    resolve()
+                }
+                if (counter++ == 40) { // 40 * 250 = 10000
+                    clearInterval(interval)
+                    reject()
+                }
+            }, 250);
+        })
+    }
+
+    attachIfPossible() {
+        $(".hasevent").each((index, td) => {
+            let popupContent = $(`<div>${$(td).attr("data-core_calendar-popupcontent")}</div>`);
+            let newPopupContent = "";
+            popupContent.find("div").each((index, div) => {
+                div = $(div);
+                newPopupContent += this.getNewDiv(div, Moodle.getEvent(div));
+            });
+            $(td).attr("data-core_calendar-popupcontent", newPopupContent);
+        });
+        let events = []
+        $(".hasevent").each((_, e) => {
+            events = [...events, ...Moodle.getDayEvents($(e))]
+        })
+
+        let saveBtn = $(`<a title="Save Moodle events to your Calendar" href="#"><img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>`)
+        let header = $(".block_calendar_month > div.header > div.title > div.block_action")
+        header.append(saveBtn)
+        saveBtn.click(() => {
+            handleEvents(this, events)
+        });
+    }
+
+
     convertToURI(event) {
         event.url = encodeURIComponent(event.url);
         return event;
@@ -101,19 +111,21 @@ class Moodle extends Extractor {
         ${div.find("a")[0].outerHTML}`;
     }
 
-    static getEvent(eventTd) {
+    static getDayEvents(eventTd) {
         let anchor = eventTd.find("a");
         let d = new Date(1000 * parseFloat(anchor[0].href.match(/time=(\d+)/)[1]));
-        return {
-            name: anchor.text(),
-            type: jTry(() => {
-                return eventTd.find("img").attr("title");
-            }, ""),
-            url: anchor[0].href,
-            from: d,
-            to: d,
-            location: "Moodle"
-        };
+        d = d.addDays(parseInt(anchor.text()) - 1)
+        return eventTd.children(".hidden").find("div").map((_, e) => {
+            e = $(e)
+            return {
+                name: e.text().trim(),
+                type: e.find("img").attr("src").match(/uporto\/(\w+)\/\d+\/icon/)[1],
+                url: anchor[0].href,
+                from: d,
+                to: d,
+                location: "Moodle"
+            };
+        })
     }
 }
 
