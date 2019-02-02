@@ -5,7 +5,7 @@ class InfiniteScroll extends Extractor {
     constructor() {
         super();
         this.table = $(this.selector = "table.dados");
-        if (!this.apply) this.table = $(this.selector = "table.dadossz");
+        if (!this.table) this.table = $(this.selector = "table.dadossz");
         this.loading = false // indicates when there is an ongoing ajax request
         this.ready();
     }
