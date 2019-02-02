@@ -17,7 +17,6 @@ class Extractor {
             default: true
         })
         this.structure.storage.text = this.structure.storage.text || []
-        console.log(this.structure.storage.text);
         let has_exclude_urls = this.structure.storage.text.some((setting) => setting.name == "exclude_urls_csv")
         if (!has_exclude_urls) {
             this.structure.storage.text.push({
@@ -65,7 +64,7 @@ class Extractor {
      * if this page is in one of the excluded urls
      */
     applyToPage() {
-        let excluded_page = this.exclude_urls_csv.split(",").some(e => this.url.includes(e.toLowerCase()))
+        let excluded_page = this.exclude_urls_csv.split(",").some(e => e.length > 0 && this.url.includes(e.toLowerCase()))
         let options_page = this.url.indexOf('options.html') != -1
         if (excluded_page) console.warn(`Extractor ${this.structure.extractor} was NOT APPLIED to this page as it is blacklisted`);
         if (!this.apply) console.warn(`Extractor ${this.structure.extractor} was NOT APPLIED to this page, you have disabled it in the options page (${chrome.extension.getURL('options.html')})`);
