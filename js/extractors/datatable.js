@@ -32,7 +32,6 @@ class DataTable extends Extractor {
     }
 
     attachTableIfPossible(table) {
-        console.log(table);
         // return if table not found or not applied
         if (!table.length || !this.validTable(table)) return
         if (!table.find("tr").toArray().length) return //if table is empty
@@ -58,7 +57,6 @@ class DataTable extends Extractor {
         this.performCustomValidation(table)
         let cols = table.find("tr:has(> th)").find("th").toArray().length
         let first = table.find("tr:has(> td)").eq(0).find("td").toArray().length
-        console.log(cols+ " - " + first);
         return cols == first && table.find("td[rowspan],td[colspan]").length == 0
     }
 
