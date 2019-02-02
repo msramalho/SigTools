@@ -293,4 +293,8 @@ Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for
     - Every extractor has "apply" setting by default (boolean defaults to true)
     - Improved Contribution guidelines (extractors, tests, ...)
     - Mozilla problem with minified files
+ - V3.1
+    - Minimalist changelog page
+    - fixed `exclude_urls_csv` bug that disabled all extractors
+    - updates to satisfy Firefox's restrictions
 
