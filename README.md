@@ -295,6 +295,8 @@ Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for
     - Mozilla problem with minified files
  - V3.1
     - Minimalist changelog page
-    - fixed `exclude_urls_csv` bug that disabled all extractors
-    - updates to satisfy Firefox's restrictions
+    - Fixed `exclude_urls_csv` bug that disabled all extractors
+    - Updates to satisfy Firefox's restrictions
+ - V3.1.1
+    - Closed issues [#52](https://github.com/msramalho/SigTools/issues/52), [#45](https://github.com/msramalho/SigTools/issues/45)
 
