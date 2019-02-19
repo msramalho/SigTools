@@ -58,7 +58,7 @@ function createModal(extractor, events, repeat, from, to) {
         updateEvents(modal, events)
 
         //decide whether to add as single or recurring events (based on the start and end dates supplied)
-        let cal = ics(); //creat ics instance
+        let cal = ics("sigtools"); //creat ics instance
         events.forEach(event => { //iterate events
             if (event.download) //if this event was selected by user -> add it
                 cal.addEvent(extractor.getName(event), extractor.getDescription(event), event.location, event.from.toString(), event.to.toString(), repeat);
