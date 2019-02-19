@@ -4,7 +4,7 @@ class Grades extends Extractor {
 
     constructor() {
         super();
-        this.originalTable = $("table.dadossz");
+        this.originalTable = $(this.selector = "table.dadossz");
         this.table = this.originalTable.clone();
         this.ready();
     }
@@ -29,26 +29,24 @@ class Grades extends Extractor {
 
 
     attachIfPossible() {
+        let callback = removeDatatableIfExists(this.selector)
+
         // return if table not found or not applied
         if (!this.originalTable.length) return
 
         // create div for attaching modules
+        // this.originalTable.before(`<div><div style="float:left;"></div><div style="float:right"></div></div>`)
         this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2 class="noBorder" style="margin-top:0;">SigTools Grade Analysis</h2></div>`)
         // attach modules (order of invocation matters)
         this.attachCharts()
         this.attachMetrics()
 
-        // inject dynamic tables
-        this.originalTable.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`))
-        this.originalTable.prepend($(`<thead>${this.originalTable.find("tr").html()}</thead>`))
-        this.originalTable.find("tbody tr:has(> th)").remove()
-        // sorting guide: https://www.datatables.net/plug-ins/sorting/
-        // $("table.dadossz").dataTable({
-        //     paging: false,
-        //     order: [],
-        //     dom: 'Bfrtip',
-        //     buttons: ['copy', 'csv', 'excel', 'print'],
-        // });
+        // inject data-tables
+        callback($(this.selector))
+        $("#DataTables_Table_0_wrapper").css({ //force the datable to be side-by-side with statistics
+            clear: "none",
+            display: "table"
+        })
     }
 
     /**
