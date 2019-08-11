@@ -76,10 +76,12 @@ class Grades extends Extractor {
     attachMetrics() {
         let g = this.getNumericGrades();
         let m = math
-        
-        let codeInUrl = "http://" + $("img.autenticacao-foto").attr("src")
-        let code = (new URL(codeInUrl)).searchParams.get("pct_cod");
-        let mine = this.grades.find(i => i.id == code).grade
+		
+		let name = $("a.nomelogin").text()
+		let nameRegex = name.split(" ").join(".*")
+        // let codeInUrl = "http://" + $("img.autenticacao-foto").attr("src")
+		// let code = (new URL(codeInUrl)).searchParams.get("pct_cod")
+        let mine = this.grades.find(i => new RegExp(nameRegex).test(i.name)).grade
         mine = $.isNumeric(mine) ? parseInt(mine) : 0
 
         let passed = g.filter(x => x >= 10).length
