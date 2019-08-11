@@ -4,7 +4,7 @@ class Grades extends Extractor {
 
     constructor() {
         super();
-        this.originalTable = $("table.dadossz");
+        this.originalTable = $(this.selector = "table.dadossz");
         this.table = this.originalTable.clone();
         this.ready();
     }
@@ -29,26 +29,24 @@ class Grades extends Extractor {
 
 
     attachIfPossible() {
+        let callback = removeDatatableIfExists(this.selector)
+
         // return if table not found or not applied
         if (!this.originalTable.length) return
 
         // create div for attaching modules
+        // this.originalTable.before(`<div><div style="float:left;"></div><div style="float:right"></div></div>`)
         this.originalTable.before(`<div class="gradeChartDiv" style="min-width: ${this.chart_min_width};"><h2 class="noBorder" style="margin-top:0;">SigTools Grade Analysis</h2></div>`)
         // attach modules (order of invocation matters)
         this.attachCharts()
         this.attachMetrics()
 
-        // inject dynamic tables
-        this.originalTable.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`))
-        this.originalTable.prepend($(`<thead>${this.originalTable.find("tr").html()}</thead>`))
-        this.originalTable.find("tbody tr:has(> th)").remove()
-        // sorting guide: https://www.datatables.net/plug-ins/sorting/
-        // $("table.dadossz").dataTable({
-        //     paging: false,
-        //     order: [],
-        //     dom: 'Bfrtip',
-        //     buttons: ['copy', 'csv', 'excel', 'print'],
-        // });
+        // inject data-tables
+        callback($(this.selector))
+        $("#DataTables_Table_0_wrapper").css({ //force the datable to be side-by-side with statistics
+            clear: "none",
+            display: "table"
+        })
     }
 
     /**
@@ -79,15 +77,19 @@ class Grades extends Extractor {
         let g = this.getNumericGrades();
         let m = math
 
-        let name = $(".nomelogin").html()
-        let mine = this.grades.find(i => i.name == name).grade
-        mine = $.isNumeric(mine) ? parseInt(mine) : 0
+        let mine = false
+        try {
+            // will fail if student is not in grades page
+            let name = $("a.nomelogin").text()
+            let nameRegex = name.split(" ").join(".*")
+            mine = this.grades.find(i => new RegExp(nameRegex).test(i.name)).grade
+            mine = $.isNumeric(mine) ? parseInt(mine) : 0
+        } catch {}
 
         let passed = g.filter(x => x >= 10).length
         let failed = this.getGrades().length - passed
 
-        let max = m.max(g),
-            min = m.min(g)
+        let max = m.max(g)
         let best = this.grades.filter(i => i.grade == max).sort((a, b) => a - b)
         let fail = this.grades.filter(i => !$.isNumeric(i.grade) || parseInt(i.grade) < 10).map(s => {
             s.name = `${s.name} (${s.grade})`;
@@ -95,15 +97,19 @@ class Grades extends Extractor {
         })
 
         let metricsHtml = `
-        <div class="gradeMetrics">
-            <h4>Personal Analysis</h4>
-            <table>
-                <tr><td>My grade: </td><td>${mine}</td></tr>
-                <tr><td>Position: </td><td>${g.sort((a, b) => b - a).indexOf(mine)+1}º</td></tr>
-                <tr><td>Same as me: </td><td>${this.getGrades().filter(i => i == mine).length}</td></tr>
-            </table>
-            <hr/>
-            <h4>Overall Statistics</h4>
+		<div class="gradeMetrics">`
+        if (mine != false) {
+            metricsHtml +=
+                `<h4>Personal Analysis</h4>
+				<table>
+					<tr><td>My grade: </td><td>${mine}</td></tr>
+					<tr><td>Position: </td><td>${g.sort((a, b) => b - a).indexOf(mine)+1}º</td></tr>
+					<tr><td>Same as me: </td><td>${this.getGrades().filter(i => i == mine).length}</td></tr>
+				</table>
+				<hr/>`
+        }
+        metricsHtml +=
+            `<h4>Overall Statistics</h4>
             <table>
                 <tr><td>Average: </td><td>${m.round(m.mean(g), 2)}</td> <td>Std: </td><td>${m.round(m.std(g),2)}</td></tr>
                 <tr><td>Min: </td><td>${m.min(g)}</td> <td>Max: </td><td>${m.max(g)}</td></tr>

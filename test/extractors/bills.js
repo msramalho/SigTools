@@ -26,7 +26,7 @@ describe('Bill extractor', function() {
         })
         // b[0].amount.should.equal("120,00 €")
         b[0].amount.should.have.length(8)
-        b[0].description.should.equal("Carta de Curso - Licenciatura - Mestrado Integrado em Engenharia Informática e Computação - Pedido de Certificado: Carta de Curso - Grau de Licenciado")
+		b[0].description.should.equal("Carta de Curso - Licenciatura - Mestrado Integrado em Engenharia Informática e Computação - Pedido de Certificado: Carta de Curso - Grau de Licenciado")
         b[0].from.should.eql(new Date("2018-12-22 00:00"))
         b[0].to.should.eql(new Date("2019-01-08 00:00"))
         b[0].date.should.eql(new Date("2019-01-08 00:00"))

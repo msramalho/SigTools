@@ -25,7 +25,7 @@ class Bill extends Extractor {
                 }],
                 textarea: [{
                     name: "description",
-                    default: "Due: ${date}\nAmount: ${amount}"
+                    default: "Amount: ${amount}"
                 }]
             }
         }
@@ -56,14 +56,17 @@ class Bill extends Extractor {
     }
 
     _parsePendingBill(billEl) {
-        let startDate = Bill._getDateOrUndefined($(billEl).children(':nth(3)').text())
-        let endDate = Bill._getDateOrUndefined($(billEl).children(':nth(4)').text())
+		let getDateFromBill = function(index){
+			let dateFromBill = Bill._getDateOrUndefined($(billEl).children(`:nth(${index})`).text());
+			if(dateFromBill === undefined) dateFromBill = new Date();
+			return dateFromBill;
+		}
         return {
             description: $(billEl).children(':nth(2)').text(),
             amount: $(billEl).children(':nth(7)').text(),
-            from: startDate,
-            to: endDate,
-            date: endDate,
+            from: getDateFromBill(3),
+            to: getDateFromBill(4),
+            date: getDateFromBill(4),
             location: "",
             download: false
         };

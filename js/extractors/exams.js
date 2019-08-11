@@ -49,7 +49,7 @@ class Exams extends Extractor {
         if (this.table) {
             this.table.each((index, table) => {
                 table = $(table);
-                this.exams[index] = this.exams[index] == undefined ? this.getEvents(index) : this.exams[index];
+				this.exams[index] = this.exams[index] == undefined ? this.getEvents(index) : this.exams[index];
                 if (this.exams[index].events.length != 0) {
                     let saveBtn = $(`<a class="calendarBtn" title="Save exams to your Calendar"><img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>`);
                     table.before(saveBtn);
@@ -86,7 +86,7 @@ class Exams extends Extractor {
         let end = new Date(day.getTime());
         end = end.setHoursMinutes(hours, 1);
         //get other variables from the html
-        let subjectInfo = exameTd.find("a:first-child()");
+		let subjectInfo = exameTd.find(">a:first-child()");
         return {
             from: start,
             to: end,

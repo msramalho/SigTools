@@ -202,11 +202,11 @@ After developing a new extractor, it should be added to the [options.html](optio
 <!-- same for tests and <script></script> -->
 
 ### Tests
-Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [tests](tests/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js).
+Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [test](test/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js).
 
-To run tests open the [tests.html](tests.html) file on the browser, this was the only way as chrome extensions cannot be fully developed as ES6 modules, as of now. This system works fairly well.
+To run tests open the [tests.html](tests.html) file on the browser (we advise [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) for VSCode), this was the only way as chrome extensions cannot be fully developed as ES6 modules, as of now. This system works fairly well.
 
-To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for evey test with jquery selectors) you can do:
+To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for every test with jquery selectors) you can do:
 ```javascript
 describe('what the test is about', function() {
     it('should return some results', function(done) {
@@ -295,6 +295,12 @@ Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for
     - Mozilla problem with minified files
  - V3.1
     - Minimalist changelog page
-    - fixed `exclude_urls_csv` bug that disabled all extractors
-    - updates to satisfy Firefox's restrictions
+    - Fixed `exclude_urls_csv` bug that disabled all extractors
+    - Updates to satisfy Firefox's restrictions
+ - V3.1.1
+    - Closed issues [#52](https://github.com/msramalho/SigTools/issues/52), [#45](https://github.com/msramalho/SigTools/issues/45)
+ - V3.1.2
+   - Fixed Broken Grades [#62](https://github.com/msramalho/SigTools/issues/62)
+   - Fixed Bad Exam Acronym parsing [#59](https://github.com/msramalho/SigTools/issues/59)
+   - Handled Firefox Add-ons problems with 3rd party libraries...
 
