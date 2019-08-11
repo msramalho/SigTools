@@ -56,14 +56,17 @@ class Bill extends Extractor {
     }
 
     _parsePendingBill(billEl) {
-        let paymentDeadline = Bill._getDateOrUndefined($(billEl).children(':nth(4)').text());
-        if(paymentDeadline === undefined) paymentDeadline = new Date();
+		let getDateFromBill = function(index){
+			let dateFromBill = Bill._getDateOrUndefined($(billEl).children(`:nth(${index})`).text());
+			if(dateFromBill === undefined) dateFromBill = new Date();
+			return dateFromBill;
+		}
         return {
             description: $(billEl).children(':nth(2)').text(),
             amount: $(billEl).children(':nth(7)').text(),
-            from: paymentDeadline,
-            to: paymentDeadline,
-            date: paymentDeadline,
+            from: getDateFromBill(3),
+            to: getDateFromBill(4),
+            date: getDateFromBill(4),
             location: "",
             download: false
         };
