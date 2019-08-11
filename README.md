@@ -206,7 +206,7 @@ Testing a browser extension is hard. Nonetheless, we try. Tests are located in t
 
 To run tests open the [tests.html](tests.html) file on the browser (we advise [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) for VSCode), this was the only way as chrome extensions cannot be fully developed as ES6 modules, as of now. This system works fairly well.
 
-To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for evey test with jquery selectors) you can do:
+To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for every test with jquery selectors) you can do:
 ```javascript
 describe('what the test is about', function() {
     it('should return some results', function(done) {
