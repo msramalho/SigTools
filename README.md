@@ -202,9 +202,9 @@ After developing a new extractor, it should be added to the [options.html](optio
 <!-- same for tests and <script></script> -->
 
 ### Tests
-Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [tests](tests/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js).
+Testing a browser extension is hard. Nonetheless, we try. Tests are located in the [test](test/) folder and we use [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) along with some [improvised magic](tests/setup.js).
 
-To run tests open the [tests.html](tests.html) file on the browser, this was the only way as chrome extensions cannot be fully developed as ES6 modules, as of now. This system works fairly well.
+To run tests open the [tests.html](tests.html) file on the browser (we advise [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) for VSCode), this was the only way as chrome extensions cannot be fully developed as ES6 modules, as of now. This system works fairly well.
 
 To create a new test, check the previous ones. If you need to load html as the current jquery context (you will for evey test with jquery selectors) you can do:
 ```javascript
