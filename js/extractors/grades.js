@@ -76,19 +76,20 @@ class Grades extends Extractor {
     attachMetrics() {
         let g = this.getNumericGrades();
         let m = math
-		
-		let name = $("a.nomelogin").text()
-		let nameRegex = name.split(" ").join(".*")
-        // let codeInUrl = "http://" + $("img.autenticacao-foto").attr("src")
-		// let code = (new URL(codeInUrl)).searchParams.get("pct_cod")
-        let mine = this.grades.find(i => new RegExp(nameRegex).test(i.name)).grade
-        mine = $.isNumeric(mine) ? parseInt(mine) : 0
+
+        let mine = false
+        try {
+            // will fail if student is not in grades page
+            let name = $("a.nomelogin").text()
+            let nameRegex = name.split(" ").join(".*")
+            mine = this.grades.find(i => new RegExp(nameRegex).test(i.name)).grade
+            mine = $.isNumeric(mine) ? parseInt(mine) : 0
+        } catch {}
 
         let passed = g.filter(x => x >= 10).length
         let failed = this.getGrades().length - passed
 
-        let max = m.max(g),
-            min = m.min(g)
+        let max = m.max(g)
         let best = this.grades.filter(i => i.grade == max).sort((a, b) => a - b)
         let fail = this.grades.filter(i => !$.isNumeric(i.grade) || parseInt(i.grade) < 10).map(s => {
             s.name = `${s.name} (${s.grade})`;
@@ -96,15 +97,19 @@ class Grades extends Extractor {
         })
 
         let metricsHtml = `
-        <div class="gradeMetrics">
-            <h4>Personal Analysis</h4>
-            <table>
-                <tr><td>My grade: </td><td>${mine}</td></tr>
-                <tr><td>Position: </td><td>${g.sort((a, b) => b - a).indexOf(mine)+1}º</td></tr>
-                <tr><td>Same as me: </td><td>${this.getGrades().filter(i => i == mine).length}</td></tr>
-            </table>
-            <hr/>
-            <h4>Overall Statistics</h4>
+		<div class="gradeMetrics">`
+        if (mine != false) {
+            metricsHtml +=
+                `<h4>Personal Analysis</h4>
+				<table>
+					<tr><td>My grade: </td><td>${mine}</td></tr>
+					<tr><td>Position: </td><td>${g.sort((a, b) => b - a).indexOf(mine)+1}º</td></tr>
+					<tr><td>Same as me: </td><td>${this.getGrades().filter(i => i == mine).length}</td></tr>
+				</table>
+				<hr/>`
+        }
+        metricsHtml +=
+            `<h4>Overall Statistics</h4>
             <table>
                 <tr><td>Average: </td><td>${m.round(m.mean(g), 2)}</td> <td>Std: </td><td>${m.round(m.std(g),2)}</td></tr>
                 <tr><td>Min: </td><td>${m.min(g)}</td> <td>Max: </td><td>${m.max(g)}</td></tr>
