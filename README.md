@@ -299,4 +299,8 @@ Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for
     - Updates to satisfy Firefox's restrictions
  - V3.1.1
     - Closed issues [#52](https://github.com/msramalho/SigTools/issues/52), [#45](https://github.com/msramalho/SigTools/issues/45)
+ - V3.1.2
+   - Fixed Broken Grades [#62](https://github.com/msramalho/SigTools/issues/62)
+   - Fixed Bad Exam Acronym parsing [#59](https://github.com/msramalho/SigTools/issues/59)
+   - Handled Firefox Add-ons problems with 3rd party libraries...
 
