@@ -303,4 +303,5 @@ Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for
    - Fixed Broken Grades [#62](https://github.com/msramalho/SigTools/issues/62)
    - Fixed Bad Exam Acronym parsing [#59](https://github.com/msramalho/SigTools/issues/59)
    - Handled Firefox Add-ons problems with 3rd party libraries...
-
+ - V3.1.3
+   - Fixed UI problem in "Conta corrente" page
