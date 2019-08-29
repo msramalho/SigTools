@@ -36,8 +36,10 @@ class Bill extends Extractor {
             let event = this._parsePendingBill(element);
             let drop = getDropdown(event, this, undefined, {
                 target: "dropdown_" + index,
-                divClass: "dropdown right removeFrame"
-            });
+				divClass: "dropdown removeFrame",
+				divStyle: "display:contents;",
+				dropdownStyle: "position: absolute;"
+			});
             $('<td></td>').appendTo(element).append(drop[0]);
         }, this);
 

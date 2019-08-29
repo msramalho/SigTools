@@ -14,11 +14,13 @@ function getDropdown(event, context, repeat, style) {
     style.divClass = style.divClass || "dropdown right "
     style.divStyle = style.divStyle || "position:initial;"
     style.aClass = style.aClass || "calendarBtn dropBtn"
+    style.dropdownClass = style.dropdownClass || "dropdown-content"
+    style.dropdownStyle = style.dropdownStyle || ""
 
     return $(`
 	<div class="${style.divClass}" style="${style.divStyle}">
 		<a class="${style.aClass}" target="${style.target}" title="Save this event to your Calendar"><img target="${style.target}" src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>
-        <div id="${style.target}" class="dropdown-content">
+        <div id="${style.target}" class="${style.dropdownClass}" style="${style.dropdownStyle}">
         ${generateOneClickDOM("", "dropdownIcon", "google", google_url, context.isHTML, "Google").outerHTML}
         ${generateOneClickDOM("", "dropdownIcon", "outlook", outlook_url, context.isHTML, "Outlook").outerHTML}
         ${generateOneClickDOM("", "dropdownIcon", "yahoo", yahoo_url, context.isHTML, "Yahoo").outerHTML}
