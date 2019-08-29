@@ -1,6 +1,7 @@
 class Bill extends Extractor {
     constructor() {
         super();
+        this.tableSelector = '#tab0 > table > tbody > tr';
         this.ready();
     }
 
@@ -32,14 +33,15 @@ class Bill extends Extractor {
     }
 
     attachIfPossible() {
+		$('<th>Sigtools</th>').appendTo(this._getBillsHeader()[0])
         this._getBills().forEach((element, index) => {
             let event = this._parsePendingBill(element);
             let drop = getDropdown(event, this, undefined, {
                 target: "dropdown_" + index,
-				divClass: "dropdown removeFrame",
-				divStyle: "display:contents;",
-				dropdownStyle: "position: absolute;"
-			});
+                divClass: "dropdown removeFrame",
+                divStyle: "display:contents;",
+                dropdownStyle: "position: absolute;"
+            });
             $('<td></td>').appendTo(element).append(drop[0]);
         }, this);
 
@@ -53,16 +55,20 @@ class Bill extends Extractor {
     }
 
     _getBills() {
-        let _billsDOM = $('#tab0 > table > tbody > tr'); // array-like object
+        let _billsDOM = $(this.tableSelector); // array-like object
         return Array.prototype.slice.call(_billsDOM, 1); // array object, removing header row
     }
 
+    _getBillsHeader() {
+		return $(this.tableSelector);
+    }
+
     _parsePendingBill(billEl) {
-		let getDateFromBill = function(index){
-			let dateFromBill = Bill._getDateOrUndefined($(billEl).children(`:nth(${index})`).text());
-			if(dateFromBill === undefined) dateFromBill = new Date();
-			return dateFromBill;
-		}
+        let getDateFromBill = function(index) {
+            let dateFromBill = Bill._getDateOrUndefined($(billEl).children(`:nth(${index})`).text());
+            if (dateFromBill === undefined) dateFromBill = new Date();
+            return dateFromBill;
+        }
         return {
             description: $(billEl).children(':nth(2)').text(),
             amount: $(billEl).children(':nth(7)').text(),
@@ -74,8 +80,8 @@ class Bill extends Extractor {
         };
     }
 
-    static _getDateOrUndefined(dateString){
-        return dateString?new Date(dateString):undefined
+    static _getDateOrUndefined(dateString) {
+        return dateString ? new Date(dateString) : undefined
     }
 }
 
