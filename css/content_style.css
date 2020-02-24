@@ -247,3 +247,7 @@ div.dropdown.right {
     background-color: #1565C0;
     background-image: none;
 }
+
+a.calendarBtn:hover {
+    color: #ffffff;
+}
