@@ -1,0 +1,46 @@
+{
+  "name": "sigtools",
+  "version": "3.1.4",
+  "description": "An extension that makes the information system of the University of Porto slightly better.",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "google-chrome ./src/tests.html",
+    "chrome-build": "cross-env TARGET=chrome gulp",
+    "opera-build": "cross-env TARGET=opera gulp",
+    "firefox-build": "cross-env TARGET=firefox gulp",
+    "build": "cross-env NODE_ENV=production npm run chrome-build && cross-env NODE_ENV=production npm run opera-build && cross-env NODE_ENV=production npm run firefox-build",
+    "chrome-watch": "cross-env TARGET=chrome gulp watch",
+    "opera-watch": "cross-env TARGET=opera gulp watch",
+    "firefox-watch": "cross-env TARGET=firefox gulp watch",
+    "chrome-dist": "cross-env NODE_ENV=production cross-env TARGET=chrome gulp dist",
+    "opera-dist": "cross-env NODE_ENV=production cross-env TARGET=opera gulp dist",
+    "firefox-dist": "cross-env NODE_ENV=production cross-env TARGET=firefox gulp dist",
+    "dist": "npm run chrome-dist && npm run opera-dist && npm run firefox-dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msramalho/SigTools.git"
+  },
+  "keywords": [
+    "browser-extension",
+    "productivity"
+  ],
+  "author": "msramalho",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/msramalho/SigTools/issues"
+  },
+  "homepage": "https://github.com/msramalho/SigTools#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-livereload": "^4.0.2",
+    "gulp-load-plugins": "^2.0.4",
+    "gulp-merge-json": "^2.1.1",
+    "gulp-zip": "^5.0.2"
+  }
+}

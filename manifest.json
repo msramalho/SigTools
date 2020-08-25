@@ -2,8 +2,8 @@
     "manifest_version": 2,
     "name": "SigTools",
     "short_name": "Sigarra Tools",
-    "version": "3.1.3",
-    "description": "Sigarra Tools - Sigarra on Steroids: Export Calendar Events, Infinite Scroll, DataTables, and more (SigToCa's heir)",
+    "version": "4.0.0",
+    "description": "Sigarra Tools - Sigarra on Steroids: Export Calendar Events, Infinite Scroll, DataTables, and more",
     "icons": {
         "16": "icons/icon-16.png",
         "48": "icons/icon-48.png",
@@ -20,9 +20,7 @@
     "content_scripts": [{
         "matches": ["https://*.up.pt/*"],
         "css": ["css/content_style.css"],
-        "js": ["js/lib/jquery-3.4.1.js", "js/lib/ics.deps.min.js", "js/lib/ics.js", "js/lib/sweetalert.min.js",
-            "js/utils/calendar.js", "js/utils/global.js", "js/utils/dropdown.js", "js/utils/modal.js", "js/utils/time.js", "js/lib/datatables.min.js", "js/extractors/extractor.js"
-        ],
+        "js": ["js/lib/jquery-3.4.1.js", "js/lib/ics.deps.min.js", "js/lib/ics.js", "js/lib/sweetalert.min.js", "js/utils/calendar.js", "js/utils/global.js", "js/utils/dropdown.js", "js/utils/modal.js", "js/utils/time.js", "js/lib/datatables.min.js", "js/extractors/extractor.js"],
         "run_at": "document_end"
     }, {
         "matches": ["https://sigarra.up.pt/*"],
