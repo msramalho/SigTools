@@ -3,7 +3,8 @@ const {
     src,
     series,
     parallel,
-    watch
+    watch,
+    dest
 } = require('gulp');
 
 const $ = require('gulp-load-plugins')()
@@ -82,13 +83,15 @@ function mergeAll(done) {
     pipe('./src/extra/**/*', `./build/${target}/extra`)
     pipe('./src/icons/**/*', `./build/${target}/icons`)
     pipe('./src/js/**/*', `./build/${target}/js`)
-    pipe(['./src/**/*.html'], `./build/${target}`)
+    pipe(['./src/*.html'], `./build/${target}`)
     done()
 }
 
 function zip() {
     // zip all files in the target folder for dist
-    return pipe(`./build/${target}/**/*`, $.zip(`${target}.zip`), './dist')
+    return src([`./build/${target}/**/*`, `./build/${target}/**/**/*`])
+        .pipe($.zip(`${target}.zip`))
+        .pipe(dest('./dist'));
 }
 
 // watch for any changes in the source folder
@@ -109,7 +112,9 @@ function pipe(src, ...transforms) {
 }
 
 // Export tasks
-exports.build = series(parallel(cleanBuild, cleanDist), parallel(manifest, mergeAll))
-exports.dist = series(exports.build, zip)
+exports.zip = series(zip)
+exports.clean = series(cleanBuild, cleanDist)
+exports.build = series(exports.clean, manifest, mergeAll)
+exports.dist = series(exports.build, series(zip))
 exports.watch = startWatching
 exports.default = exports.build;

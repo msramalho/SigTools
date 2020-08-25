@@ -1,6 +1,6 @@
 {
   "name": "sigtools",
-  "version": "3.1.4",
+  "version": "4.0.0",
   "description": "An extension that makes the information system of the University of Porto slightly better.",
   "main": "gulpfile.js",
   "directories": {
@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "google-chrome ./src/tests.html",
+    "zip": "cross-env TARGET=chrome gulp zip && cross-env TARGET=opera gulp zip && cross-env TARGET=firefox gulp zip",
     "chrome-build": "cross-env TARGET=chrome gulp",
     "opera-build": "cross-env TARGET=opera gulp",
     "firefox-build": "cross-env TARGET=firefox gulp",

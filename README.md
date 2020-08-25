@@ -145,8 +145,8 @@ You can contribute by:
 3. run `npm run chrome-watch` or `npm run firefox-watch` or `npm run opera-watch` during development
    1. the way to upload development extensions will vary depending on the browser see below
    2. point it to the correct folder that is maintained with live-reload inside the `build/` folder
-4. run `npm run build` when ready for final tests
-5. pull-request once ready
+4. run `npm run build` when ready for final tests followed by `npm run zip` to create all the zip files (this step is optional in PRs)
+5. pull-request once ready (do not include `/build` or `/dist`)
 
 
 
@@ -162,7 +162,7 @@ You can contribute by:
 
 
 ### Packaging
-Run `npm run dist` to create a zipped, production-ready extension for each browser. 
+Run `npm run build` + `npm run zip` to create a zipped, production-ready extension for each browser (atm there seems to be a [strange issue](https://github.com/msramalho/SigTools/issues/76) with `npm run dist`). 
  
 
 
