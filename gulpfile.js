@@ -23,7 +23,7 @@ let manifestInfo = {
     dev: {
         "background": {
             "scripts": [
-                "js/livereload.js",
+                // "js/livereload.js",
             ]
         }
     },
