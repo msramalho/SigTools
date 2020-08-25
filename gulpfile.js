@@ -31,7 +31,7 @@ let manifestInfo = {
     firefox: {
         "applications": {
             "gecko": {
-                "id": "sigtools@msramalho.github.io"
+                "id": "{901c6ba2-023e-4cab-9842-2a8c9d051a15}"
             }
         }
     }
@@ -83,7 +83,7 @@ function mergeAll(done) {
     pipe('./src/extra/**/*', `./build/${target}/extra`)
     pipe('./src/icons/**/*', `./build/${target}/icons`)
     pipe('./src/js/**/*', `./build/${target}/js`)
-    pipe(['./src/*.html'], `./build/${target}`)
+    pipe(['./src/changelog.html', './src/options.html'], `./build/${target}`)
     done()
 }
 
