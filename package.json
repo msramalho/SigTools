@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "open ./src/tests.html",
+    "test": "google-chrome ./src/tests.html",
     "chrome-build": "cross-env TARGET=chrome gulp",
     "opera-build": "cross-env TARGET=opera gulp",
     "firefox-build": "cross-env TARGET=firefox gulp",

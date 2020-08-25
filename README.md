@@ -122,7 +122,7 @@ SigTools exports to [iCalendar](https://en.wikipedia.org/wiki/ICalendar) *.ics* 
 
 
 ### Performance
-It was developed to be as non-intrusive as possible, requires no permission, only executes processes when it needs to and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
+It was developed to be as non-intrusive as possible, requires minimal permissions, only executes processes when it needs to, and all the scripts are loaded after the pages are ready so as to minimize any interface performance impact!
 
 
 # Contribute to SigTools
@@ -132,9 +132,38 @@ You can contribute by:
  - Adding more [modules/extractors](https://github.com/msramalho/SigTools/tree/master/js/extractors) each module should address a different calendar need
  - Sharing this Extension
 
+
+
 <details>
 <summary>Contribution guide</summary>
 <p>
+
+
+## Developing with gulp.js and npm
+1. fork project
+2. run `npm install`
+3. run `npm run chrome-watch` or `npm run firefox-watch` or `npm run opera-watch` during development
+   1. the way to upload development extensions will vary depending on the browser see below
+   2. point it to the correct folder that is maintained with live-reload inside the `build/` folder
+4. run `npm run build` when ready for final tests
+5. pull-request once ready
+
+
+
+##### Load the extension in Chrome & Opera
+1. Open Chrome/Opera browser and navigate to chrome://extensions
+2. Select "Developer Mode" and then click "Load unpacked extension..."
+3. From the file browser, choose to `my-slack-workspaces/build/chrome` or (`my-slack-workspaces/build/opera`)
+
+
+##### Load the extension in Firefox
+1. Open Firefox browser and navigate to about:debugging
+2. Click "Load Temporary Add-on" and from the file browser, choose `my-slack-workspaces/build/firefox/manifest.json`
+
+
+### Packaging
+Run `npm run dist` to create a zipped, production-ready extension for each browser. 
+ 
 
 
 ## Code structure
@@ -305,3 +334,6 @@ Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for
    - Handled Firefox Add-ons problems with 3rd party libraries...
  - V3.1.3
    - Fixed UI problem in "Conta corrente" page
+ - V4.0.0
+   - Revamp the way the extension is designed, introducing faster development and deployments with [gulp.js](https://gulpjs.com/)
+   - Fix issues that led the extension to be blocked on Firefox
