@@ -1,6 +1,6 @@
 <p align="center">
  <a href="https://chrome.google.com/webstore/detail/sigarra-to-calendar/piefgbacnljenipiifjopkfifeljjkme">
-  <img src="icons/icon-512.png" width="128"/>
+  <img src="src/icons/icon-512.png" width="128"/>
  </a>
 </p>
 <h1 align="center">SigTools - Sigarra Tools</h1>
