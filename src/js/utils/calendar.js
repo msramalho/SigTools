@@ -11,28 +11,40 @@ function eventToGCalendar(extractor, event, repeat) {
     if (repeat) recur = `&recur=RRULE:FREQ=${repeat.freq};UNTIL=${(new Date(repeat.until)).toGCalendar()}`;
 
     let dates = '';
-    if(event.from && event.to)
+    if (event.from && event.to)
         dates = `&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}`;
-    
-    if(event)
-    return (`https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigTools"}${recur}${dates}`);
+
+    if (event)
+        return (`https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigTools"}${recur}${dates}`);
 }
 
 /**
- * return a URL for adding events to Outlook.com
+ * Create a 'Add to Calendar' URL for Outlook.com
+ * 
+ * Base URL: https://outlook.live.com/calendar/0/deeplink/compose
+ * Query parameters:
+ * * `path`: `/calendar/action/compose`
+ * * `rru`: `addevent`
+ * * `subject`: The event subject (string)
+ * * `body`: The event description (string, no html support)
+ * * `location`: Event location (string)
+ * * `startdt`: event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
+ * * `enddt`: event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
+ * 
  * @param {Extractor} extractor class that implements getName and getDescription from the event
  * @param {event object} event needs to have (at least) {from, to, location, download}
  * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
+ * 
+ * @see {@link https://en.wikipedia.org/wiki/ISO_8601 ISO 8601}
  */
 function eventToOutlookCalendar(extractor, event, repeat) {
-    let data = `&subject=${extractor.getName(event, true)}` +
-		`&location=${event.location}` +
-		`&body=${extractor.getDescription(event, true, true)}`;
+    let data = `&subject=${encodeURIComponent(extractor.getName(event, true))}` +
+        `&location=${encodeURIComponent(event.location)}` +
+        `&body=${encodeURIComponent(extractor.getDescription(event, true, true))}`;
 
-    if(event.from) data += `&startdt=${event.from.toGCalendar()}`;
-    if(event.to) data += `&enddt=${event.to.toGCalendar()}`;
-
-    return 'https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent' + data;
+    if (event.from) data += `&startdt=${luxon.DateTime.fromJSDate(event.from).toISO()}`;
+    if (event.to) data += `&enddt=${luxon.DateTime.fromJSDate(event.to).toISO()}`;
+    return 'https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent' + data;
 }
 
 /**
@@ -53,8 +65,8 @@ function eventToYahooCalendar(extractor, event, repeat) {
         `&TITLE=${extractor.getName(event, true)}` +
         `&in_loc=${event.location}` +
         `&DESC=${extractor.getDescription(event, true, true)}`;
-    
-    if(event.from) data += `&ST=${event.from.toGCalendar()}`;
+
+    if (event.from) data += `&ST=${event.from.toGCalendar()}`;
     // + `&REND=${}`
     return 'http://calendar.yahoo.com/?v=60' + data;
 }
@@ -97,7 +109,7 @@ function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html, tit
 
     // add event listener
     if (html)
-        a.setAttribute("onclick", `window.open(decodeURI('${encodeURI(url.replace(/'/g,"\""))}').replace(/\\s/g, "%20"));`);
+        a.setAttribute("onclick", `window.open(decodeURI('${encodeURI(url.replace(/'/g, "\""))}').replace(/\\s/g, "%20"));`);
     else
         a.setAttribute("onclick", `window.open('${url.replace(/\n/g, '%0A')}');`);
 
