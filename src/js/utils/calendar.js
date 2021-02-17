@@ -1,4 +1,18 @@
 "use strict";
+
+/**
+ * 
+ * @param {Object} url 
+ * @param {String} url.baseURL 
+ * @param {Object} url.queryParams 
+ */
+function __compileURL(url) {
+    return url.baseURL + '?' + Object.entries(url.queryParams)
+        .filter(([key, value]) => value !== undefined && value !== null)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('&');
+}
+
 /**
  * return a URL for google chrome event adding from an event
  * @param {Extractor} extractor class that implements getName and getDescription from the event
@@ -33,12 +47,12 @@ function eventToGCalendar(extractor, event, repeat) {
  * 
  * @param {Extractor} extractor class that implements getName and getDescription from the event
  * @param {event object} event needs to have (at least) {from, to, location, download}
- * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
+ * @param {*} repeat no support for Outlook.com
  * 
  * @see {@link https://en.wikipedia.org/wiki/ISO_8601 ISO 8601}
  */
 function eventToOutlookCalendar(extractor, event, repeat) {
-    const obj = {
+    return __compileURL({
         baseURL: 'https://outlook.live.com/calendar/0/deeplink/compose',
         queryParams: {
             rru: 'addevent',
@@ -49,11 +63,7 @@ function eventToOutlookCalendar(extractor, event, repeat) {
             startdt: luxon.DateTime.fromJSDate(event.from).toISO(),
             enddt: luxon.DateTime.fromJSDate(event.to).toISO()
         }
-    }
-
-    return obj.baseURL + '?' + Object.entries(obj.queryParams)
-        .map(([key, value]) => `${key}=${value}`)
-        .join('&');
+    })
 }
 
 /**
