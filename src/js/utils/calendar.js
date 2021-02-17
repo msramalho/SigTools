@@ -38,13 +38,22 @@ function eventToGCalendar(extractor, event, repeat) {
  * @see {@link https://en.wikipedia.org/wiki/ISO_8601 ISO 8601}
  */
 function eventToOutlookCalendar(extractor, event, repeat) {
-    let data = `&subject=${encodeURIComponent(extractor.getName(event, true))}` +
-        `&location=${encodeURIComponent(event.location)}` +
-        `&body=${encodeURIComponent(extractor.getDescription(event, true, true))}`;
+    const obj = {
+        baseURL: 'https://outlook.live.com/calendar/0/deeplink/compose',
+        queryParams: {
+            rru: 'addevent',
+            path: '/calendar/action/compose',
+            subject: encodeURIComponent(extractor.getName(event, true)),
+            location: encodeURIComponent(event.location),
+            body: encodeURIComponent(extractor.getDescription(event, true, true)),
+            startdt: luxon.DateTime.fromJSDate(event.from).toISO(),
+            enddt: luxon.DateTime.fromJSDate(event.to).toISO()
+        }
+    }
 
-    if (event.from) data += `&startdt=${luxon.DateTime.fromJSDate(event.from).toISO()}`;
-    if (event.to) data += `&enddt=${luxon.DateTime.fromJSDate(event.to).toISO()}`;
-    return 'https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent' + data;
+    return obj.baseURL + '?' + Object.entries(obj.queryParams)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('&');
 }
 
 /**
