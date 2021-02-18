@@ -69,8 +69,8 @@ function eventToGCalendar(extractor, event, repeat) {
  * * `subject`: The event title (string)
  * * `body`: The event description (string, no html support)
  * * `location`: Event location (string)
- * * `startdt`: event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
- * * `enddt`: event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
+ * * `startdt`: Event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
+ * * `enddt`: Event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
  * 
  * @param {Extractor} extractor class that implements getName and getDescription from the event
  * @param {event object} event needs to have (at least) {from, to, location, download}
@@ -108,27 +108,42 @@ function eventToOutlookCalendar(extractor, event, repeat) {
 }
 
 /**
- * return a URL for adding events to Yahoo.com
+ * Create a 'Add to Calendar' URL for Yahoo
+ * 
+ * Base URL: https://calendar.yahoo.com/
+ * Query parameters:
+ * * `title`: The event title (string)
+ * * `desc`: The event description (string, unknown html support)
+ * * `in_loc`: Event location (string)
+ * * `st`: Event start time in ISO 8601 simplified
+ * * `et`: Event end time in ISO 8601 simplified
+ * * `v`: `60`
  * @param {Extractor} extractor class that implements getName and getDescription from the event
  * @param {event object} event needs to have (at least) {from, to, location, download}
- * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
- * http://chris.photobooks.com/tests/calendar/Notes.html
+ * @param {*} repeat no support for Outlook.com
+ * 
+ * @see eventToGCalendar
  */
 function eventToYahooCalendar(extractor, event, repeat) {
-    // calculate duration
-    let dMins = (event.to - event.from) / (60 * 1000) // duration in minutes
-    let dHours = Math.floor(dMins / 60) // convert to full hours
-    dMins = dMins % 60 // remaining minutes
+    const luxonSettings = {
+        format: 'basic',
+        suppressMilliseconds: true,
+        includeOffset: false
+    }
+    const startDate = DateTime.fromJSDate(event.from).toISO(luxonSettings);
+    const endDate = DateTime.fromJSDate(event.to).toISO(luxonSettings);
 
-    let data =
-        `&DUR=${dHours}${dMins}` +
-        `&TITLE=${extractor.getName(event, true)}` +
-        `&in_loc=${event.location}` +
-        `&DESC=${extractor.getDescription(event, true, true)}`;
-
-    if (event.from) data += `&ST=${event.from.toGCalendar()}`;
-    // + `&REND=${}`
-    return 'http://calendar.yahoo.com/?v=60' + data;
+    return __compileURL({
+        baseURL: 'https://calendar.yahoo.com/',
+        queryParams: {
+            title: extractor.getName(event, true),
+            desc: extractor.getDescription(event, true),
+            in_loc: event.location,
+            st: startDate,
+            et: endDate,
+            v: '60'
+        }
+    });
 }
 
 /**
