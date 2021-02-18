@@ -60,9 +60,9 @@ function eventToGCalendar(extractor, event, repeat) {
 }
 
 /**
- * Create a 'Add to Calendar' URL for Outlook.com
+ * Prepares query parameters for Office365 and Outlook.com 'Add to calendar'
+ * links
  * 
- * Base URL: https://outlook.live.com/calendar/0/deeplink/compose
  * Query parameters:
  * * `path`: `/calendar/action/compose`
  * * `rru`: `addevent`
@@ -72,15 +72,11 @@ function eventToGCalendar(extractor, event, repeat) {
  * * `startdt`: Event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
  * * `enddt`: Event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
  * 
- * @param {Extractor} extractor class that implements getName and getDescription from the event
- * @param {event object} event needs to have (at least) {from, to, location, download}
- * @param {*} repeat no support for Outlook.com
- * 
  * @see {@link https://en.wikipedia.org/wiki/ISO_8601 ISO 8601}
  */
-function eventToOutlookCalendar(extractor, event, repeat) {
+function __getMicrosoftQueryParams(extractor, event, repeat) {
     /**
-     * Custom encoding for Microsoft Calendar
+     * Custom encoding for Microsoft Calendars
      * * Unicode for "normal" space: `U+0020`
      * * Unicode for thin space: `U+2009`
      * 
@@ -93,17 +89,50 @@ function eventToOutlookCalendar(extractor, event, repeat) {
      */
     const customEncode = (str) => str.split('\u0020').join('\u2009');
 
+    return {
+        rru: 'addevent',
+        path: '/calendar/action/compose',
+        subject: encodeURIComponent(customEncode(extractor.getName(event, true))),
+        location: encodeURIComponent(customEncode(event.location)),
+        body: encodeURIComponent(customEncode(extractor.getDescription(event, true, true))),
+        startdt: DateTime.fromJSDate(event.from).toISO(),
+        enddt: DateTime.fromJSDate(event.to).toISO()
+    };
+}
+
+/**
+ * Create a 'Add to Calendar' URL for Outlook.com
+ * 
+ * Base URL: https://outlook.live.com/calendar/0/deeplink/compose
+ * Query parameters: @see {__getMicrosoftQueryParams}
+ * 
+ * @param {Extractor} extractor class that implements getName and getDescription from the event
+ * @param {event object} event needs to have (at least) {from, to, location, download}
+ * @param {*} repeat no support for Outlook.com
+ * 
+ */
+function eventToOutlookCalendar(extractor, event, repeat) {
     return __compileURL({
         baseURL: 'https://outlook.live.com/calendar/0/deeplink/compose',
-        queryParams: {
-            rru: 'addevent',
-            path: '/calendar/action/compose',
-            subject: encodeURIComponent(customEncode(extractor.getName(event, true))),
-            location: encodeURIComponent(customEncode(event.location)),
-            body: encodeURIComponent(customEncode(extractor.getDescription(event, true, true))),
-            startdt: DateTime.fromJSDate(event.from).toISO(),
-            enddt: DateTime.fromJSDate(event.to).toISO()
-        }
+        queryParams: __getMicrosoftQueryParams(extractor, event, repeat)
+    });
+}
+
+/**
+ * Create a 'Add to Calendar' URL for Outlook.com
+ * 
+ * Base URL: https://outlook.office.com/calendar/0/deeplink/compose
+ * Query parameters: @see {__getMicrosoftQueryParams}
+ * 
+ * @param {Extractor} extractor class that implements getName and getDescription from the event
+ * @param {event object} event needs to have (at least) {from, to, location, download}
+ * @param {*} repeat no support for Outlook.com
+ * 
+ */
+function eventToOffice365Calendar(extractor, event, repeat) {
+    return __compileURL({
+        baseURL: 'https://outlook.office.com/calendar/0/deeplink/compose',
+        queryParams: __getMicrosoftQueryParams(extractor, event, repeat)
     });
 }
 
@@ -171,6 +200,10 @@ function generateOneClickDOM(class_atr_a, class_atr_img, service, url, html, tit
         a.setAttribute("title", "Add this single event to your Outlook Calendar in one click!");
         img.setAttribute("alt", "outlook calendar icon");
         img.setAttribute("src", `${chrome.extension.getURL("icons/outlook.png")}`);
+    } else if (service == "office365") {
+        a.setAttribute("title", "Add this single event to your Office365 Calendar in one click!");
+        img.setAttribute("alt", "office 365 icon");
+        img.setAttribute("src", `${chrome.extension.getURL("icons/office365.png")}`);
     } else if (service == "yahoo") {
         a.setAttribute("title", "Add this single event to your Yahoo Calendar in one click!");
         img.setAttribute("alt", "yahoo calendar icon");
