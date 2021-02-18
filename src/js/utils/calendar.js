@@ -36,10 +36,15 @@ function __compileURL(url) {
  * @param {*} repeat
  */
 function eventToGCalendar(extractor, event, repeat) {
-    const startDate = DateTime.fromJSDate(event.from).toISO({ format: 'basic' });
-    const endDate = DateTime.fromJSDate(event.to).toISO({ format: 'basic' });
+    const luxonSettings = {
+        format: 'basic',
+        suppressMilliseconds: true,
+        includeOffset: false
+    }
+    const startDate = DateTime.fromJSDate(event.from).toISO(luxonSettings);
+    const endDate = DateTime.fromJSDate(event.to).toISO(luxonSettings);
     const getRecur = () =>
-        `RRULE:FREQ=${repeat.freq};UNTIL=${DateTime.fromJSDate(repeat.until).toISO({ format: 'basic' })}`;
+        `RRULE:FREQ=${repeat.freq};UNTIL=${DateTime.fromJSDate(repeat.until).toISO(luxonSettings)}`;
 
     return __compileURL({
         baseURL: 'https://calendar.google.com/calendar/render',
