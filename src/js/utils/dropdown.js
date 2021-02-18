@@ -26,7 +26,7 @@ function getDropdown(event, context, repeat, style) {
         ${generateOneClickDOM("", "dropdownIcon", "outlook", outlook_url, context.isHTML, "Outlook").outerHTML}
         ${generateOneClickDOM("", "dropdownIcon", "office365", office365_url, context.isHTML, "Office 365").outerHTML}
         ${generateOneClickDOM("", "dropdownIcon", "yahoo", yahoo_url, context.isHTML, "Yahoo").outerHTML}
-		<a class="donwloadSingleIcs" data='${JSON.stringify(event)}' style="background-color:#e3e3e3" title="For other calendars, download the single .ics file" href="#"><img class="dropdownIcon" alt="apple calendar icon" src="${chrome.extension.getURL("icons/apple.png")}">Others</a>
+		<a class="donwloadSingleIcs" data='${JSON.stringify(event)}' style="background-color:#e3e3e3" title="For other calendars, download the single .ics file" href="#"><img class="dropdownIcon" alt="apple calendar icon" src="${chrome.extension.getURL("icons/calendar.png")}">Others (.ics)</a>
 		</div>
 	</div>`);
 }

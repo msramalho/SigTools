@@ -274,6 +274,7 @@ A thanks to...  [ics.js](https://github.com/nwcell/ics.js) | [FileSaver.js](http
 
 Credits to [Paomedia](https://www.iconfinder.com/icons/285665/calendar_icon) for the flat calendar icon! ![](icons/calendar.svg)
 
+Credits to [Icons8](https://icons8.com/) for services icons such as Office 365, Outlook, Google and Yahoo.
 
 # Changelog
  - V1.0
