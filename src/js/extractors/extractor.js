@@ -77,7 +77,7 @@ class Extractor {
     init() {
         let that = this;
         return new Promise(
-            function(resolve, reject) {
+            function (resolve, reject) {
                 chrome.storage.local.get(that.structure.extractor, (obj) => {
                     obj = obj[that.structure.extractor]; // remove wrapper so that values are directly accessible
                     getProperties(that.structure.storage).forEach(prop => {
@@ -97,17 +97,23 @@ class Extractor {
     /**
      * function that receives an event and returns its name in the desired format
      */
-    getName(event, forUrl) {
-        if (forUrl) event = this._getConvertedToUri(event)
-        return parseStrFormat(event, this.title, this.isHTML)
+    getName(event) {
+        return parseStrFormat(event, this.title, this.isHTML);
+    }
+
+    getNameEncoded(event) {
+        return encodeURIComponent(this.getName(event));
     }
 
     /**
      * function that receives an event and returns its description in the desired format
      */
-    getDescription(event, forUrl) {
-        if (forUrl) event = this._getConvertedToUri(event)
-        return parseStrFormat(event, this.description, this.isHTML)
+    getDescription(event) {
+        return parseStrFormat(event, this.description, this.isHTML);
+    }
+
+    getDescriptionEncoded(event) {
+        return encodeURIComponent(this.getDescription(event));
     }
 
     _getConvertedToUri(original) {

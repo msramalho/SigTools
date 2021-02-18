@@ -51,8 +51,8 @@ function eventToGCalendar(extractor, event, repeat) {
         queryParams: {
             action: 'TEMPLATE',
             dates: `${startDate}/${endDate}`,
-            text: extractor.getName(event, true),
-            details: extractor.getDescription(event, true),
+            text: extractor.getNameEncoded(event),
+            details: extractor.getDescriptionEncoded(event),
             location: event.location,
             recur: repeat ? getRecur() : null
         }
@@ -92,9 +92,9 @@ function __getMicrosoftQueryParams(extractor, event, repeat) {
     return {
         rru: 'addevent',
         path: '/calendar/action/compose',
-        subject: encodeURIComponent(customEncode(extractor.getName(event, true))),
+        subject: encodeURIComponent(customEncode(extractor.getName(event))),
         location: encodeURIComponent(customEncode(event.location)),
-        body: encodeURIComponent(customEncode(extractor.getDescription(event, true, true))),
+        body: encodeURIComponent(customEncode(extractor.getDescription(event))),
         startdt: DateTime.fromJSDate(event.from).toISO(),
         enddt: DateTime.fromJSDate(event.to).toISO()
     };
@@ -165,8 +165,8 @@ function eventToYahooCalendar(extractor, event, repeat) {
     return __compileURL({
         baseURL: 'https://calendar.yahoo.com/',
         queryParams: {
-            title: extractor.getName(event, true),
-            desc: extractor.getDescription(event, true),
+            title: extractor.getNameEncoded(event),
+            desc: extractor.getDescriptionEncoded(event),
             in_loc: event.location,
             st: startDate,
             et: endDate,
