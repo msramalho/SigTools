@@ -79,14 +79,28 @@ function eventToGCalendar(extractor, event, repeat) {
  * @see {@link https://en.wikipedia.org/wiki/ISO_8601 ISO 8601}
  */
 function eventToOutlookCalendar(extractor, event, repeat) {
+    /**
+     * Custom encoding for Microsoft Calendar
+     * * Unicode for "normal" space: `U+0020`
+     * * Unicode for thin space: `U+2009`
+     * 
+     * Note: replaceAll() for strings still not well supported, and using
+     * unicode in regex (to replace all ocurrences with replace()) is tricky
+     * as well. Hacky solution below uses split() and join()
+     * 
+     * @see {@link https://github.com/msramalho/SigTools/issues/83}
+     * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll}
+     */
+    const customEncode = (str) => str.split('\u0020').join('\u2009');
+
     return __compileURL({
         baseURL: 'https://outlook.live.com/calendar/0/deeplink/compose',
         queryParams: {
             rru: 'addevent',
             path: '/calendar/action/compose',
-            subject: encodeURIComponent(extractor.getName(event, true)),
-            location: encodeURIComponent(event.location),
-            body: encodeURIComponent(extractor.getDescription(event, true, true)),
+            subject: encodeURIComponent(customEncode(extractor.getName(event, true))),
+            location: encodeURIComponent(customEncode(event.location)),
+            body: encodeURIComponent(customEncode(extractor.getDescription(event, true, true))),
             startdt: DateTime.fromJSDate(event.from).toISO(),
             enddt: DateTime.fromJSDate(event.to).toISO()
         }
