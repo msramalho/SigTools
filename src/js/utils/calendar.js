@@ -1,12 +1,40 @@
 "use strict";
 
+/** Shortcut for DateTime in Luxon lib */
 const DateTime = luxon.DateTime;
 
 /**
+ * An object event. Different extracts produce different event objects, as
+ * different information is available (bills, exams, timetable classes, ...).
+ * However, at least three properties are mandatory: `from`, `to`, `location`.
+ * 
+ * @typedef {Object} SigEvent 
+ * @property {Date?} from - The start date
+ * @property {Date?} to - The end date
+ * @property {String?} location - The event location, if any
+ */
+
+/**
+ * A recurrency object with a date that defines the end of the recurring event
+and the frequency
+ * 
+ * @typedef {Object} SigRecurrence 
+ * @property {String} freq - Any frequency rule supported in RFC standard.
+For SigTools context, the unique expected value is 'WEEKLY'
+ * @property {Date} until - The end date for the recurring event
+ * @see {@link https://icalendar.org/iCalendar-RFC-5545/3-8-5-3-recurrence-rule.html}
+*/
+
+/**
+ * Creates the final URL for adding events to third-party calendars, formating
+ * the query parameters automatically
  * 
  * @param {Object} url 
- * @param {String} url.baseURL 
- * @param {Object} url.queryParams 
+ * @param {String} url.baseURL - The base URL for the third-party calendar
+ * @param {Object} url.queryParams - An object of key/values for query parameters.
+ * Null/undefined values are skipped automatically 
+ * 
+ * @returns {String} URL string, e.g. `https://calendar.google.com/calendar/render/?text=Example&dates=...`
  */
 function __compileURL(url) {
     return url.baseURL + '?' + Object.entries(url.queryParams)
@@ -19,21 +47,24 @@ function __compileURL(url) {
 /**
  * Create a 'Add to Calendar' URL for Google Calendar
  * 
- * Base URL: https://calendar.google.com/calendar/render
+ * Base URL: `https://calendar.google.com/calendar/render`
+ * 
  * Query parameters:
  * * `action`: `TEMPLATE`
- * * `dates`: <start date>/<end date>
+ * * `dates`: `<start date>/<end date>`
  *  * Both dates in ISO 8601 simplified (YYYYMMDDTHHmmss+Z)
  * * `text`: The event title (string)
  * * `details`: The event description (string, with html support)
  * * `location`: Event location (string)
- * * `recur`: A recurrence rule with format RRULE:FREQ=<freq>;UNTIL=<date>
- *  * Standard: {@link https://icalendar.org/iCalendar-RFC-5545/3-8-5-3-recurrence-rule.html}
- *  * Date is in the same format as start/end dates
-
- * @param {Extractor} extractor class that implements getName and getDescription from the event
- * @param {event object} event needs to have (at least) {from, to, location, download}
- * @param {*} repeat
+ * * `recur`: A recurrence rule with format `RRULE:FREQ=<freq>;UNTIL=<date>`
+ *   * Standard: {@link https://icalendar.org/iCalendar-RFC-5545/3-8-5-3-recurrence-rule.html}
+ * * Date is in the same format as start/end dates
+ *
+ * @param {Extractor} extractor The extractor
+ * @param {SigEvent} event A single event to be calenderized
+ * @param {SigRecurrence?} repeat Recurrence metadata, if applicable
+ * 
+ * @returns {String} 'Add to calendar' link for Google Calendars
  */
 function eventToGCalendar(extractor, event, repeat) {
     const luxonSettings = {
@@ -73,6 +104,9 @@ function eventToGCalendar(extractor, event, repeat) {
  * * `enddt`: Event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
  * 
  * @see {@link https://en.wikipedia.org/wiki/ISO_8601 ISO 8601}
+ * 
+ * @returns {Object} Object of key/value for the supported query parameters in
+ * Microsoft calendars
  */
 function __getMicrosoftQueryParams(extractor, event, repeat) {
     /**
@@ -103,13 +137,14 @@ function __getMicrosoftQueryParams(extractor, event, repeat) {
 /**
  * Create a 'Add to Calendar' URL for Outlook.com
  * 
- * Base URL: https://outlook.live.com/calendar/0/deeplink/compose
- * Query parameters: @see {__getMicrosoftQueryParams}
+ * Base URL: `https://outlook.live.com/calendar/0/deeplink/compose`
  * 
- * @param {Extractor} extractor class that implements getName and getDescription from the event
- * @param {event object} event needs to have (at least) {from, to, location, download}
- * @param {*} repeat no support for Outlook.com
+ * Query parameters: {@link __getMicrosoftQueryParams}
  * 
+ * @param {Extractor} extractor The extractor
+ * @param {SigEvent} event A single event to be calenderized
+ * @param {SigRecurrence?} repeat Recurrence metadata, if applicable
+ * @returns {String} 'Add to calendar' link for Outlook.com calendars
  */
 function eventToOutlookCalendar(extractor, event, repeat) {
     return __compileURL({
@@ -119,15 +154,16 @@ function eventToOutlookCalendar(extractor, event, repeat) {
 }
 
 /**
- * Create a 'Add to Calendar' URL for Outlook.com
+ * Create a 'Add to Calendar' URL for Office365
  * 
- * Base URL: https://outlook.office.com/calendar/0/deeplink/compose
- * Query parameters: @see {__getMicrosoftQueryParams}
+ * Base URL: `https://outlook.office.com/calendar/0/deeplink/compose`
  * 
- * @param {Extractor} extractor class that implements getName and getDescription from the event
- * @param {event object} event needs to have (at least) {from, to, location, download}
- * @param {*} repeat no support for Outlook.com
+ * Query parameters: {@link __getMicrosoftQueryParams}
  * 
+ * @param {Extractor} extractor The extractor
+ * @param {SigEvent} event A single event to be calenderized
+ * @param {SigRecurrence?} repeat Recurrence metadata, if applicable
+ * @returns {String} 'Add to calendar' link for Office365 calendars
  */
 function eventToOffice365Calendar(extractor, event, repeat) {
     return __compileURL({
@@ -139,19 +175,20 @@ function eventToOffice365Calendar(extractor, event, repeat) {
 /**
  * Create a 'Add to Calendar' URL for Yahoo
  * 
- * Base URL: https://calendar.yahoo.com/
+ * Base URL: `https://calendar.yahoo.com/`
+ * 
  * Query parameters:
  * * `title`: The event title (string)
  * * `desc`: The event description (string, unknown html support)
  * * `in_loc`: Event location (string)
- * * `st`: Event start time in ISO 8601 simplified
+ * * `st`: Event start time in ISO 8601 simplified ({@link eventToGCalendar})
  * * `et`: Event end time in ISO 8601 simplified
  * * `v`: `60`
- * @param {Extractor} extractor class that implements getName and getDescription from the event
- * @param {event object} event needs to have (at least) {from, to, location, download}
- * @param {*} repeat no support for Outlook.com
+ * @param {Extractor} extractor The extractor
+ * @param {SigEvent} event A single event to be calenderized
+ * @param {SigRecurrence?} repeat Recurrence metadata, if applicable
  * 
- * @see eventToGCalendar
+ * @returns {String} 'Add to calendar' link for Yahoo.com calendars
  */
 function eventToYahooCalendar(extractor, event, repeat) {
     const luxonSettings = {
