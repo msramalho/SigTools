@@ -1,5 +1,7 @@
 "use strict";
 
+const DateTime = luxon.DateTime;
+
 /**
  * 
  * @param {Object} url 
@@ -8,28 +10,48 @@
  */
 function __compileURL(url) {
     return url.baseURL + '?' + Object.entries(url.queryParams)
+        // remove parameters with undefined values (e.g. start and end time)
         .filter(([key, value]) => value !== undefined && value !== null)
         .map(([key, value]) => `${key}=${value}`)
         .join('&');
 }
 
 /**
- * return a URL for google chrome event adding from an event
+ * Create a 'Add to Calendar' URL for Google Calendar
+ * 
+ * Base URL: https://calendar.google.com/calendar/render
+ * Query parameters:
+ * * `action`: `TEMPLATE`
+ * * `dates`: <start date>/<end date>
+ *  * Both dates in ISO 8601 simplified (YYYYMMDDTHHmmss+Z)
+ * * `text`: The event title (string)
+ * * `details`: The event description (string, with html support)
+ * * `location`: Event location (string)
+ * * `recur`: A recurrence rule with format RRULE:FREQ=<freq>;UNTIL=<date>
+ *  * Standard: {@link https://icalendar.org/iCalendar-RFC-5545/3-8-5-3-recurrence-rule.html}
+ *  * Date is in the same format as start/end dates
+
  * @param {Extractor} extractor class that implements getName and getDescription from the event
  * @param {event object} event needs to have (at least) {from, to, location, download}
- * @param {*} repeat if undefined the even does not repeat overtime, otherwise it does (uses the same format as ics.js, so: repeat = { freq: "WEEKLY", until: stringFriendlyWithDate };)
- * https://richmarr.wordpress.com/2008/01/07/adding-events-to-users-calendars-part-2-web-calendars/
+ * @param {*} repeat
  */
 function eventToGCalendar(extractor, event, repeat) {
-    let recur = "";
-    if (repeat) recur = `&recur=RRULE:FREQ=${repeat.freq};UNTIL=${(new Date(repeat.until)).toGCalendar()}`;
+    const startDate = DateTime.fromJSDate(event.from).toISO({ format: 'basic' });
+    const endDate = DateTime.fromJSDate(event.to).toISO({ format: 'basic' });
+    const getRecur = () =>
+        `RRULE:FREQ=${repeat.freq};UNTIL=${DateTime.fromJSDate(repeat.until).toISO({ format: 'basic' })}`;
 
-    let dates = '';
-    if (event.from && event.to)
-        dates = `&dates=${event.from.toGCalendar()}/${event.to.toGCalendar()}`;
-
-    if (event)
-        return (`https://calendar.google.com/calendar/r/eventedit?text=${extractor.getName(event, true)}&location=${event.location}&details=${extractor.getDescription(event, true, false)}&sprop=name:${extractor.getName(event, true)}&sprop=website:${"https://github.com/msramalho/SigTools"}${recur}${dates}`);
+    return __compileURL({
+        baseURL: 'https://calendar.google.com/calendar/render',
+        queryParams: {
+            action: 'TEMPLATE',
+            dates: `${startDate}/${endDate}`,
+            text: extractor.getName(event, true),
+            details: extractor.getDescription(event, true),
+            location: event.location,
+            recur: repeat ? getRecur() : null
+        }
+    });
 }
 
 /**
@@ -39,7 +61,7 @@ function eventToGCalendar(extractor, event, repeat) {
  * Query parameters:
  * * `path`: `/calendar/action/compose`
  * * `rru`: `addevent`
- * * `subject`: The event subject (string)
+ * * `subject`: The event title (string)
  * * `body`: The event description (string, no html support)
  * * `location`: Event location (string)
  * * `startdt`: event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
@@ -60,10 +82,10 @@ function eventToOutlookCalendar(extractor, event, repeat) {
             subject: encodeURIComponent(extractor.getName(event, true)),
             location: encodeURIComponent(event.location),
             body: encodeURIComponent(extractor.getDescription(event, true, true)),
-            startdt: luxon.DateTime.fromJSDate(event.from).toISO(),
-            enddt: luxon.DateTime.fromJSDate(event.to).toISO()
+            startdt: DateTime.fromJSDate(event.from).toISO(),
+            enddt: DateTime.fromJSDate(event.to).toISO()
         }
-    })
+    });
 }
 
 /**
