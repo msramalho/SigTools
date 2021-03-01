@@ -169,7 +169,7 @@ Run `npm run build` + `npm run zip` to create a zipped, production-ready extensi
 ## Code structure
  * `extractors` for all the scripts that extract information from a page and act accordingly
  * `lib` for external scripts
- * `scripts` for the JS scripts that are atomic or that are used for an `hmtl` page
+ * `scripts` for the JS scripts that are atomic or that are used for an `html` page
  * `utils` for functions that are reused among the `extractors` and other scripts
 
 In the [manifest.json](manifest.json) file, in the `content_scripts` section, there is an initial match to load all the global scripts and then, for each page, each extractor is loaded.
@@ -338,3 +338,8 @@ Credits to [Icons8](https://icons8.com/) for services icons such as Office 365, 
  - V4.0.0
    - Revamp the way the extension is designed, introducing faster development and deployments with [gulp.js](https://gulpjs.com/)
    - Fix issues that led the extension to be blocked on Firefox
+ - V4.1.0
+   - Documentation
+   - Handle weird Microsoft encoding problem [#83](https://github.com/msramalho/SigTools/issues/83)
+   - Update the link for Outlook.com events [#84](https://github.com/msramalho/SigTools/issues/84)
+   - Fix URI encoding bug [#85](https://github.com/msramalho/SigTools/issues/85)
