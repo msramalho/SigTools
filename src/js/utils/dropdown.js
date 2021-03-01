@@ -17,21 +17,13 @@ function getAddToCalendarDOM(class_atr_a, class_atr_img, service, url, html, tit
 
     // set title and append an <img>
     if (service == "google") {
-        a.setAttribute("title", "Add this single event to your Google Calendar in one click!");
-        img.setAttribute("alt", "google calendar icon");
-        img.setAttribute("src", `${chrome.extension.getURL("icons/gcalendar.png")}`);
+        generateAnchorWithIcon(a, img, "Google Calendar", "icons/gcalendar.png");
     } else if (service == "outlook") {
-        a.setAttribute("title", "Add this single event to your Outlook Calendar in one click!");
-        img.setAttribute("alt", "outlook calendar icon");
-        img.setAttribute("src", `${chrome.extension.getURL("icons/outlook.png")}`);
+        generateAnchorWithIcon(a, img, "Outlook Calendar", "icons/outlook.png");
     } else if (service == "office365") {
-        a.setAttribute("title", "Add this single event to your Office365 Calendar in one click!");
-        img.setAttribute("alt", "office 365 icon");
-        img.setAttribute("src", `${chrome.extension.getURL("icons/office365.png")}`);
+        generateAnchorWithIcon(a, img, "Office365 Calendar", "icons/office365.png");
     } else if (service == "yahoo") {
-        a.setAttribute("title", "Add this single event to your Yahoo Calendar in one click!");
-        img.setAttribute("alt", "yahoo calendar icon");
-        img.setAttribute("src", `${chrome.extension.getURL("icons/yahoo.png")}`);
+        generateAnchorWithIcon(a, img, "Yahoo Calendar", "icons/yahoo.png");
     }
     a.appendChild(img);
 
@@ -46,6 +38,12 @@ function getAddToCalendarDOM(class_atr_a, class_atr_img, service, url, html, tit
         a.setAttribute("onclick", `window.open('${url.replace(/\n/g, '%0A')}');`);
 
     return a;
+}
+
+function generateAnchorWithIcon(a, img, title, src){
+    a.setAttribute("title",`Add this single event to your ${title} in one click!`);
+    img.setAttribute("alt", `${title} icon`);
+    img.setAttribute("src", chrome.extension.getURL(src));
 }
 
 /**
