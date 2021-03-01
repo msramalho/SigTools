@@ -17,16 +17,16 @@ class Moodle extends Extractor {
             extractor: "moodle",
             description: "Extracts moodle calendar events",
             parameters: [{
-                    name: "name",
-                    description: "eg: Minitest Compilers"
-                },
-                {
-                    name: "type",
-                    description: "eg: Submission"
-                }, {
-                    name: "url",
-                    description: "link to the event page in moodle"
-                }
+                name: "name",
+                description: "eg: Minitest Compilers"
+            },
+            {
+                name: "type",
+                description: "eg: Submission"
+            }, {
+                name: "url",
+                description: "link to the event page in moodle"
+            }
             ],
             storage: {
                 text: [{
@@ -112,8 +112,8 @@ class Moodle extends Extractor {
         // Browsers ignore newlines on the URLs, they are ommited. Therefore, I encode all newlines if formats are plain text
         return `
         ${div.find("img")[0].outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, Moodle.isHTML).outerHTML}
-        ${generateOneClickDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, Moodle.isHTML).outerHTML}
+        ${getAddToCalendarDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "google", google_url, Moodle.isHTML).outerHTML}
+        ${getAddToCalendarDOM("sig_moodleCalendar", "calendarIconMoodle smallicon", "outlook", outlook_url, Moodle.isHTML).outerHTML}
         ${div.find("a")[0].outerHTML}`;
     }
 

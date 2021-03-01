@@ -84,7 +84,7 @@ function getRepeat(from, to) {
     if (from && to && dayDiff(from, to) > 6) {
         repeat = {
             freq: "WEEKLY",
-            until: to.toString()
+            until: to
         };
     }
     return repeat;

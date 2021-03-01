@@ -55,7 +55,7 @@ function getAnchor(title, href, text) {
 /**
  * Extends jquery to return text of element without the text of any nested elements
  */
-jQuery.fn.selfText = function() {
+jQuery.fn.selfText = function () {
     return this
         .clone() //clone the element
         .children() //select all the children
