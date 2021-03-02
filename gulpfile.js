@@ -60,7 +60,14 @@ function manifest() {
         .pipe($.mergeJson({
             fileName: "manifest.json",
             jsonSpace: " ".repeat(4),
-            endObj: target === "firefox" ? manifestInfo.firefox : manifestInfo.dev
+            endObj: target === "firefox" ? manifestInfo.firefox : manifestInfo.dev,
+            // if development environment, disable the background script
+            edit: (parsedJson, file) => {
+                if (environment === 'development') {
+                    delete parsedJson.background;
+                }
+                return parsedJson;
+            }
         }))
         .pipe(gulp.dest(`./build/${target}`))
 }
