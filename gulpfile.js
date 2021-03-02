@@ -85,13 +85,24 @@ function manifest() {
 //         .pipe(dest(`build/${target}/styles`))
 // }
 
-function mergeAll(done) {
-    pipe('./src/css/**/*', `./build/${target}/css`)
-    pipe('./src/extra/**/*', `./build/${target}/extra`)
-    pipe('./src/icons/**/*', `./build/${target}/icons`)
-    pipe('./src/js/**/*', `./build/${target}/js`)
-    pipe(['./src/changelog.html', './src/options.html'], `./build/${target}`)
-    done()
+function moveCss() {
+    return pipe('./src/css/**/*', `./build/${target}/css`);
+}
+
+function moveExtra() {
+    return pipe('./src/extra/**/*', `./build/${target}/extra`);
+}
+
+function moveIcons() {
+    return pipe('./src/icons/**/*', `./build/${target}/icons`);
+}
+
+function moveJs() {
+    return pipe('./src/js/**/*', `./build/${target}/js`);
+}
+
+function moveHtml() {
+    return pipe(['./src/changelog.html', './src/options.html'], `./build/${target}`);
 }
 
 function zip() {
@@ -121,7 +132,7 @@ function pipe(src, ...transforms) {
 // Export tasks
 exports.zip = series(zip)
 exports.clean = series(cleanBuild, cleanDist)
-exports.build = series(exports.clean, manifest, mergeAll)
-exports.dist = series(exports.build, series(zip))
+exports.build = series(exports.clean, manifest, parallel(moveHtml, moveCss, moveJs, moveExtra, moveIcons))
+exports.dist = series(exports.build, zip)
 exports.watch = series(exports.build, startWatching)
 exports.default = exports.build;
