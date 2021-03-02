@@ -33,7 +33,7 @@ class Bill extends Extractor {
     }
 
     attachIfPossible() {
-		$('<th>Sigtools</th>').appendTo(this._getBillsHeader()[0])
+        $('<th>Sigtools</th>').appendTo(this._getBillsHeader()[0])
         this._getBills().forEach((element, index) => {
             let event = this._parsePendingBill(element);
             let drop = getDropdown(event, this, undefined, {
@@ -48,23 +48,17 @@ class Bill extends Extractor {
         setDropdownListeners(this, undefined);
     }
 
-    convertToURI(event) {
-        event.description = encodeURIComponent(event.description);
-        event.amount = encodeURIComponent(event.amount);
-        return event;
-    }
-
     _getBills() {
         let _billsDOM = $(this.tableSelector); // array-like object
         return Array.prototype.slice.call(_billsDOM, 1); // array object, removing header row
     }
 
     _getBillsHeader() {
-		return $(this.tableSelector);
+        return $(this.tableSelector);
     }
 
     _parsePendingBill(billEl) {
-        let getDateFromBill = function(index) {
+        let getDateFromBill = function (index) {
             let dateFromBill = Bill._getDateOrUndefined($(billEl).children(`:nth(${index})`).text());
             if (dateFromBill === undefined) dateFromBill = new Date();
             return dateFromBill;

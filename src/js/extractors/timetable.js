@@ -109,15 +109,6 @@ class Timetable extends Extractor {
         };
     }
 
-    convertToURI(event) {
-        event.name = encodeURIComponent(event.name);
-        event.teacher.name = encodeURIComponent(event.teacher.name);
-        event.teacher.url = encodeURIComponent(event.teacher.url);
-        event.room.url = encodeURIComponent(event.room.url);
-        event.klass.url = encodeURIComponent(event.klass.url);
-        return event;
-    }
-
 }
 
 $.prototype.parseTable = function(dupCols, dupRows, textMode) {

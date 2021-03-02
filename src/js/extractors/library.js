@@ -88,15 +88,6 @@ class LibraryExtractor extends Extractor {
 
     }
 
-    convertToURI(event) {
-        event.book = encodeURIComponent(event.book);
-        event.library = encodeURIComponent(event.library);
-        event.shelf = encodeURIComponent(event.shelf);
-        event.fine = encodeURIComponent(event.fine);
-        event.renew_link = encodeURIComponent(event.renew_link);
-        return event;
-    }
-
 }
 
 // add an instance to the EXTRACTORS variable, and also trigger attachIfPossible due to constructor

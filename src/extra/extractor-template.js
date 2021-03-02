@@ -13,9 +13,9 @@ class TemplateExtractor extends Extractor {
             extractor: "the name of the extractor", // must be unique among extractors
             description: "a simple description of what it does",
             parameters: [{//a list of the parameters that can be used any user
-                    name: "name of the parameter",
-                    description: "either describe or exemplify"
-                }
+                name: "name of the parameter",
+                description: "either describe or exemplify"
+            }
                 //... other parameters
             ],
             storage: { // the variables to save for this extractor (in the local storage)
@@ -47,10 +47,6 @@ class TemplateExtractor extends Extractor {
 
 
     attachIfPossible() {
-
-    }
-
-    convertToURI(original) {
 
     }
 
