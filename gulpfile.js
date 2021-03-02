@@ -123,5 +123,5 @@ exports.zip = series(zip)
 exports.clean = series(cleanBuild, cleanDist)
 exports.build = series(exports.clean, manifest, mergeAll)
 exports.dist = series(exports.build, series(zip))
-exports.watch = startWatching
+exports.watch = series(exports.build, startWatching)
 exports.default = exports.build;
