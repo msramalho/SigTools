@@ -152,7 +152,6 @@ function pipe(src, ...transforms) {
 }
 
 // Export tasks
-exports.zip = series(zip);
 exports.clean = series(cleanBuild, cleanDist);
 exports.build = series(
     exports.clean,
