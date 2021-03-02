@@ -54,6 +54,14 @@ function cleanDist() {
     }).pipe($.clean())
 }
 
+function cleanAll() {
+    // remove the dist contents
+    return src([`./dist/`, `./build/`], {
+        read: false,
+        allowEmpty: true
+    }).pipe($.clean())
+}
+
 function manifest() {
     // append specific info to manifest and place it in the target folder
     return src('./manifest.json')
@@ -135,4 +143,5 @@ exports.clean = series(cleanBuild, cleanDist)
 exports.build = series(exports.clean, manifest, parallel(moveHtml, moveCss, moveJs, moveExtra, moveIcons))
 exports.dist = series(exports.build, zip)
 exports.watch = series(exports.build, startWatching)
+exports.cleanAll = cleanAll
 exports.default = exports.build;
