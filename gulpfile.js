@@ -9,18 +9,23 @@ const {
 
 const $ = require('gulp-load-plugins')()
 
-// deployment type and target
-// let production = process.env.NODE_ENV === "production";
-let target = process.env.TARGET || "chrome";
-let environment = process.env.NODE_ENV || "development";
+/**
+ * The target browser. Used to customize the manifest and choose the destination
+ * folder for builds and distribution packaging 
+ * @type {('chrome' | 'firefox' | 'opera')}
+ */
+const target = process.env.TARGET || "chrome";
 
-// read target specific configurations
-// let generic = JSON.parse(fs.readFileSync(`./config/${environment}.json`));
-// let specific = JSON.parse(fs.readFileSync(`./config/${target}.json`));
-// let contextObject = Object.assign({}, generic, specific);
+/** 
+ * The environment. Used to disable the background script on development
+ * @type {('production' | 'development' )}
+ */
+const environment = process.env.NODE_ENV || "development";
 
-
-let manifestInfo = {
+/**
+ * 
+ */
+const manifestInfo = {
     dev: {
         "background": {
             "scripts": [
@@ -37,34 +42,6 @@ let manifestInfo = {
     }
 }
 
-// Tasks
-function cleanBuild() {
-    // remove the build contents
-    return src(`./build/${target}`, {
-        read: false,
-        allowEmpty: true
-    }).pipe($.clean())
-}
-
-function cleanDist() {
-    // remove the dist contents
-    return src(`./dist/${target}`, {
-        read: false,
-        allowEmpty: true
-    }).pipe($.clean())
-}
-
-function manifest() {
-    // append specific info to manifest and place it in the target folder
-    return src('./manifest.json')
-        .pipe($.mergeJson({
-            fileName: "manifest.json",
-            jsonSpace: " ".repeat(4),
-            endObj: target === "firefox" ? manifestInfo.firefox : manifestInfo.dev
-        }))
-        .pipe(gulp.dest(`./build/${target}`))
-}
-
 // Should there be a need for scss
 // function styles() {
 //     // convert scss to css in build folder
@@ -78,15 +55,78 @@ function manifest() {
 //         .pipe(dest(`build/${target}/styles`))
 // }
 
-function mergeAll(done) {
-    pipe('./src/css/**/*', `./build/${target}/css`)
-    pipe('./src/extra/**/*', `./build/${target}/extra`)
-    pipe('./src/icons/**/*', `./build/${target}/icons`)
-    pipe('./src/js/**/*', `./build/${target}/js`)
-    pipe(['./src/changelog.html', './src/options.html'], `./build/${target}`)
-    done()
+/** Task: Delete 'build' folder for current target browser */
+function cleanBuild() {
+    // remove the build contents
+    return src(`./build/${target}`, {
+        read: false,
+        allowEmpty: true
+    }).pipe($.clean())
 }
 
+/** Task: Delete 'dist' folder for current target browser */
+function cleanDist() {
+    // remove the dist contents
+    return src(`./dist/${target}`, {
+        read: false,
+        allowEmpty: true
+    }).pipe($.clean())
+}
+
+/** Task: Delete parent 'dist' and 'build' folders */
+function cleanAll() {
+    // remove the dist contents
+    return src([`./dist/`, `./build/`], {
+        read: false,
+        allowEmpty: true
+    }).pipe($.clean())
+}
+
+/** Task: Generates the manifest to meet different browser requirements */
+function manifest() {
+    // append specific info to manifest and place it in the target folder
+    return src('./manifest.json')
+        .pipe($.mergeJson({
+            fileName: "manifest.json",
+            jsonSpace: " ".repeat(4),
+            endObj: target === "firefox" ? manifestInfo.firefox : manifestInfo.dev,
+            // if development environment, disable the background script
+            edit: (parsedJson, file) => {
+                if (environment === 'development') {
+                    delete parsedJson.background;
+                }
+                return parsedJson;
+            }
+        }))
+        .pipe(gulp.dest(`./build/${target}`))
+}
+
+/** Task: Copy CSS folder from `src/` to `build/` */
+function moveCss() {
+    return pipe('./src/css/**/*', `./build/${target}/css`);
+}
+
+/** Task: Copy extra folder from `src/` to `build/` */
+function moveExtra() {
+    return pipe('./src/extra/**/*', `./build/${target}/extra`);
+}
+
+/** Task: Copy icons folder from `src/` to `build/` */
+function moveIcons() {
+    return pipe('./src/icons/**/*', `./build/${target}/icons`);
+}
+
+/** Task: Copy javascript folder from `src/` to `build/` */
+function moveJs() {
+    return pipe('./src/js/**/*', `./build/${target}/js`);
+}
+
+/** Task: Copy html files from `src/` to `build/` */
+function moveHtml() {
+    return pipe(['./src/changelog.html', './src/options.html'], `./build/${target}`);
+}
+
+/** Task: Zips each browser build inside the `dist/` folder. Assumes build completed */
 function zip() {
     // zip all files in the target folder for dist
     return src([`./build/${target}/**/*`, `./build/${target}/**/**/*`])
@@ -94,7 +134,7 @@ function zip() {
         .pipe(dest('./dist'));
 }
 
-// watch for any changes in the source folder
+/** Task: Watch for any changes in the source folder */
 function startWatching() {
     $.livereload.listen()
     watch(['./src/*', './src/**/*', './src/**/**/*']).on("change", () => {
@@ -112,9 +152,13 @@ function pipe(src, ...transforms) {
 }
 
 // Export tasks
-exports.zip = series(zip)
-exports.clean = series(cleanBuild, cleanDist)
-exports.build = series(exports.clean, manifest, mergeAll)
-exports.dist = series(exports.build, series(zip))
-exports.watch = startWatching
+exports.clean = series(cleanBuild, cleanDist);
+exports.build = series(
+    exports.clean,
+    manifest,
+    parallel(moveHtml, moveCss, moveJs, moveExtra, moveIcons)
+);
+exports.dist = series(exports.build, zip);
+exports.watch = series(exports.build, startWatching);
+exports.cleanAll = cleanAll;
 exports.default = exports.build;
