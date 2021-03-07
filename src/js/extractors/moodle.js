@@ -93,12 +93,6 @@ class Moodle extends Extractor {
         })
     }
 
-
-    convertToURI(event) {
-        event.url = encodeURIComponent(event.url);
-        return event;
-    }
-
     /**
      *
      * @param {*} event

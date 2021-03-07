@@ -88,13 +88,6 @@ class Exams extends Extractor {
         };
     }
 
-    convertToURI(event) {
-        event.subject.name = encodeURIComponent(event.subject.name);
-        event.info = encodeURIComponent(event.info);
-        event.subject.url = encodeURIComponent(event.subject.url);
-        return event;
-    }
-
     static getEvent(day, exameTd) {
         //calculate the start and end times
         let hours = exameTd.html().match(/\d+:\d+-\d+:\d+/g)[0].replace("-", " - ");

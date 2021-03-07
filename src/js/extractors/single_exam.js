@@ -57,22 +57,6 @@ class SingleExam extends Extractor {
         setDropdownListeners();
     }
 
-    convertToURI(event) {
-        event.subject.name = encodeURIComponent(event.subject.name);
-        event.info = encodeURIComponent(event.info);
-        event.subject.url = encodeURIComponent(event.subject.url);
-        event.rooms = event.rooms.map(x => {
-            x.url = encodeURIComponent(x.url);
-            return x;
-        })
-        event.teachers = event.teachers.map(x => {
-            x.url = encodeURIComponent(x.url);
-            x.name = encodeURIComponent(x.name);
-            return x;
-        })
-        return event;
-    }
-
     getEvent() {
         // get array of rows
         let rows = $("table tr td:nth-child(2)").toArray()

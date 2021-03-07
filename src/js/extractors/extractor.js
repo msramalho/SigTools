@@ -43,13 +43,6 @@ class Extractor {
     }
 
     /**
-     * function that receives an event and clones it, and calls encodeURIComponent on the necessary elements and then returns the new object, that can be safely used in injected URIs
-     */
-    convertToURI(original) {
-        throw "Must implement convertToURI method on children of Extractor"
-    }
-
-    /**
      * simple wrapper that waits for init and then calls attachIfPossible, should be called in constructor of implementing classes
      */
     ready() {
@@ -114,11 +107,6 @@ class Extractor {
 
     getDescriptionEncoded(event) {
         return encodeURIComponent(this.getDescription(event));
-    }
-
-    _getConvertedToUri(original) {
-        let event = jQuery.extend(true, {}, original)
-        return this.convertToURI(event)
     }
 }
 
