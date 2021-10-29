@@ -254,20 +254,32 @@ a.calendarBtn:hover {
     color: #ffffff;
 }
 
-.SigTools__dt__table th.sorting::after,
-.SigTools__dt__table th.sorting_asc::after,
-.SigTools__dt__table th.sorting_desc::after {
-    font-size: 18px;
-    font-weight: normal;
-    font-family: monospace;
-    content: '\21C5'; /* up and down arrow */
-    margin-left: 3px;
+.SigTools__dt__table th.sorting {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_both.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_both.png") !important;
 }
 
-.SigTools__dt__table th.sorting_asc::after {
-    content: '\2191'; /* up arrow */
+.SigTools__dt__table th.sorting_asc {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_asc.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_asc.png") !important;
 }
 
-.SigTools__dt__table th.sorting_desc::after {
-    content: '\2193'; /* down arrow */
+.SigTools__dt__table th.sorting_desc {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_desc.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_desc.png") !important;
+}
+
+.SigTools__dt__table th.sorting_asc_disabled {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_asc_disabled.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_asc_disabled.png") !important;
+}
+
+.SigTools__dt__table th.sorting_desc_disabled {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_desc_disabled.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_desc_disabled.png") !important;
 }
