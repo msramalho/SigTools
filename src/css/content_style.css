@@ -231,7 +231,9 @@ div.dropdown.right {
     background-color: transparent;
 }
 
-/* datatables */
+/**
+ * Datatables
+ */
 
 .dataTables_filter input[type="search"] {
     margin-left: 10px
@@ -250,4 +252,34 @@ div.dropdown.right {
 
 a.calendarBtn:hover {
     color: #ffffff;
+}
+
+.SigTools__dt__table th.sorting {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_both.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_both.png") !important;
+}
+
+.SigTools__dt__table th.sorting_asc {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_asc.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_asc.png") !important;
+}
+
+.SigTools__dt__table th.sorting_desc {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_desc.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_desc.png") !important;
+}
+
+.SigTools__dt__table th.sorting_asc_disabled {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_asc_disabled.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_asc_disabled.png") !important;
+}
+
+.SigTools__dt__table th.sorting_desc_disabled {
+    background-image:
+        url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_desc_disabled.png"),
+        url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_desc_disabled.png") !important;
 }
