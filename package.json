@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "gulp test",
+    "test": "./node_modules/http-server/bin/http-server ./src/ -p 3000 -c-1 --cors -o tests.html",
     "chrome-build": "cross-env TARGET=chrome gulp",
     "opera-build": "cross-env TARGET=opera gulp",
     "firefox-build": "cross-env TARGET=firefox gulp",
