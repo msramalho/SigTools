@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "google-chrome ./src/tests.html",
+    "test": "gulp test",
     "chrome-build": "cross-env TARGET=chrome gulp",
     "opera-build": "cross-env TARGET=opera gulp",
     "firefox-build": "cross-env TARGET=firefox gulp",
@@ -42,6 +42,7 @@
     "gulp-livereload": "^4.0.2",
     "gulp-load-plugins": "^2.0.4",
     "gulp-merge-json": "^2.1.1",
-    "gulp-zip": "^5.0.2"
+    "gulp-zip": "^5.0.2",
+    "http-server": "^14.0.0"
   }
 }
