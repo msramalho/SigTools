@@ -108,7 +108,7 @@ class DataTable extends Extractor {
      */
      validTable($table) {
         if (this.disable_one_row)
-            return $table.find("tr").toArray().length >= 2;
+            return $table.find("tr").toArray().length > 2;
         else
             return true;
     }
