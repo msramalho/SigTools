@@ -6,8 +6,10 @@ const {
     watch,
     dest
 } = require('gulp');
-
+const httpServer = require('http-server')
+const { spawn } = require('child_process');
 const $ = require('gulp-load-plugins')()
+
 
 /**
  * The target browser. Used to customize the manifest and choose the destination
@@ -40,6 +42,43 @@ const manifestInfo = {
             }
         }
     }
+}
+
+function launchLocalServer(cb) {
+    if(this.localWebServer === undefined) {
+        this.localWebServer = httpServer.createServer({
+            root: './src/test/pages',
+            cors: true,
+            cache: -1,
+            showDir: true,
+        })
+        this.localWebServer.listen(3000);
+    }
+    cb();
+}
+
+function closeLocalServer(cb) {
+    if(this.localWebServer !== undefined)
+        this.localWebServer.close();
+
+    cb();
+}
+
+function test() {
+    const proc = spawn("chromium-browser", ['./src/tests.html'], {
+        detached: true,
+        stdio: 'ignore'
+    });
+    proc.unref();
+    return new Promise((resolve) => {
+        proc.on('exit', function () {
+            resolve();
+        });
+        // endless...
+        process.on('SIGINT', function () {
+            resolve();
+        });
+    })
 }
 
 // Should there be a need for scss
@@ -162,3 +201,4 @@ exports.dist = series(exports.build, zip);
 exports.watch = series(exports.build, startWatching);
 exports.cleanAll = cleanAll;
 exports.default = exports.build;
+exports.test = series(launchLocalServer, test, closeLocalServer);
