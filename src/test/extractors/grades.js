@@ -1,7 +1,7 @@
 describe('Grades extractor', function() {
     before(() => {
         return new Promise((resolve) => {
-            updatejQueryContext("test/pages/grades_monitoria.html").then(resolve)
+            updatejQueryContext("grades_monitoria.html").then(resolve)
         })
     })
     let e;

@@ -3,6 +3,7 @@
  * @param {URI} url
  */
 function updatejQueryContext(url) {
+    url = `http://0.0.0.0:3000/${url}`;
     return new Promise((resolve) => {
         $.get(url, function(html) {
             jQuery.noConflict();

@@ -1,7 +1,7 @@
 describe('Bill extractor', function() {
     before(() => {
         return new Promise((resolve) => {
-            updatejQueryContext("test/pages/conta_corrente.html").then(resolve)
+            updatejQueryContext("conta_corrente.html").then(resolve)
         })
     })
     let e, b;
