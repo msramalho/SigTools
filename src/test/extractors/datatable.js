@@ -15,7 +15,7 @@ describe("Datatables", function () {
          * Loads sample file with multiple valid tables
          */
         before(function (done) {
-            updatejQueryContext("test/pages/datatables/all_valid.html").then(() => {
+            updatejQueryContext("datatables/all_valid.html").then(() => {
                 this.dt = new DataTable();
                 this.dt.attachIfPossible();
                 done();
@@ -53,7 +53,7 @@ describe("Datatables", function () {
 
     describe("Single row feature (user setting)", function () {
         it("Single row not disabled", function (done) {
-            updatejQueryContext("test/pages/datatables/single_row.html").then(() => {
+            updatejQueryContext("datatables/single_row.html").then(() => {
                 const dt = new DataTable();
                 dt.disable_one_row = false;
                 for (const t of dt.tables) {
@@ -64,7 +64,7 @@ describe("Datatables", function () {
         });
 
         it("Single row disabled", function (done) {
-            updatejQueryContext("test/pages/datatables/single_row.html").then(() => {
+            updatejQueryContext("datatables/single_row.html").then(() => {
                 const dt = new DataTable();
                 dt.disable_one_row = true;
                 for (const t of dt.tables) {
@@ -77,7 +77,7 @@ describe("Datatables", function () {
 
     describe("Tables with implicit headers", function () {
         before(function (done) {
-            updatejQueryContext("test/pages/datatables/implicit_headers.html").then(() => {
+            updatejQueryContext("datatables/implicit_headers.html").then(() => {
                 this.dt = new DataTable();
                 done();
             });

@@ -1,7 +1,7 @@
 describe('Timetable extractor', function() {
     before(() => {
         return new Promise((resolve) => {
-            updatejQueryContext("test/pages/timetable_rcom.html").then(resolve)
+            updatejQueryContext("timetable_rcom.html").then(resolve)
         })
     })
     let e;
