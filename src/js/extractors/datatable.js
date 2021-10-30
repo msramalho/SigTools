@@ -31,7 +31,7 @@ class TableUtils {
      */
     static getHeaderRows($table) {
         // find the first table row (not necessarially the first table children (e.g. <caption>))
-        const $firstRow = $table.find("tr:first-child");
+        const $firstRow = $table.find("tr").first();
         // if the first table row is a header row, iterate over the sibling table rows while they are headers
         if (TableUtils.isHeaderRow($firstRow)) {
             // iterate over the sibling rows, and collect the header ones
@@ -107,10 +107,10 @@ class DataTable extends Extractor {
      * Check if the current table is valid for applying datatables
      */
      validTable($table) {
-        if (this.disable_one_row)
-            return $table.find("tr").toArray().length > 2;
-        else
-            return true;
+        const numHeadersRows = TableUtils.getHeaderRows($table).length;
+        const numDataRows = $table.find("tr").toArray().length - numHeadersRows;
+
+        return !this.disable_one_row || numDataRows > 1;
     }
 
     /**
