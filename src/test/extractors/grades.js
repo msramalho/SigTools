@@ -1,4 +1,5 @@
 describe('Grades extractor', function() {
+    this.timeout(5000);
     before(() => {
         return new Promise((resolve) => {
             updatejQueryContext("grades_monitoria.html").then(resolve)
