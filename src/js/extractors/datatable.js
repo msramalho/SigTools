@@ -98,8 +98,8 @@ class DataTable extends Extractor {
             // inject dynamic tables title
             $table.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`));
         } catch (e) {
-            // TODO: cleanup
             // if it fails, table may have a `dataTable` class that changes styling
+            $table.removeClass('dataTable');
         }
     }
 
