@@ -107,6 +107,10 @@ class DataTable extends Extractor {
      * Check if the current table is valid for applying datatables
      */
      validTable($table) {
+        // if table nested inside another table, abort
+        if ($table.find('table').length !== 0)
+            return false;
+        
         const numHeadersRows = TableUtils.getHeaderRows($table).length;
         const numDataRows = $table.find("tr").toArray().length - numHeadersRows;
 
