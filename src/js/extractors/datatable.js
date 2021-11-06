@@ -127,6 +127,9 @@ class DataTable extends Extractor {
 
         // add <thead> if missing, required by DataTable lib
         this.transformAddTableHeader($table);
+
+        // detects possible footers and wraps in <tfoot>
+        this.transformAddFooter($table);
     }
 
     /**
@@ -166,6 +169,27 @@ class DataTable extends Extractor {
                 // append the row to the header
                 $thead.append($tr);
             }
+
+
+        }
+    }
+
+    transformAddFooter($table) {
+        // if table has no explicit thead, abort
+        if($table.children('thead').length === 0)
+            return;
+        
+        // detect if last row could be a footer
+        // heuristic: number of cells does not match the remainder body rows
+        // could be a row showing total/count values
+        let $bodyRows = $table.children('tbody').length ? $table.find('tbody > tr') : $table.find(' > tr');
+        
+        const $lastRow = $($bodyRows[$bodyRows.length - 1]);
+        const $penulRow = $($bodyRows[$bodyRows.length - 2]);
+
+        if($lastRow.children().length !== $penulRow.children().length) {
+            $lastRow.remove();
+            $table.append($("<tfoot>").append($lastRow));
         }
     }
 }
