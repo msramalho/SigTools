@@ -50,6 +50,53 @@ class TableUtils {
     }
 }
 class DataTable extends Extractor {
+    static dtRootWrapperCls = 'dataTables_wrapper';
+    static dtCustomRootWrapperCls = 'SigTools__dt';
+    static dtTableWrapperCls = 'SigTools__dt__table';
+    static dtTableCls = 'dataTable';
+
+    // options to use in the datatable constructors
+    static datatableOptions = {
+        paging: false,
+        order: [],
+        /**
+         * Define the table control elements to appear on the page and in what order
+         * @see {@link https://datatables.net/reference/option/dom}
+         *
+         * Moreover, we also use this to wrap around DataTable elements in `div`s with
+         * our own class names. This enables us to create CSS rules with more specificity
+         * thus overriding the library defaults with more ease
+         *
+         * 1. A wrapper div with class 'SigTools__dt'
+         * 2. B -> the buttons for copying and exporting table data
+         * 3. f -> filter inputs (search box)
+         * 4. r -> show a loading indicator (see: https://datatables.net/reference/option/processing)
+         * 5. t -> the table itself with class 'SigTools__dt__table'
+         * 6. i -> information summary
+         * 7. p -> pagination control
+         */
+        dom: `<"${DataTable.dtCustomRootWrapperCls}"Bfr<"${DataTable.dtTableWrapperCls}"t>i>`,
+        buttons: ['copyHtml5', 'print', {
+            extend: 'csvHtml5',
+            charset: 'UTF-8',
+            bom: true
+        }, {
+                extend: 'excelHtml5',
+                charset: 'UTF-8',
+                bom: true
+            }
+        ],
+    }
+
+    /**
+     * 
+     * @param {*} $table The <table> jQuery element where DataTable is applied
+     * @returns The top root node created by DataTable that wraps table among filter/sorting inputs
+     */
+    static getWrapper($table) {
+        return $table.parents(`.${DataTable.dtRootWrapperCls}`);
+    }
+
     constructor() {
         super();
         this.tables = $("table.dados,table.dadossz,table.tabela:has( tr.i)").toArray();
@@ -86,29 +133,34 @@ class DataTable extends Extractor {
         // or initial work of DataTable lib does not affect the original table
         // if the attaching the DataTable is OK, then we just need to update the DOM
         // once per table, which is also more efficient
-        const $dt = $($table).clone(true);
+        const $neoTable = $($table).clone(true);
+        //const $dt = $table;
 
         // validate table based on user settings for minimum number of rows
-        if (!this.validTable($dt))
+        if (!this.validTable($neoTable))
             return;
 
-        // remove sigarra stuff that is useless
+        // remove DOM elements related to sorting
         $("#ordenacao").remove();
-        $("th a").remove();
+        $neoTable.find("th a").remove();
 
         // make the necessary transformations to the tables to make DataTable work
-        this.preprocessTable($dt);
+        this.preprocessTable($neoTable);
 
         try {
             // try to apply the DataTable
-            $dt.dataTable(DataTable.datatableOptions);
-            // inject dynamic tables title
-            $dt.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`));
+            $neoTable.dataTable(DataTable.datatableOptions);
+            const $wrapper = DataTable.getWrapper($neoTable);
 
             // success, replace original table
-            $table.replaceWith($dt);
+            $table.replaceWith($wrapper);
+
+            // inject dynamic tables title
+            $wrapper.before(
+                $(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`)
+            );
         } catch (e) {
-            //console.warn('Failed to apply DataTable in', $table[0]);
+            console.warn('Failed to apply DataTable in', $table[0]);
         }
     }
 
@@ -213,39 +265,6 @@ class DataTable extends Extractor {
             $table.append($("<tfoot>").append($lastRow));
         }
     }
-}
-
-// static property: options to use in the datatable calls
-DataTable.datatableOptions = {
-    paging: false,
-    order: [],
-    /**
-     * Define the table control elements to appear on the page and in what order
-     * @see {@link https://datatables.net/reference/option/dom}
-     *
-     * Moreover, we also use this to wrap around DataTable elements in `div`s with
-     * our own class names. This enables us to create CSS rules with more specificity
-     * thus overriding the library defaults with more ease
-     *
-     * 1. A wrapper div with class 'SigTools__dt'
-     * 2. B -> the buttons for copying and exporting table data
-     * 3. f -> filter inputs (search box)
-     * 4. r -> show a loading indicator (see: https://datatables.net/reference/option/processing)
-     * 5. t -> the table itself with class 'SigTools__dt__table'
-     * 6. i -> information summary
-     * 7. p -> pagination control
-     */
-    dom: `<"SigTools__dt"Bfr<"SigTools__dt__table"t>i>`,
-    buttons: ['copyHtml5', 'print', {
-        extend: 'csvHtml5',
-        charset: 'UTF-8',
-        bom: true
-    }, {
-            extend: 'excelHtml5',
-            charset: 'UTF-8',
-            bom: true
-        }
-    ],
 }
 
 /**
