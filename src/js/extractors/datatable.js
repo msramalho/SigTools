@@ -8,13 +8,13 @@ class TableUtils {
      * @returns {boolean}
      */
     static isHeaderRow($tr) {
-        if(!$tr.is('tr'))
+        if (!$tr.is('tr'))
             throw Error(`Expected <tr> element. Got ${$tr}`);
         // A table row is considered as header if and only if all cells/children
         // are `<th>`. According to MDN, a `tr` can have as children `td`, `th`
         // and other script related elements, such `<script>` or `<template>`
         // See: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/tr#technical_summary
-        
+
         // Thus the condition below is: number of cells (`td` or `th`) must
         // match the number of header cells. If its not, then at least one cell
         // is `td` and is no longer safe to assume it as a table header
@@ -89,6 +89,9 @@ class DataTable extends Extractor {
         $("#ordenacao").remove();
         $("th a").remove();
 
+        // backup, in case DataTable fails
+        const $backup = $($table).clone(true);
+
         // make the necessary transformations to the tables to make DataTable work
         this.preprocessTable($table);
 
@@ -100,17 +103,22 @@ class DataTable extends Extractor {
         } catch (e) {
             // if it fails, table may have a `dataTable` class that changes styling
             $table.removeClass('dataTable');
+
+            // if the constructor started modifying the DOM and failed, then perform full restore
+            // note: DataTables have a 'destroy()' method, my if the constructor fails the chance is
+            // calling 'destroy' will throw
+            $table.parents('.dataTables_wrapper').replaceWith($backup);
         }
     }
 
     /**
      * Check if the current table is valid for applying datatables
      */
-     validTable($table) {
+    validTable($table) {
         // if table nested inside another table, abort
         if ($table.find('table').length !== 0)
             return false;
-        
+
         const numHeadersRows = TableUtils.getHeaderRows($table).length;
         const numDataRows = $table.find("tr").toArray().length - numHeadersRows;
 
@@ -176,18 +184,18 @@ class DataTable extends Extractor {
 
     transformAddFooter($table) {
         // if table has no explicit thead, abort
-        if($table.children('thead').length === 0)
+        if ($table.children('thead').length === 0)
             return;
-        
+
         // detect if last row could be a footer
         // heuristic: number of cells does not match the remainder body rows
         // could be a row showing total/count values
         let $bodyRows = $table.children('tbody').length ? $table.find('tbody > tr') : $table.find(' > tr');
-        
+
         const $lastRow = $($bodyRows[$bodyRows.length - 1]);
         const $penulRow = $($bodyRows[$bodyRows.length - 2]);
 
-        if($lastRow.children().length !== $penulRow.children().length) {
+        if ($lastRow.children().length !== $penulRow.children().length) {
             $lastRow.remove();
             $table.append($("<tfoot>").append($lastRow));
         }
