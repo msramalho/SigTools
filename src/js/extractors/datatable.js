@@ -81,33 +81,34 @@ class DataTable extends Extractor {
     }
 
     attachTableIfPossible($table) {
+        // clone table
+        // in case the DataTable fails, any DOM manipulation due our pre-processing
+        // or initial work of DataTable lib does not affect the original table
+        // if the attaching the DataTable is OK, then we just need to update the DOM
+        // once per table, which is also more efficient
+        const $dt = $($table).clone(true);
+
         // validate table based on user settings for minimum number of rows
-        if (!this.validTable($table))
+        if (!this.validTable($dt))
             return;
 
         // remove sigarra stuff that is useless
         $("#ordenacao").remove();
         $("th a").remove();
 
-        // backup, in case DataTable fails
-        const $backup = $($table).clone(true);
-
         // make the necessary transformations to the tables to make DataTable work
-        this.preprocessTable($table);
+        this.preprocessTable($dt);
 
         try {
             // try to apply the DataTable
-            $table.dataTable(DataTable.datatableOptions);
+            $dt.dataTable(DataTable.datatableOptions);
             // inject dynamic tables title
-            $table.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`));
-        } catch (e) {
-            // if it fails, table may have a `dataTable` class that changes styling
-            $table.removeClass('dataTable');
+            $dt.prev().after($(`<h2 class="noBorder">SigTools Dynamic Tables</h2>`));
 
-            // if the constructor started modifying the DOM and failed, then perform full restore
-            // note: DataTables have a 'destroy()' method, my if the constructor fails the chance is
-            // calling 'destroy' will throw
-            $table.parents('.dataTables_wrapper').replaceWith($backup);
+            // success, replace original table
+            $table.replaceWith($dt);
+        } catch (e) {
+            //console.warn('Failed to apply DataTable in', $table[0]);
         }
     }
 
