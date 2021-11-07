@@ -178,24 +178,36 @@ class DataTable extends Extractor {
                 $thead.append($tr);
             }
 
-
         }
     }
 
+    /**
+     * Attempts to extract footers to support more datatables
+     * 
+     * Some tables have as a last row a 'total' or similar value. In general,
+     * this is a summary of the data in the table, and therefore it shouldn't be
+     * part of the body and sorting mechanisms. Moreover, its quite often that
+     * this last row has just two or so columns ( | Total: | < value > |), while
+     * the body has more columns, thus DataTable will fail.
+     * 
+     * This method is a conservative approach to extract the last row and wrap it
+     * in <tfoot>. It relies in:
+     * (1) - Last row has a class 'totais'. Examples can be found in courses 
+     * information page, e.g. https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=459523,
+     * list of thesis proposals (ESTAGIOS_ALUNOS.LISTA_EMPRESAS),  
+     * @param {*} $table 
+     * @returns 
+     */
     transformAddFooter($table) {
         // if table has no explicit thead, abort
         if ($table.children('thead').length === 0)
             return;
 
-        // detect if last row could be a footer
-        // heuristic: number of cells does not match the remainder body rows
-        // could be a row showing total/count values
         let $bodyRows = $table.children('tbody').length ? $table.find('tbody > tr') : $table.find(' > tr');
 
         const $lastRow = $($bodyRows[$bodyRows.length - 1]);
-        const $penulRow = $($bodyRows[$bodyRows.length - 2]);
 
-        if ($lastRow.children().length !== $penulRow.children().length) {
+        if ($lastRow.hasClass('totais')) {
             $lastRow.remove();
             $table.append($("<tfoot>").append($lastRow));
         }
