@@ -24,6 +24,11 @@
         "run_at": "document_end"
     }, {
         "matches": ["https://sigarra.up.pt/*"],
+        "exclude_globs": [
+            "*hor_geral*", "*HOR_GERAL*",
+            "*exa_geral*", "*EXA_GERAL*",
+            "*gpag_ccorrente_geral.conta_corrente_view*", "*GPAG_CCORRENTE_GERAL.CONTA_CORRENTE_VIEW*"
+        ],
         "css": ["css/datatables.min.css"],
         "js": ["js/extractors/datatable.js", "js/extractors/infinite_scroll.js"],
         "run_at": "document_end"
