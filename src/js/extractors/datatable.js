@@ -99,8 +99,7 @@ class DataTable extends Extractor {
 
     constructor() {
         super();
-        this.tables = $("table.dados,table.dadossz,table.tabela:has( tr.i)").toArray();
-        this.loading = false // indicates when there is an ongoing ajax request
+        this.loading = false; // indicates when there is an ongoing ajax request
         this.ready();
     }
 
@@ -123,8 +122,8 @@ class DataTable extends Extractor {
     }
 
     attachIfPossible() {
-        // returned becaused of unit tests
-        return $.each(this.tables, (_, t) => this.attachTableIfPossible($(t)))
+        $("table.dados,table.dadossz,table.tabela:has( tr.i)")
+            .each((_, t) => this.attachTableIfPossible($(t)));
     }
 
     attachTableIfPossible($table) {
@@ -133,24 +132,24 @@ class DataTable extends Extractor {
         // or initial work of DataTable lib does not affect the original table
         // if the attaching the DataTable is OK, then we just need to update the DOM
         // once per table, which is also more efficient
-        const $neoTable = $($table).clone(true);
+        const $dtTable = $($table).clone(true);
         //const $dt = $table;
 
         // validate table based on user settings for minimum number of rows
-        if (!this.validTable($neoTable))
+        if (!this.validTable($dtTable))
             return;
 
         // remove DOM elements related to sorting
         $("#ordenacao").remove();
-        $neoTable.find("th a").remove();
+        $dtTable.find("th a").remove();
 
         // make the necessary transformations to the tables to make DataTable work
-        this.preprocessTable($neoTable);
+        this.preprocessTable($dtTable);
 
         try {
             // try to apply the DataTable
-            $neoTable.dataTable(DataTable.datatableOptions);
-            const $wrapper = DataTable.getWrapper($neoTable);
+            $dtTable.dataTable(DataTable.datatableOptions);
+            const $wrapper = DataTable.getWrapper($dtTable);
 
             // success, replace original table
             $table.replaceWith($wrapper);

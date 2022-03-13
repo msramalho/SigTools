@@ -10,44 +10,21 @@ describe("Datatables", function () {
         return isTableWrapped($table) && isAllWrapped($table);
     }
 
-    describe("Out-of-the-box valid tables", function () {
-        /**
-         * Loads sample file with multiple valid tables
-         */
-        before(function (done) {
-            updatejQueryContext("datatables/all_valid.html").then(() => {
-                this.dt = new DataTable();
-                this.dt.attachIfPossible();
-                done();
-            });
-        });
-
-        /**
-         * Ensure the extractor finds all possible tables
-         */
-        it("Find all candidate HTML tables", function () {
-            const ids = [
-                'table-1',
-                'table-2',
-                'table-spans-1'
-            ];
-            chai.assert.isArray(this.dt.tables, "Tables should be an array");
-            chai.assert.equal(this.dt.tables.length, ids.length, `Expected to find ${ids.length} tables`);
-            for(const id of ids) {
-                chai.assert.isDefined(this.dt.tables.find((t) => t.id === id), `Expected table ${id} to be a valid candidate`);
-            }
-        })
-
+    describe("Valid tables (no pre-processing needed)", function () {
         /**
          * Check DataTable lib loads correctly on all candidate tables
          */
         it("Check DataTable loads correctly on all candidates", function () {
+            updatejQueryContext("datatables/all_valid.html").then(() => {
+                this.dt = new DataTable();
+                this.dt.attachIfPossible();
 
-            for (const t of this.dt.tables) {
-                chai.assert.isTrue(
-                    isDataTableApplied(t)
-                );
-            }
+                for(const t of $('table')) {
+                    chai.assert.isTrue(
+                       isDataTableApplied(t)
+                    );
+                }
+            });
         });
     });
 
@@ -56,7 +33,7 @@ describe("Datatables", function () {
             updatejQueryContext("datatables/single_row.html").then(() => {
                 const dt = new DataTable();
                 dt.disable_one_row = false;
-                for (const t of dt.tables) {
+                for (const t of $('table')) {
                     chai.assert.isTrue(dt.validTable($(t)));
                 }
                 done();
@@ -67,7 +44,7 @@ describe("Datatables", function () {
             updatejQueryContext("datatables/single_row.html").then(() => {
                 const dt = new DataTable();
                 dt.disable_one_row = true;
-                for (const t of dt.tables) {
+                for (const t of $('table')) {
                     chai.assert.isFalse(dt.validTable($(t)));
                 }
                 done();
@@ -146,7 +123,7 @@ describe("Datatables", function () {
             ];
 
             for (const tid of validTableIds) {
-                chai.assert.isTrue(isDataTableApplied($(this._aux.find(($t) => $t.id === tid))));
+                chai.assert.isTrue(isDataTableApplied($(`#${tid}`)));
             }
 
             const invalidTableIds = [
@@ -155,7 +132,7 @@ describe("Datatables", function () {
             ];
 
             for (const tid of invalidTableIds) {
-                chai.assert.isFalse(isDataTableApplied($(this._aux.find(($t) => $t.id === tid))));
+                chai.assert.isFalse(isDataTableApplied(isDataTableApplied($(`#${tid}`))));
             }
         });
     });
