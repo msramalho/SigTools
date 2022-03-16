@@ -3,7 +3,6 @@
  * TODO
  */
 class MailTo extends Extractor {
-
     constructor() {
         super();
         this.ready();
@@ -14,13 +13,15 @@ class MailTo extends Extractor {
             extractor: "mailto",
             description: "Things",
             storage: {
-                text: [{
-                    name: "exclude_urls_csv",
-                    // ignore the profile page for FEUP employees
-                    default: "func_geral.formview"
-                }]
-            }
-        }
+                text: [
+                    {
+                        name: "exclude_urls_csv",
+                        // ignore the profile page for FEUP employees
+                        default: "func_geral.formview",
+                    },
+                ],
+            },
+        };
     }
 
     attachIfPossible() {
@@ -46,30 +47,42 @@ class MailTo extends Extractor {
                         usersData[id] = {
                             email,
                             firstname,
-                            lastname
+                            lastname,
                         };
-                        Logger.debug("[Mailto]", `Found data for user with ID '${id}'`, usersData[id]);
+                        Logger.debug(
+                            "[Mailto]",
+                            `Found data for user with ID '${id}'`,
+                            usersData[id]
+                        );
                     })
                     .catch((e) => {
-                        Logger.error("[Mailto]", `Failed to find data for user with ID '${id}'`);
-                    })
+                        Logger.error(
+                            "[Mailto]",
+                            `Failed to find data for user with ID '${id}'`
+                        );
+                    });
 
                 // add this promise to the list
-                allPromises.push(
-                    p
-                );
+                allPromises.push(p);
             }
         }
 
         // wait for all promises to resolve/fail to ensure the usersData is updated
         Promise.allSettled(allPromises).then(() => {
-            Logger.debug("[Mailto]", `Adding the 'send email' button for users with available email...`);
+            Logger.debug(
+                "[Mailto]",
+                `Adding the 'send email' button for users with available email...`
+            );
             // for each hyperlink in the page, add the 'send email' button
             for (const { id, node } of allHyperlinks) {
                 if (id in usersData && usersData[id].email) {
                     node.insertAdjacentHTML(
                         "beforebegin",
-                        `<a href="mailto:${usersData[id].email}"><img style="margin-right:0.25em" src="${chrome.extension.getURL("icons/email.png")}"></a>`
+                        `<a href="mailto:${
+                            usersData[id].email
+                        }"><img style="margin-right:0.25em" src="${chrome.extension.getURL(
+                            "icons/email.png"
+                        )}"></a>`
                     );
                 }
             }
@@ -78,9 +91,9 @@ class MailTo extends Extractor {
             Logger.debug("[Mailto]", `Updating the users cache...`);
             chrome.storage.local.get("users_cache", (result) => {
                 const cache = {
-                    "users_cache": {
+                    users_cache: {
                         ...result["users_cache"],
-                        ...usersData
+                        ...usersData,
                     },
                 };
                 chrome.storage.local.set(cache);
@@ -98,11 +111,11 @@ class MailTo extends Extractor {
      * }[]}
      */
     getUserHyperlinks() {
-        /* 
+        /*
          * In general there is a url for FEUP employees (func_geral.formview)
          * and another one for students (fest_geral.cursos_list). The URLs
          * end with a numeric ID
-         * 
+         *
          * There is a third option (vld_entidades_geral.entidade_pagina), which
          * is used for both, e.g., in dissertation list pages, which causes
          * the browser to redirect to one of the aforementioned URLs depending
@@ -114,28 +127,31 @@ class MailTo extends Extractor {
          * tags are not interpreted, and therefore no redirect occurs. In the
          * future, when support for students is added the urls
          * `vld_entidades_geral.entidade_pagina` must be handled individually
-         * to find the actual url, wether it is `func_geral.formview` or 
+         * to find the actual url, wether it is `func_geral.formview` or
          * `fest_geral.cursos_list`. For now, it is enough to get the user ID
          * and use the version `func_geral.formview`. If it is a student ID,
          * the request simply fails and the code skips the user
-        */
-        const re = /(func_geral\.formview\?p_codigo|vld_entidades_geral\.entidade_pagina\?pct_codigo)=(\d+)/i;
-        return Array.prototype.filter.call(document.querySelectorAll("a"), ($el) => re.test($el.href)).map(($el) => {
-            const m = $el.href.match(re);
-            return {
-                url: $el.href,
-                id: m[2],
-                node: $el
-            };
-        });
+         */
+        const re =
+            /(func_geral\.formview\?p_codigo|vld_entidades_geral\.entidade_pagina\?pct_codigo)=(\d+)/i;
+        return Array.prototype.filter
+            .call(document.querySelectorAll("a"), ($el) => re.test($el.href))
+            .map(($el) => {
+                const m = $el.href.match(re);
+                return {
+                    url: $el.href,
+                    id: m[2],
+                    node: $el,
+                };
+            });
     }
 
     /**
      * Loads the profile information for a given user identified by its ID. The
      * data is loaded from cache, when available. Otherwise, it attempts to
      * parse the Sigarra profile page
-     * 
-     * @param {string|number} userID 
+     *
+     * @param {string|number} userID
      * @returns {Promise<{
      *  name: string,
      *  firstname: string,
@@ -152,18 +168,26 @@ class MailTo extends Extractor {
                 result = result["users_cache"] || {};
                 if (result[userID] && result[userID].email) {
                     // if the user ID is cached and has an email, return the result
-                    Logger.debug("[Mailto]", `User with ID '${userID}' is cached and email is available.`);
+                    Logger.debug(
+                        "[Mailto]",
+                        `User with ID '${userID}' is cached and email is available.`
+                    );
                     resolve(result[userID]);
                 } else {
                     // otherwise parse the profile page and cache the results
-                    Logger.debug("[Mailto]", `User with ID '${userID}' is not cached. Trying to retrieve the data...`);
-                    UserStaffParser
-                        .fromURL(`https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=${userID}`)
+                    Logger.debug(
+                        "[Mailto]",
+                        `User with ID '${userID}' is not cached. Trying to retrieve the data...`
+                    );
+                    UserStaffParser.fromURL(
+                        `https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=${userID}`
+                    )
                         .then((userParser) => {
-                            // successful 
+                            // successful
                             const data = userParser.parse();
                             resolve(data);
-                        }).catch((e) => {
+                        })
+                        .catch((e) => {
                             // error, probably because it is a student ID
                             reject(e);
                         });

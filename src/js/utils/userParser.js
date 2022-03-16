@@ -7,10 +7,10 @@
  */
 class UserStaffParser {
     /**
-     * 
+     *
      * @param {Document?} doc An optional DOM object to use as parsing context.
      * Defaults to the 'document' global variable
-     * 
+     *
      * @throws In case the target page does not have the expected DOM elements
      */
     constructor(doc) {
@@ -27,15 +27,15 @@ class UserStaffParser {
 
     /**
      * Run the parser over a URL page rather than current 'document' context
-     * @param {string} url 
+     * @param {string} url
      * @returns Promise<UserParser>
      */
     static fromURL(url) {
         return fetch(url)
-            .then(response => response.text())
-            .then(body => {
+            .then((response) => response.text())
+            .then((body) => {
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(body, 'text/html');
+                const doc = parser.parseFromString(body, "text/html");
                 return new UserStaffParser(doc);
             });
     }
@@ -43,8 +43,8 @@ class UserStaffParser {
     /**
      * Finds the table row with personal information for a given label,
      * e.g. 'Name:'
-     * 
-     * @param {string} label 
+     *
+     * @param {string} label
      * @returns {HTMLElement} A table row with the target data
      * @returns {undefined} An entry with the specified label was not found
      */
@@ -55,18 +55,18 @@ class UserStaffParser {
         // | Email Institucional:   | john@fe.up.pt |
         // The label param represents the field name on the left side
 
-        const $tr = Array
-            .from(this.$personalInfo.querySelectorAll("tr"))
-            .find(e => {
+        const $tr = Array.from(this.$personalInfo.querySelectorAll("tr")).find(
+            (e) => {
                 const $tdLabel = e.children[0];
                 return $tdLabel.textContent === label;
-            });
+            }
+        );
 
         return $tr;
     }
 
     /**
-     * 
+     *
      * @returns {string} The full name
      */
     _tryParseName() {
@@ -75,17 +75,19 @@ class UserStaffParser {
         // are needed, I hope (right Sigarra?)
         // Moreover, the english view translates the field label, but every
         // other label is always in portuguese :)
-        const $tr = this._tryParseField("Nome:") || this._tryParseField("Name:");
+        const $tr =
+            this._tryParseField("Nome:") || this._tryParseField("Name:");
         return $tr.children[1].textContent.trim();
     }
 
     /**
-     * 
+     *
      * @returns {string|null} An URL for personal webpage
      */
     _tryParseWebpage() {
         // the hyperlink for webpage is next to the name field
-        const $tr = this._tryParseField("Nome:") || this._tryParseField("Name:");
+        const $tr =
+            this._tryParseField("Nome:") || this._tryParseField("Name:");
         if (!$tr) return null;
 
         const $a = $tr.children[1].querySelector("a");
@@ -94,7 +96,7 @@ class UserStaffParser {
     }
 
     /**
-     * 
+     *
      * @returns {string|null} The institutional email. Alternative emails are
      * not visible, except for the administration
      */
@@ -106,8 +108,7 @@ class UserStaffParser {
 
         // the '@' is typically an image, replace it with plain text
         const $img = $emailTd.querySelector("img");
-        if ($img)
-            $img.replaceWith("@");
+        if ($img) $img.replaceWith("@");
 
         return $emailTd.textContent.trim();
     }
@@ -122,7 +123,7 @@ class UserStaffParser {
 
     /**
      * Tries to parse personal information from a Sigarra profile view
-     * 
+     *
      * @returns {{
      *  name: string,
      *  firstname: string,
