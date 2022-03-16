@@ -6,6 +6,7 @@ const {
     watch,
     dest
 } = require('gulp');
+const preprocess = require("gulp-preprocess");
 const $ = require('gulp-load-plugins')()
 
 
@@ -118,7 +119,9 @@ function moveIcons() {
 
 /** Task: Copy javascript folder from `src/` to `build/` */
 function moveJs() {
-    return pipe('./src/js/**/*', `./build/${target}/js`);
+    return src('./src/js/**/*')
+        .pipe(preprocess({ context: { DEBUG: environment === 'development' }}))
+        .pipe(gulp.dest(`./build/${target}/js`));
 }
 
 /** Task: Copy html files from `src/` to `build/` */
