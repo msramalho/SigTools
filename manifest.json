@@ -20,7 +20,7 @@
     "content_scripts": [{
         "matches": ["https://*.up.pt/*"],
         "css": ["css/content_style.css"],
-        "js": ["js/lib/jquery-3.4.1.js", "js/lib/datatables.min.js", "js/lib/ics.deps.min.js", "js/lib/ics.js", "js/lib/sweetalert.min.js", "js/lib/luxon.min.js", "js/utils/calendar.js", "js/utils/global.js", "js/utils/dropdown.js", "js/utils/modal.js", "js/utils/time.js", "js/utils/logger.js", "js/utils/userParser.js", "js/extractors/extractor.js"],
+        "js": ["js/lib/jquery-3.4.1.js", "js/lib/datatables.min.js", "js/lib/ics.deps.min.js", "js/lib/ics.js", "js/lib/sweetalert.min.js", "js/lib/luxon.min.js", "js/utils/calendar.js", "js/utils/global.js", "js/utils/dropdown.js", "js/utils/modal.js", "js/utils/time.js", "js/utils/logger.js", "js/utils/userParser.js", "js/extractors/extractor.js", "js/extractors/mailto.js"],
         "run_at": "document_end"
     }, {
         "matches": ["https://sigarra.up.pt/*"],
