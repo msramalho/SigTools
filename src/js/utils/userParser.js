@@ -76,7 +76,6 @@ class UserStaffParser {
         // Moreover, the english view translates the field label, but every
         // other label is always in portuguese :)
         const $tr = this._tryParseField("Nome:") || this._tryParseField("Name:");
-        console.debug($tr.children[1].textContent);
         return $tr.children[1].textContent.trim();
     }
 

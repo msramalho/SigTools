@@ -1,6 +1,6 @@
 "use strict";
 /**
- * The base extractor that works as an interface for the other interfaces
+ * TODO
  */
 class MailTo extends Extractor {
 
@@ -24,15 +24,51 @@ class MailTo extends Extractor {
     }
 
     attachIfPossible() {
-        for (const t of this.getProfileHyperlinks()) {
-            this.getEmail(t.id).then(email => {
-                if (email)
-                    t.node.insertAdjacentHTML(
-                        "beforebegin",
-                        `<a href="mailto:${email}"><img style="margin-right:0.25em" src="${chrome.extension.getURL("icons/email.png")}"></a>`
-                    );
-            });
+        // store data for all unique users
+        const usersData = {};
+
+        // find all hyperlinks for unique user profiles
+        const allHyperlinks = this.getUserHyperlinks();
+
+        // for each unique user, load all details from cache or by parsing the profile page
+        const allPromises = [];
+        const uniqueIds = new Set();
+        for (const { id } of allHyperlinks) {
+            if (!uniqueIds.has(id)) {
+                uniqueIds.add(id);
+                allPromises.push(
+                    this.getUserData(id).then(({ email, firstname, lastname }) => {
+                        usersData[id] = {
+                            email,
+                            firstname,
+                            lastname
+                        };
+                    })
+                );
+            }
         }
+
+        Promise.allSettled(allPromises).then(() => {
+            // for each hyperlink in the page, add the 'send email' button
+            for (const { id, node } of allHyperlinks) {
+                if (id in usersData && usersData[id].email) {
+                    node.insertAdjacentHTML(
+                        "beforebegin",
+                        `<a href="mailto:${usersData[id].email}"><img style="margin-right:0.25em" src="${chrome.extension.getURL("icons/email.png")}"></a>`
+                    );
+                }
+            }
+
+            // Update cache
+            chrome.storage.local.get("users_cache", (result) => {
+                chrome.storage.local.set({
+                    "users_cache": {
+                        ...result["users_cache"],
+                        ...usersData
+                    },
+                });
+            });
+        });
     }
 
     /**
@@ -43,7 +79,7 @@ class MailTo extends Extractor {
      *  node: HTMLElement
      * }[]}
      */
-    getProfileHyperlinks() {
+    getUserHyperlinks() {
         const re = /func_geral\.formview\?p_codigo=(\d+)/i;
         return Array.prototype.filter.call(document.querySelectorAll("a"), ($el) => re.test($el.href)).map(($el) => {
             const m = $el.href.match(re);
@@ -55,13 +91,37 @@ class MailTo extends Extractor {
         });
     }
 
-    getEmail(profileID) {
-        return UserStaffParser
-            .fromURL(`https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=${profileID}`)
-            .then((userParser) => {
-                const data = userParser.parse();
-                return data.email;
+    /**
+     * 
+     * @param {*} userID 
+     * @returns {Promise<{
+     *  name: string,
+     *  firstname: string,
+     *  lastname: string,
+     *  email: string|null,
+     *  webpage: string|null,
+     * }>}
+     */
+    getUserData(userID) {
+        return new Promise((resolve, reject) => {
+            // try to load from cache
+            chrome.storage.local.get("users_cache", (result) => {
+                // note: if the entry 'users_cache' does not exist, 'result' is an empty object
+                result = result["users_cache"] || {};
+                if (result[userID] && result[userID].email) {
+                    // if the user ID is cached and has an email, return the result
+                    resolve(result[userID]);
+                } else {
+                    // otherwise parse the profile page and cache the results
+                    UserStaffParser
+                        .fromURL(`https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=${userID}`)
+                        .then((userParser) => {
+                            const data = userParser.parse();
+                            resolve(data);
+                        })
+                }
             });
+        });
     }
 }
 
