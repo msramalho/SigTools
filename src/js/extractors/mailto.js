@@ -43,23 +43,18 @@ class MailTo extends Extractor {
 
                 // init promise
                 const p = this.getUserData(id)
-                    .then(({ email, firstname, lastname }) => {
+                    .then(({ email, firstname, lastname, name }) => {
                         usersData[id] = {
                             email,
+                            name,
                             firstname,
                             lastname,
+                            id,
                         };
-                        Logger.debug(
-                            "[Mailto]",
-                            `Found data for user with ID '${id}'`,
-                            usersData[id]
-                        );
+                        Logger.debug("[Mailto]", `Found data for user with ID '${id}'`, usersData[id]);
                     })
                     .catch((e) => {
-                        Logger.error(
-                            "[Mailto]",
-                            `Failed to find data for user with ID '${id}'`
-                        );
+                        Logger.error("[Mailto]", `Failed to find data for user with ID '${id}'`);
                     });
 
                 // add this promise to the list
@@ -69,10 +64,7 @@ class MailTo extends Extractor {
 
         // wait for all promises to resolve/fail to ensure the usersData is updated
         Promise.allSettled(allPromises).then(() => {
-            Logger.debug(
-                "[Mailto]",
-                `Adding the 'send email' button for users with available email...`
-            );
+            Logger.debug("[Mailto]", `Adding the 'send email' button for users with available email...`);
             // for each hyperlink in the page, add the 'send email' button
             for (const { id, node } of allHyperlinks) {
                 if (id in usersData && usersData[id].email) {
@@ -80,9 +72,7 @@ class MailTo extends Extractor {
                         "beforebegin",
                         `<a href="mailto:${
                             usersData[id].email
-                        }"><img style="margin-right:0.25em" src="${chrome.extension.getURL(
-                            "icons/email.png"
-                        )}"></a>`
+                        }"><img style="margin-right:0.25em" src="${chrome.extension.getURL("icons/email.png")}"></a>`
                     );
                 }
             }
@@ -99,6 +89,15 @@ class MailTo extends Extractor {
                 chrome.storage.local.set(cache);
                 Logger.debug("[Mailto]", `New cache version:`, cache);
             });
+
+            // Add batch email modal
+            const template = document.createElement("template");
+            template.innerHTML = `<button>CLICK ME</button>`;
+            const btn = template.content.firstElementChild;
+            btn.addEventListener("click", (ev) => {
+                this.attachSendBatchEmailModal(usersData);
+            });
+            document.querySelector("#colunaextra").appendChild(btn);
         });
     }
 
@@ -132,8 +131,7 @@ class MailTo extends Extractor {
          * and use the version `func_geral.formview`. If it is a student ID,
          * the request simply fails and the code skips the user
          */
-        const re =
-            /(func_geral\.formview\?p_codigo|vld_entidades_geral\.entidade_pagina\?pct_codigo)=(\d+)/i;
+        const re = /(func_geral\.formview\?p_codigo|vld_entidades_geral\.entidade_pagina\?pct_codigo)=(\d+)/i;
         return Array.prototype.filter
             .call(document.querySelectorAll("a"), ($el) => re.test($el.href))
             .map(($el) => {
@@ -168,20 +166,12 @@ class MailTo extends Extractor {
                 result = result["users_cache"] || {};
                 if (result[userID] && result[userID].email) {
                     // if the user ID is cached and has an email, return the result
-                    Logger.debug(
-                        "[Mailto]",
-                        `User with ID '${userID}' is cached and email is available.`
-                    );
+                    Logger.debug("[Mailto]", `User with ID '${userID}' is cached and email is available.`);
                     resolve(result[userID]);
                 } else {
                     // otherwise parse the profile page and cache the results
-                    Logger.debug(
-                        "[Mailto]",
-                        `User with ID '${userID}' is not cached. Trying to retrieve the data...`
-                    );
-                    UserStaffParser.fromURL(
-                        `https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=${userID}`
-                    )
+                    Logger.debug("[Mailto]", `User with ID '${userID}' is not cached. Trying to retrieve the data...`);
+                    UserStaffParser.fromURL(`https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=${userID}`)
                         .then((userParser) => {
                             // successful
                             const data = userParser.parse();
@@ -193,6 +183,71 @@ class MailTo extends Extractor {
                         });
                 }
             });
+        });
+    }
+
+    attachSendBatchEmailModal(usersData) {
+        // the modal div template
+        const $modal = createElementFromString(`<div id="sig_emailsModal">
+                <div class="sig_modalBody">
+                    <h1>SigTools</h1>
+                    <p>Select the email recipients</p>
+                    <div class="emails-select">
+                        <div class="emails-select__field emails-select__field--to">
+                            <!-- <div class="user"> -->
+                        </div>
+                    </div>
+                    <div>
+                        <button class="send-email">Send email</button>
+                    </div>
+                </div>
+                <div class="sig_overlay"></div>
+            </div>`);
+
+        // add users checkboxes to select all recipients and sort by name
+        const userCtnr = $modal.querySelector(".emails-select__field--to");
+        for (const user of Object.values(usersData).sort((a, b) => a.name.localeCompare(b.name))) {
+            const userCheckBox = createElementFromString(`
+                <div class="user">
+                    <input type="checkbox" id="user-${user.id}">
+                    <label for="user-${user.id}">${user.firstname} ${user.lastname}</label>
+                </div>
+            `);
+            userCtnr.append(userCheckBox);
+        }
+
+        // add 'click' event in the 'send email' button
+        $modal.querySelector(".send-email").addEventListener("click", (e) => {
+            const selectedIds = new Set();
+
+            // traverse the user selection checkboxes, if checked, add to the set
+            for (const $input of $modal.querySelectorAll(".emails-select__field--to .user input")) {
+                if ($input.checked) {
+                    const id = $input.id.split("-")[1];
+                    selectedIds.add(id);
+                }
+            }
+
+            // if no selected emails, do not proceed
+            if (!selectedIds.size) return;
+
+            // get the emails for the selected emails
+            const selectedEmails = Object.keys(usersData)
+                .filter((id) => selectedIds.has(id))
+                .map((id) => usersData[id].email);
+
+            // build the mailto link
+            // format: mailto:<addr1>;<addr2>?&cc=<addr3>&bcc=<addr4>;<addr5>
+            const mailto = `mailto:${selectedEmails.join(";")}`;
+            window.open(mailto, "_self");
+        });
+
+        // add the modal to the DOM
+        document.querySelector("head").insertAdjacentElement("beforebegin", $modal);
+
+        // add event listener for clicks outside the modal div to close it
+        document.querySelector(".sig_overlay").addEventListener("click", (ev) => {
+            $modal.remove();
         });
     }
 }

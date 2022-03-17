@@ -283,3 +283,37 @@ a.calendarBtn:hover {
         url("moz-extension://__MSG_@@extension_id__/icons/datatables/sort_desc_disabled.png"),
         url("chrome-extension://__MSG_@@extension_id__/icons/datatables/sort_desc_disabled.png") !important;
 }
+
+/**
+ * Modal for batch emails
+ */
+
+
+/* content_style.css | moz-extension://6802f31f-1441-496e-a71e-67b79186ea23/css/content_style.css */
+
+.emails-select {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+}
+
+.emails-select .emails-select__field {
+    min-height: 50px;
+    border: 1px black dashed;
+    margin: 0.5em 0;
+    padding: 0.5em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+}
+
+.emails-select .emails-select__field .user {
+    padding: 0.25em 0.5em;
+    background-color: lightgrey;
+    margin: 0.25em;
+    font-size: 1.2em;
+    flex: 0 0;
+    display: inline-block;
+    white-space: nowrap;
+    user-select: none;
+}
