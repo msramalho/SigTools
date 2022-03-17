@@ -102,3 +102,14 @@ function jsonToCsv(objArray) {
 
     return str;
 }
+
+/**
+ * Creates an HTML element object from a DOM string
+ * @param {string} htmlString 
+ * @returns {HTMLElement}
+ */
+function createElementFromString(htmlString) {
+    const div = document.createElement('div');
+    div.innerHTML = htmlString.trim();
+    return div.firstElementChild;
+}
