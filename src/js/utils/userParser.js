@@ -32,10 +32,19 @@ class UserStaffParser {
      */
     static fromURL(url) {
         return fetch(url)
-            .then((response) => response.text())
-            .then((body) => {
+            .then((response) => response.arrayBuffer())
+            .then((buffer) => {
+                /**
+                 * Responses from sigarra endpoints are encoded as
+                 * `text/html; charset=iso-8859-15`. The first step is to 
+                 * decode the array buffer, which has the raw bytes, to uft-8
+                 */
+                const decoder = new TextDecoder('iso-8859-15');
+                const html = decoder.decode(buffer);
+                
+                // create a new DOM parser for the decoded html
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(body, "text/html");
+                const doc = parser.parseFromString(html, "text/html");
                 return new UserStaffParser(doc);
             });
     }
