@@ -30,53 +30,54 @@ class MailTo extends Extractor {
 
         // find all hyperlinks for unique user profiles
         Logger.debug("[Mailto]", `Looking for all hyperlinks in the page...`);
-        const allHyperlinks = this.getUserHyperlinks();
+        const allHyperlinks = this._getUserHyperlinks();
 
-        // for each unique user, load all details from cache or by parsing the profile page
+        // if no users data, then skip
+        if (!Object.keys(allHyperlinks).length) return;
+
+        // for each unique user, get profile data and update the DOM
         const allPromises = [];
-        const uniqueIds = new Set();
-        for (const { id, node } of allHyperlinks) {
-            Logger.debug("[Mailto]", `Found user ID ${id} from`, node);
-            if (!uniqueIds.has(id)) {
-                // register the ID to avoid duplicated processing
-                uniqueIds.add(id);
+        for (const [id, nodes] of Object.entries(allHyperlinks)) {
+            Logger.debug("[Mailto]", `Found user ID ${id} in nodes`, nodes);
 
-                // init promise
-                const p = this.getUserData(id)
-                    .then(({ email, firstname, lastname, name }) => {
-                        usersData[id] = {
-                            email,
-                            name,
-                            firstname,
-                            lastname,
-                            id,
-                        };
-                        Logger.debug("[Mailto]", `Found data for user with ID '${id}'`, usersData[id]);
-                    })
-                    .catch((e) => {
-                        Logger.error("[Mailto]", `Failed to find data for user with ID '${id}'`);
-                    });
+            // get the data for this user through cache or parsing the profile page
+            const p = this.getUserData(id)
+                .then(({ email, firstname, lastname, name }) => {
+                    const data = {
+                        email,
+                        name,
+                        firstname,
+                        lastname,
+                        id,
+                    };
 
-                // add this promise to the list
-                allPromises.push(p);
-            }
+                    usersData[id] = data;
+                    Logger.debug("[Mailto]", `Found data for user with ID '${id}'`, data);
+                    return { email, nodes };
+                })
+                .then(({ email, nodes }) => {
+                    if (!email) return;
+
+                    // for each hyperlink in the page, add the 'send email' button
+                    for (const node of nodes) {
+                        node.insertAdjacentHTML(
+                            "beforebegin",
+                            `<a href="mailto:${email}"><img style="margin-right:0.25em" src="${chrome.extension.getURL(
+                                "icons/email.png"
+                            )}"></a>`
+                        );
+                    }
+                })
+                .catch((e) => {
+                    Logger.warn("[Mailto]", `Failed to find data for user with ID '${id}'`);
+                });
+
+            // add this promise to the list
+            allPromises.push(p);
         }
 
-        // wait for all promises to resolve/fail to ensure the usersData is updated
+        // wait for all promises to resolve/fail to ensure the usersData is updated before caching
         Promise.allSettled(allPromises).then(() => {
-            Logger.debug("[Mailto]", `Adding the 'send email' button for users with available email...`);
-            // for each hyperlink in the page, add the 'send email' button
-            for (const { id, node } of allHyperlinks) {
-                if (id in usersData && usersData[id].email) {
-                    node.insertAdjacentHTML(
-                        "beforebegin",
-                        `<a href="mailto:${
-                            usersData[id].email
-                        }"><img style="margin-right:0.25em" src="${chrome.extension.getURL("icons/email.png")}"></a>`
-                    );
-                }
-            }
-
             // Update cache
             Logger.debug("[Mailto]", `Updating the users cache...`);
             chrome.storage.local.get("users_cache", (result) => {
@@ -100,14 +101,12 @@ class MailTo extends Extractor {
     }
 
     /**
-     *
+     * Finds all hyperlinks in the page for user profiles
      * @returns {{
-     *  url: string,
-     *  id: string,
-     *  node: HTMLElement
-     * }[]}
+     *  id: HTMLElement[],
+     * }}
      */
-    getUserHyperlinks() {
+    _getUserHyperlinks() {
         /*
          * In general there is a url for FEUP employees (func_geral.formview)
          * and another one for students (fest_geral.cursos_list). The URLs
@@ -132,14 +131,16 @@ class MailTo extends Extractor {
         const re = /(func_geral\.formview\?p_codigo|vld_entidades_geral\.entidade_pagina\?pct_codigo)=(\d+)/i;
         return Array.prototype.filter
             .call(document.querySelectorAll("a"), ($el) => re.test($el.href))
-            .map(($el) => {
-                const m = $el.href.match(re);
-                return {
-                    url: $el.href,
-                    id: m[2],
-                    node: $el,
-                };
-            });
+            .reduce((obj, $el) => {
+                const id = $el.href.match(re)[2];
+
+                if (!obj[id]) {
+                    obj[id] = [];
+                }
+
+                obj[id].push($el);
+                return obj;
+            }, {});
     }
 
     /**
