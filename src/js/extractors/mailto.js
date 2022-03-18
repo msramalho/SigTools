@@ -90,14 +90,12 @@ class MailTo extends Extractor {
                 Logger.debug("[Mailto]", `New cache version:`, cache);
             });
 
-            // Add batch email modal
-            const template = document.createElement("template");
-            template.innerHTML = `<button>CLICK ME</button>`;
-            const btn = template.content.firstElementChild;
-            btn.addEventListener("click", (ev) => {
+            // Add sidebar with option for batch email
+            const sidebar = new SigarraSidebar();
+            const $btn = sidebar.addItem("Batch Email", chrome.extension.getURL("icons/email-batch.png"));
+            $btn.addEventListener("click", (ev) => {
                 this.attachSendBatchEmailModal(usersData);
             });
-            document.querySelector("#colunaextra").appendChild(btn);
         });
     }
 
