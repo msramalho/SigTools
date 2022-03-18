@@ -140,7 +140,7 @@ function zip() {
 /** Task: Watch for any changes in the source folder */
 function startWatching() {
     $.livereload.listen()
-    watch(['./src/*', './src/**/*', './src/**/**/*']).on("change", () => {
+    watch(['manifest.json','./src/*', './src/**/*', './src/**/**/*']).on("change", () => {
         exports.build()
         $.livereload.reload()
     });

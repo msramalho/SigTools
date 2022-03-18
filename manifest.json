@@ -60,6 +60,10 @@
         "matches": ["https://*.up.pt/*gpag_ccorrente_geral.conta_corrente_view*", "https://*.up.pt/*GPAG_CCORRENTE_GERAL.CONTA_CORRENTE_VIEW*"],
         "js": ["js/extractors/bills.js"],
         "run_at": "document_end"
+    }, {
+        "matches": ["https://*.up.pt/*/fest_geral.curso_percurso_academico_view*"],
+        "js": ["js/extractors/gradesim.js"],
+        "run_at": "document_end"
     }],
     "permissions": [
         "https://*.up.pt/*",
