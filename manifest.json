@@ -35,6 +35,7 @@
                 "js/utils/time.js",
                 "js/utils/logger.js",
                 "js/utils/userParser.js",
+                "js/utils/sidebar.js",
                 "js/extractors/extractor.js",
                 "js/extractors/mailto.js"
             ],
