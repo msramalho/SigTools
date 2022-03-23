@@ -3,6 +3,12 @@
  * TODO
  */
 class MailTo extends Extractor {
+    /**
+     * Keeps track of the number of selected users for batch email
+     * @type {Number}
+     */
+    count = 0;
+
     constructor() {
         super();
         this.ready();
@@ -187,7 +193,7 @@ class MailTo extends Extractor {
 
     attachSendBatchEmailModal(usersData) {
         // the modal div template
-        const $modal = createElementFromString(`<div id="sig_emailsModal">
+        const $modal = createElementFromString(`<div class="sigtools" id="sig_emailsModal">
                 <div class="sig_modalBody">
                     <h1>SigTools</h1>
                     <p>Select the email recipients</p>
@@ -197,7 +203,11 @@ class MailTo extends Extractor {
                         </div>
                     </div>
                     <div>
-                        <button class="send-email">Send email</button>
+                        <a disabled class="btn--primary send-email">
+                            <img style="margin-right:0.25em" src="${chrome.extension.getURL(
+                                "icons/email.png"
+                            )}"/>Send email
+                        </a>
                     </div>
                 </div>
                 <div class="sig_overlay"></div>
@@ -217,7 +227,19 @@ class MailTo extends Extractor {
             $usersCtnr.append(userCheckBox);
         }
 
-        // add 'click' event in the 'send email' button
+        // for all checkboxes, on change increment/decrement number of recipients
+        // if no user is selected, disable the 'send email' button
+        for (const $input of $modal.querySelectorAll(".user input")) {
+            $input.addEventListener("change", (e) => {
+                e.target.checked ? this.count++ : this.count--;
+
+                const $btn = $modal.querySelector(".send-email");
+                this.count == 0 ? $btn.setAttribute("disabled", "true") : $btn.removeAttribute("disabled");
+            });
+        }
+
+        // add 'click' event in the 'send email' button to open 'mailto' link
+        // for selected users
         $modal.querySelector(".send-email").addEventListener("click", (e) => {
             const selectedIds = new Set();
 
