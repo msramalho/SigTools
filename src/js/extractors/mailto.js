@@ -204,15 +204,17 @@ class MailTo extends Extractor {
             </div>`);
 
         // add users checkboxes to select all recipients and sort by name
-        const userCtnr = $modal.querySelector(".emails-select__field--to");
-        for (const user of Object.values(usersData).sort((a, b) => a.name.localeCompare(b.name))) {
+        const $usersCtnr = $modal.querySelector(".emails-select__field--to");
+        for (const user of Object.values(usersData)
+            .filter((u) => u.email)
+            .sort((a, b) => a.name.localeCompare(b.name))) {
             const userCheckBox = createElementFromString(`
-                <div class="user">
+                <div class="user" title="${user.name}">
                     <input type="checkbox" id="user-${user.id}">
                     <label for="user-${user.id}">${user.firstname} ${user.lastname}</label>
                 </div>
             `);
-            userCtnr.append(userCheckBox);
+            $usersCtnr.append(userCheckBox);
         }
 
         // add 'click' event in the 'send email' button
