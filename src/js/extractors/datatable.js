@@ -115,7 +115,7 @@ class DataTable extends Extractor {
                 }],
                 text: [{
                     name: "exclude_urls_csv",
-                    default: "coop_candidatura_geral.editar_candidatura,ucurr_geral.ficha_uc_view,func_geral.formview,fest_geral.cursos_list"
+                    default: "coop_candidatura_geral.editar_candidatura,ucurr_geral.ficha_uc_view,func_geral.formview,fest_geral.cursos_list,vig_geral.docentes_vigilancias_list"
                 }]
             }
         }
