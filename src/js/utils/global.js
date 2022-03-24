@@ -5,6 +5,8 @@
  * @param {object} event this variable is used in eval so DO NOT remove because of unused warning
  * @param {String} str The string to be parsed
  * @param {bool} isHTML used for conversions like "\n" -> "<br/>"
+ * 
+ * @deprecated
  */
 function parseStrFormat(event, str, isHTML) {
     let p = getProperties(event);
