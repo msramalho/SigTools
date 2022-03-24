@@ -1,7 +1,14 @@
 "use strict";
+
 /**
- * TODO
+ * @typedef {Object} UserData
+ * @property {String} id The Sigarra's identifier for the user
+ * @property {String} name Fullname
+ * @property {String} firstname First name
+ * @property {String} lastname Last name
+ * @property {String?} email The institutional email
  */
+
 class MailTo extends Extractor {
     /**
      * Keeps track of the number of selected users for batch email
@@ -9,6 +16,14 @@ class MailTo extends Extractor {
      */
     count = 0;
 
+    /**
+     * @type {Object<string, UserData>} Map of user indentifiers to user data
+     */
+    usersData = {};
+
+    /**
+     *
+     */
     constructor() {
         super();
         this.ready();
@@ -31,23 +46,22 @@ class MailTo extends Extractor {
     }
 
     attachIfPossible() {
-        // store data for all unique users
-        const usersData = {};
-
         // find all hyperlinks for unique user profiles
         Logger.debug("[Mailto]", `Looking for all hyperlinks in the page...`);
-        const allHyperlinks = this._getUserHyperlinks();
+        const allHyperlinks = this.findAllUserHyperlinks();
 
         // if no users data, then skip
         if (!Object.keys(allHyperlinks).length) return;
 
-        // for each unique user, get profile data and update the DOM
+        // for storing all promisses to determine when all data was gathered
         const allPromises = [];
+
+        // for each unique user, get profile data and update the DOM
         for (const [id, nodes] of Object.entries(allHyperlinks)) {
             Logger.debug("[Mailto]", `Found user ID ${id} in nodes`, nodes);
 
             // get the data for this user through cache or parsing the profile page
-            const p = this.getUserData(id)
+            const p = this.fetchUserData(id)
                 .then(({ email, firstname, lastname, name }) => {
                     const data = {
                         email,
@@ -56,22 +70,14 @@ class MailTo extends Extractor {
                         lastname,
                         id,
                     };
-
-                    usersData[id] = data;
+                    // store the user data
+                    this.usersData[id] = data;
                     Logger.debug("[Mailto]", `Found data for user with ID '${id}'`, data);
                     return { email, nodes };
                 })
                 .then(({ email, nodes }) => {
-                    if (!email) return;
-
-                    // for each hyperlink in the page, add the 'send email' button
-                    for (const node of nodes) {
-                        node.insertAdjacentHTML(
-                            "beforebegin",
-                            `<a href="mailto:${email}"><img style="margin-right:0.25em" src="${chrome.extension.getURL(
-                                "icons/email.png"
-                            )}"></a>`
-                        );
+                    if (email) {
+                        this.attachSendEmailOneClick(email, nodes);
                     }
                 })
                 .catch((e) => {
@@ -83,36 +89,146 @@ class MailTo extends Extractor {
         }
 
         // wait for all promises to resolve/fail to ensure the usersData is updated before caching
+        // and attaching the sidebar
         Promise.allSettled(allPromises).then(() => {
+            // Add sidebar with option for batch email
+            const sidebar = new SigarraSidebar();
+            const $btn = sidebar.addItem("Batch Email", chrome.extension.getURL("icons/email-batch.png"));
+            $btn.addEventListener("click", (ev) => {
+                this.attachBatchEmailModal();
+            });
+
             // Update cache
             Logger.debug("[Mailto]", `Updating the users cache...`);
             chrome.storage.local.get("users_cache", (result) => {
                 const cache = {
                     users_cache: {
                         ...result["users_cache"],
-                        ...usersData,
+                        ...this.usersData,
                     },
                 };
                 chrome.storage.local.set(cache);
                 Logger.debug("[Mailto]", `New cache version:`, cache);
             });
+        });
+    }
 
-            // Add sidebar with option for batch email
-            const sidebar = new SigarraSidebar();
-            const $btn = sidebar.addItem("Batch Email", chrome.extension.getURL("icons/email-batch.png"));
-            $btn.addEventListener("click", (ev) => {
-                this.attachSendBatchEmailModal(usersData);
+    /**
+     * Attaches a one-click send email button alongside hyperlinks for Sigarra
+     * users
+     *
+     * @param {string} email
+     * @param {HTMLElement[]} nodes
+     */
+    attachSendEmailOneClick(email, nodes) {
+        for (const node of nodes) {
+            node.insertAdjacentHTML(
+                "beforebegin",
+                `<a href="mailto:${email}"><img style="margin-right:0.25em" src="${chrome.extension.getURL(
+                    "icons/email.png"
+                )}"></a>`
+            );
+        }
+    }
+
+    /**
+     * Adds an option to the right sidebar in Sigarra for 'batch email', i.e.,
+     * select multiple users to send the email. Clicking in the option launches
+     * a modal that lists all users found within the current page. The user can
+     * select one or more and then click a 'send email' button that generates
+     * the 'mailto' link
+     */
+    attachBatchEmailModal() {
+        // the modal div template
+        const $modal = createElementFromString(`<div class="sigtools" id="sig_emailsModal">
+                <div class="sig_modalBody">
+                    <h1>SigTools</h1>
+                    <p>Select the email recipients</p>
+                    <div class="emails-select">
+                        <div class="emails-select__field emails-select__field--to">
+                            <!-- <div class="user"> -->
+                        </div>
+                    </div>
+                    <div>
+                        <a disabled class="btn--primary send-email">
+                            <img style="margin-right:0.25em" src="${chrome.extension.getURL(
+                                "icons/email.png"
+                            )}"/>Send email
+                        </a>
+                    </div>
+                </div>
+                <div class="sig_overlay"></div>
+            </div>`);
+
+        // add users checkboxes to select all recipients and sort by name
+        const $usersCtnr = $modal.querySelector(".emails-select__field--to");
+        for (const user of Object.values(this.usersData)
+            .filter((u) => u.email)
+            .sort((a, b) => a.name.localeCompare(b.name))) {
+            const userCheckBox = createElementFromString(`
+                <div class="user" title="${user.name}">
+                    <input type="checkbox" id="user-${user.id}">
+                    <label for="user-${user.id}">${user.firstname} ${user.lastname}</label>
+                </div>
+            `);
+            $usersCtnr.append(userCheckBox);
+        }
+
+        // for all checkboxes, on change increment/decrement number of recipients
+        // if no user is selected, disable the 'send email' button
+        for (const $input of $modal.querySelectorAll(".user input")) {
+            $input.addEventListener("change", (e) => {
+                e.target.checked ? this.count++ : this.count--;
+
+                const $btn = $modal.querySelector(".send-email");
+                this.count == 0 ? $btn.setAttribute("disabled", "true") : $btn.removeAttribute("disabled");
             });
+        }
+
+        // add 'click' event in the 'send email' button to open 'mailto' link
+        // for selected users
+        $modal.querySelector(".send-email").addEventListener("click", (e) => {
+            const selectedIds = new Set();
+
+            // traverse the user selection checkboxes, if checked, add to the set
+            for (const $input of $modal.querySelectorAll(".emails-select__field--to .user input")) {
+                if ($input.checked) {
+                    const id = $input.id.split("-")[1];
+                    selectedIds.add(id);
+                }
+            }
+
+            // if no selected emails, do not proceed
+            if (!selectedIds.size) return;
+
+            // get the emails for the selected emails
+            const selectedEmails = Object.keys(this.usersData)
+                .filter((id) => selectedIds.has(id))
+                .map((id) => this.usersData[id].email);
+
+            // build the mailto link
+            // format: mailto:<addr1>;<addr2>?&cc=<addr3>&bcc=<addr4>;<addr5>
+            const mailto = `mailto:${selectedEmails.join(";")}`;
+            window.open(mailto, "_self");
+        });
+
+        // add the modal to the DOM
+        document.querySelector("head").insertAdjacentElement("beforebegin", $modal);
+
+        // add event listener for clicks outside the modal div to close it
+        document.querySelector(".sig_overlay").addEventListener("click", (ev) => {
+            $modal.remove();
         });
     }
 
     /**
      * Finds all hyperlinks in the page for user profiles
+     *
      * @returns {{
      *  id: HTMLElement[],
      * }}
      */
-    _getUserHyperlinks() {
+    findAllUserHyperlinks() {
         /*
          * In general there is a url for FEUP employees (func_geral.formview)
          * and another one for students (fest_geral.cursos_list). The URLs
@@ -163,7 +279,7 @@ class MailTo extends Extractor {
      *  webpage: string|null,
      * }>}
      */
-    getUserData(userID) {
+    fetchUserData(userID) {
         return new Promise((resolve, reject) => {
             // try to load from cache
             chrome.storage.local.get("users_cache", (result) => {
@@ -188,89 +304,6 @@ class MailTo extends Extractor {
                         });
                 }
             });
-        });
-    }
-
-    attachSendBatchEmailModal(usersData) {
-        // the modal div template
-        const $modal = createElementFromString(`<div class="sigtools" id="sig_emailsModal">
-                <div class="sig_modalBody">
-                    <h1>SigTools</h1>
-                    <p>Select the email recipients</p>
-                    <div class="emails-select">
-                        <div class="emails-select__field emails-select__field--to">
-                            <!-- <div class="user"> -->
-                        </div>
-                    </div>
-                    <div>
-                        <a disabled class="btn--primary send-email">
-                            <img style="margin-right:0.25em" src="${chrome.extension.getURL(
-                                "icons/email.png"
-                            )}"/>Send email
-                        </a>
-                    </div>
-                </div>
-                <div class="sig_overlay"></div>
-            </div>`);
-
-        // add users checkboxes to select all recipients and sort by name
-        const $usersCtnr = $modal.querySelector(".emails-select__field--to");
-        for (const user of Object.values(usersData)
-            .filter((u) => u.email)
-            .sort((a, b) => a.name.localeCompare(b.name))) {
-            const userCheckBox = createElementFromString(`
-                <div class="user" title="${user.name}">
-                    <input type="checkbox" id="user-${user.id}">
-                    <label for="user-${user.id}">${user.firstname} ${user.lastname}</label>
-                </div>
-            `);
-            $usersCtnr.append(userCheckBox);
-        }
-
-        // for all checkboxes, on change increment/decrement number of recipients
-        // if no user is selected, disable the 'send email' button
-        for (const $input of $modal.querySelectorAll(".user input")) {
-            $input.addEventListener("change", (e) => {
-                e.target.checked ? this.count++ : this.count--;
-
-                const $btn = $modal.querySelector(".send-email");
-                this.count == 0 ? $btn.setAttribute("disabled", "true") : $btn.removeAttribute("disabled");
-            });
-        }
-
-        // add 'click' event in the 'send email' button to open 'mailto' link
-        // for selected users
-        $modal.querySelector(".send-email").addEventListener("click", (e) => {
-            const selectedIds = new Set();
-
-            // traverse the user selection checkboxes, if checked, add to the set
-            for (const $input of $modal.querySelectorAll(".emails-select__field--to .user input")) {
-                if ($input.checked) {
-                    const id = $input.id.split("-")[1];
-                    selectedIds.add(id);
-                }
-            }
-
-            // if no selected emails, do not proceed
-            if (!selectedIds.size) return;
-
-            // get the emails for the selected emails
-            const selectedEmails = Object.keys(usersData)
-                .filter((id) => selectedIds.has(id))
-                .map((id) => usersData[id].email);
-
-            // build the mailto link
-            // format: mailto:<addr1>;<addr2>?&cc=<addr3>&bcc=<addr4>;<addr5>
-            const mailto = `mailto:${selectedEmails.join(";")}`;
-            window.open(mailto, "_self");
-        });
-
-        // add the modal to the DOM
-        document.querySelector("head").insertAdjacentElement("beforebegin", $modal);
-
-        // add event listener for clicks outside the modal div to close it
-        document.querySelector(".sig_overlay").addEventListener("click", (ev) => {
-            $modal.remove();
         });
     }
 }
