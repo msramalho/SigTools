@@ -143,9 +143,9 @@ class EventExtractor extends Extractor {
      * calendars.
      */
     isHTML = null;
-    
+
     /**
-     * 
+     *
      */
     constructor() {
         super();
@@ -154,17 +154,17 @@ class EventExtractor extends Extractor {
     /**
      * Validates the metadata objects used to generate the calendar event title
      * and description.
-     * 
+     *
      * Title and description are customisable in the options
      * page with placeholers for extracted information. For instance, an
      * exam extractor has the course's name, acronym and url page. It has the
      * exams location/room, etc etc. The user can prepare a custom title that
      * uses the said information and format it in whatever style.
-     * 
+     *
      * This function ensures that the extracted metadata has all parameters as
      * declared in the Extractor's structure. See {@link structure}
-     * 
-     * @param {Object} params 
+     *
+     * @param {Object} params
      */
     _validateEventParams(params) {
         for (const { name: paramName } of this.structure.parameters) {
@@ -178,33 +178,72 @@ class EventExtractor extends Extractor {
     }
 
     /**
+     * Resolves the format string for event titles/descriptions replacing
+     * the parameters placeholders with extracted values
+     *
+     * @param {String} formatStr
+     * @param {Object} params
+     * @returns
+     */
+    _evalFormatString(formatStr, params) {
+        // prepare the format string to be evaluated
+        let str = "`" + formatStr + "`";
+        if (this.isHTML) str = str.replace("\n", "<br/>");
+
+        // In strict mode, the 'eval' has its own context
+        // therefore we prepare a list of commands to be evaluated constructing
+        // a string like 'cmd1;cmd2;cmd3'.
+        // The first commands declare the available extractor parameters as
+        // variables initialised with the extracted values
+        // The last command is simply with the format string that uses the
+        // parameters as variables, resulting in the desired string
+        // E.g.,
+        // > const name="Sistemas Operativos";const location="B101";
+        // `Exame ${name} - ${location}`
+        // outputs "Sistemas Operativos - B101"
+        const cmds = [...Object.getOwnPropertyNames(params).map((p) => `const ${p} = params.${p}`), str];
+
+        try {
+            str = eval(cmds.join(";")).replace("undefined", "n/a").replace("null", "n/a");
+        } catch (error) {
+            swal(
+                "Ups!",
+                `There was an error parsing the event format for:\n${str}\n\nPlease check the options page for SigTools to check if you have a typo in your format options`,
+                "warning"
+            );
+        }
+
+        return str;
+    }
+
+    /**
      * Build the event title using the formatting set by the user in the options
      * page.
-     * 
+     *
      * @param {Object} params An object that sets the value for all parameters
      * available in this extractor, as declared in the {@link structure} method.
-     * 
+     *
      * @returns {String} The formatted string, which may be HTML or plaintext
      * depending on user settings
      */
     buildEventTitle(params) {
         this._validateEventParams(params);
-        return parseStrFormat(params, this.title, this.isHTML);
+        return this._evalFormatString(this.title, params);
     }
 
     /**
      * Build the event description using the formatting set by the user in the
      * options page.
-     * 
+     *
      * @param {Object} params An object that sets the value for all parameters
      * available in this extractor, as declared in the {@link structure} method.
-     * 
+     *
      * @returns {String} The formatted string, which may be HTML or plaintext
      * depending on user settings
      */
     buildEventDescription(params) {
         this._validateEventParams(params);
-        return parseStrFormat(params, this.description, this.isHTML);
+        return this._evalFormatString(this.description, params);
     }
 }
 
