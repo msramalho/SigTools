@@ -125,5 +125,87 @@ class Extractor {
     }
 }
 
+class EventExtractor extends Extractor {
+    /**
+     * A format-string that sets calendar event's title for this extractor.
+     * The format-string is set by the user in the options page and the default
+     * is set in {@link structure} method.
+     */
+    title = null;
+    /**
+     * A format-string that sets calendar event's description. Similar to
+     * {@link title}
+     */
+    description = null;
+    /**
+     * A flag indicating wether the title and description format-strings are
+     * plain text or HTML. It is necessary to handle encoding in specific
+     * calendars.
+     */
+    isHTML = null;
+    
+    /**
+     * 
+     */
+    constructor() {
+        super();
+    }
+
+    /**
+     * Validates the metadata objects used to generate the calendar event title
+     * and description.
+     * 
+     * Title and description are customisable in the options
+     * page with placeholers for extracted information. For instance, an
+     * exam extractor has the course's name, acronym and url page. It has the
+     * exams location/room, etc etc. The user can prepare a custom title that
+     * uses the said information and format it in whatever style.
+     * 
+     * This function ensures that the extracted metadata has all parameters as
+     * declared in the Extractor's structure. See {@link structure}
+     * 
+     * @param {Object} params 
+     */
+    _validateEventParams(params) {
+        for (const { name: paramName } of this.structure.parameters) {
+            if (!(paramName in params))
+                throw Error(
+                    `Missing parameter '${paramName}' declared in the Extractor's structure. Received ${JSON.stringify(
+                        params
+                    )}`
+                );
+        }
+    }
+
+    /**
+     * Build the event title using the formatting set by the user in the options
+     * page.
+     * 
+     * @param {Object} params An object that sets the value for all parameters
+     * available in this extractor, as declared in the {@link structure} method.
+     * 
+     * @returns {String} The formatted string, which may be HTML or plaintext
+     * depending on user settings
+     */
+    buildEventTitle(params) {
+        this._validateEventParams(params);
+        return parseStrFormat(params, this.title, this.isHTML);
+    }
+
+    /**
+     * Build the event description using the formatting set by the user in the
+     * options page.
+     * 
+     * @param {Object} params An object that sets the value for all parameters
+     * available in this extractor, as declared in the {@link structure} method.
+     * 
+     * @returns {String} The formatted string, which may be HTML or plaintext
+     * depending on user settings
+     */
+    buildEventDescription(params) {
+        this._validateEventParams(params);
+        return parseStrFormat(params, this.description, this.isHTML);
+    }
+}
 
 let EXTRACTORS = []; //each new extractor shall add an instance of itself to this variable
