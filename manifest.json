@@ -28,6 +28,7 @@
                 "js/lib/ics.js",
                 "js/lib/sweetalert.min.js",
                 "js/lib/luxon.min.js",
+                "js/utils/event.js",
                 "js/utils/calendar.js",
                 "js/utils/global.js",
                 "js/utils/dropdown.js",
