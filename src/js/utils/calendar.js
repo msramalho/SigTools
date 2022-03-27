@@ -227,7 +227,7 @@ class CalendarUrlGenerator {
      */
     constructor(event) {
         this.event = event;
-        this.recur = this.event.getRecurRule();
+        this.recur = event.recurRule;
     }
 
     /**
@@ -444,16 +444,20 @@ class CalEvent {
      *
      * @param {String} title The event title
      * @param {String} description The event description
+     * @param {Boolean} isHTML If true, the title and description are HTML,
+     * otherwise it is plaintext
      * @param {Date} start The event's starting date-time
      * @param {Date?} end The event's ending date-time. If null/undefined, the
      * event has no duration
      * @param {String?} location The event's location
      */
-    constructor(title, description, start, end, location) {
+    constructor(title, description, isHTML, start, end, location) {
         /** @type {String} */
         this.title = title;
         /** @type {String} */
         this.description = description;
+        /** @type {Boolean} */
+        this.isHTML = isHTML;
         /** @type {Date} @private */
         this._start = start;
         /** @type {Date} @private */
@@ -504,7 +508,7 @@ class CalEvent {
      * @see {CalEvent.getRecurRule}
      * @returns
      */
-    getRecurRule() {
+    get recurRule() {
         return CalEvent.getRecurRule(this.recurStart, this.recurEnd);
     }
 
