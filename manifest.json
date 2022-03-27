@@ -93,6 +93,14 @@
             ],
             "js": ["js/extractors/bills.js"],
             "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "https://*.up.pt/*vig_geral.docentes_vigilancias_list*",
+                "https://*.up.pt/*VIG_GERAL.DOCENTES_VIGILANCIAS_LIST*"
+            ],
+            "js": ["js/extractors/supervisions.js"],
+            "run_at": "document_end"
         }
     ],
     "permissions": ["https://*.up.pt/*", "storage"],
