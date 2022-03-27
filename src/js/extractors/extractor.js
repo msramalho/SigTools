@@ -152,6 +152,36 @@ class EventExtractor extends Extractor {
     }
 
     /**
+     * Build the event title using the formatting set by the user in the options
+     * page.
+     *
+     * @param {Object} params An object that sets the value for all parameters
+     * available in this extractor, as declared in the {@link structure} method.
+     *
+     * @returns {String} The formatted string, which may be HTML or plaintext
+     * depending on user settings
+     */
+    getTitle(params) {
+        this._validateEventParams(params);
+        return this._evalFormatString(this.title, params);
+    }
+
+    /**
+     * Build the event description using the formatting set by the user in the
+     * options page.
+     *
+     * @param {Object} params An object that sets the value for all parameters
+     * available in this extractor, as declared in the {@link structure} method.
+     *
+     * @returns {String} The formatted string, which may be HTML or plaintext
+     * depending on user settings
+     */
+    getDescription(params) {
+        this._validateEventParams(params);
+        return this._evalFormatString(this.description, params);
+    }
+
+    /**
      * Validates the metadata objects used to generate the calendar event title
      * and description.
      *
@@ -214,36 +244,6 @@ class EventExtractor extends Extractor {
         }
 
         return str;
-    }
-
-    /**
-     * Build the event title using the formatting set by the user in the options
-     * page.
-     *
-     * @param {Object} params An object that sets the value for all parameters
-     * available in this extractor, as declared in the {@link structure} method.
-     *
-     * @returns {String} The formatted string, which may be HTML or plaintext
-     * depending on user settings
-     */
-    buildEventTitle(params) {
-        this._validateEventParams(params);
-        return this._evalFormatString(this.title, params);
-    }
-
-    /**
-     * Build the event description using the formatting set by the user in the
-     * options page.
-     *
-     * @param {Object} params An object that sets the value for all parameters
-     * available in this extractor, as declared in the {@link structure} method.
-     *
-     * @returns {String} The formatted string, which may be HTML or plaintext
-     * depending on user settings
-     */
-    buildEventDescription(params) {
-        this._validateEventParams(params);
-        return this._evalFormatString(this.description, params);
     }
 }
 
