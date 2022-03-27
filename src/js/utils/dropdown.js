@@ -1,5 +1,7 @@
 
 /**
+ * @deprecated
+ * @see {createDropdownItem}
  * Returns an element object <a> for OneClick feature with a <img> child
  * @param {string} class_atr_a The class for <a> element
  * @param {string} class_atr_img The class for <img> child element
@@ -40,6 +42,9 @@ function getAddToCalendarDOM(class_atr_a, class_atr_img, service, url, html, tit
     return a;
 }
 
+/**
+ * @deprecated
+ */
 function generateAnchorWithIcon(a, img, title, src){
     a.setAttribute("title",`Add this single event to your ${title} in one click!`);
     img.setAttribute("alt", `${title} icon`);
@@ -150,12 +155,6 @@ window.onclick = function (event) {
  * @returns {HTMLElement} The dropdown container 
  */
 function createEventDropdown(event, style) {
-    const urlGenerator = new CalendarUrlGenerator(event);
-    const googleUrl = urlGenerator.google();
-    const outlookUrl = urlGenerator.outlook();
-    const officeUrl = urlGenerator.office365();
-    const yahooUrl = urlGenerator.yahoo();
-
     // prepare the styling for the dropdown
     style = style || {};
     style.divClass = style.divClass || "dropdown right";
@@ -164,16 +163,13 @@ function createEventDropdown(event, style) {
     style.dropdownClass = style.dropdownClass || "dropdown-content";
     style.dropdownStyle = style.dropdownStyle || "";
 
+    // create the dropdown element (button + menu)
     const $dropdown = createElementFromString(`
 	<div class="sigDropdown ${style.divClass}" style="${style.divStyle}">
 		<a class="sigDropdown__btn ${style.aClass}" title="Save this event to your Calendar">
             <img src="${chrome.extension.getURL("icons/calendar.svg")}"/>
         </a>
         <div class="sigDropdown__menu ${style.dropdownClass}" style="${style.dropdownStyle}">
-            ${getAddToCalendarDOM("", "dropdownIcon", "google", googleUrl, event.isHTML, "Google").outerHTML}
-            ${getAddToCalendarDOM("", "dropdownIcon", "outlook", outlookUrl, event.isHTML, "Outlook").outerHTML}
-            ${getAddToCalendarDOM("", "dropdownIcon", "office365", officeUrl, event.isHTML, "Office 365").outerHTML}
-            ${getAddToCalendarDOM("", "dropdownIcon", "yahoo", yahooUrl, event.isHTML, "Yahoo").outerHTML}
             <a class="donwloadSingleIcs"
                 style="background-color:#e3e3e3"
                 title="For other calendars, download the single .ics file"
@@ -183,13 +179,14 @@ function createEventDropdown(event, style) {
                 )}">
                 Others (.ics)
             </a>
-		</div>
-	</div>`);
+        </div>
+    </div>`);
 
     // add click action for the ICS download button
     $dropdown.querySelector(".donwloadSingleIcs").addEventListener("click", (e) => {
         const cal = ics("sigtools"); //creat ics instance
         cal.addEvent(event.title, event.description, event.location, event.start, event.end, event.recurRule);
+        cal.download();
     });
 
     // on clicking the open dropdown menu, close all other dropdowns, and then show this drop menu
@@ -198,7 +195,85 @@ function createEventDropdown(event, style) {
         $dropdown.querySelector(".sigDropdown__menu").classList.toggle("show");
     });
 
+    // Add the menu items for the remainder calendars
+    const googleUrlFn = () => new CalendarUrlGenerator(event).google();
+    const outlookUrlFn = () => new CalendarUrlGenerator(event).outlook();
+    const officeUrlFn = () => new CalendarUrlGenerator(event).office365();
+    const yahooUrlFn = () => new CalendarUrlGenerator(event).yahoo();
+
+    const $dropdownMenu = $dropdown.querySelector(".sigDropdown__menu");
+
+    $dropdownMenu.insertAdjacentElement(
+        "afterbegin",
+        createDropdownItem("yahoo", yahooUrlFn, event.isHTML, "", "dropdownIcon")
+    );
+    $dropdownMenu.insertAdjacentElement(
+        "afterbegin",
+        createDropdownItem("office365", officeUrlFn, event.isHTML, "", "dropdownIcon")
+    );
+    $dropdownMenu.insertAdjacentElement(
+        "afterbegin",
+        createDropdownItem("outlook", outlookUrlFn, event.isHTML, "", "dropdownIcon")
+    );
+    $dropdownMenu.insertAdjacentElement(
+        "afterbegin",
+        createDropdownItem("google", googleUrlFn, event.isHTML, "", "dropdownIcon")
+    );
+
     return $dropdown;
+}
+
+/**
+ * Returns a dropdown item for a calendar platform. On click, opens a new tab
+ * with the URL for adding an event in the selected platform
+ *
+ * @param {"google"|"outlook"|"office365"|"yahoo"} service
+ * @param {Function|String} url The URL to be opened. Can be a function for
+ * dynamically generated URLs
+ * @param {boolean} isHTML Whether the URL may contain inline html, requiring
+ * different encoding approaches
+ * @param {string} class_atr_a The class for <a> element
+ * @param {string} class_atr_img The class for <img> child element
+ */
+function createDropdownItem(service, url, isHTML, class_atr_a, class_atr_img) {
+
+    // description and icon path for different services
+    let desc, iconPath;
+    if (service == "google") {
+        desc = "Google";
+        iconPath = "icons/gcalendar.png";
+    } else if (service == "outlook") {
+        desc = "Outlook";
+        iconPath = "icons/outlook.png";
+    } else if (service == "office365") {
+        desc = "Office365";
+        iconPath = "icons/office365.png";
+    } else if (service == "yahoo") {
+        desc = "Yahoo";
+        iconPath = "icons/yahoo.png";
+    }
+
+    // create the dropdown item element
+    const $dropdownItem = createElementFromString(`
+        <a href="#"
+            title="Add this single event to your ${desc} calendar in one click!"
+            class="${class_atr_a}">
+            <img class="${class_atr_img}"
+                alt="${desc} calendar icon"
+                src="${chrome.extension.getURL(iconPath)}">
+            ${desc}
+        </a>
+    `);
+
+    $dropdownItem.addEventListener("click", (e) => {
+        let _url = typeof url === 'function' ? url() : url;
+        if (isHTML)
+            window.open(decodeURI(encodeURI(_url.replace(/'/g, "\""))).replace(/\\s/g, "%20"));
+        else
+            window.open(_url.replace(/\n/g, '%0A'));
+    })
+
+    return $dropdownItem;
 }
 
 window.addEventListener("click", (ev) => {
@@ -208,4 +283,4 @@ window.addEventListener("click", (ev) => {
         for (const $el of document.querySelectorAll('.sigDropdown__menu'))
             $el.classList.remove("show");
     }
-})
+});
