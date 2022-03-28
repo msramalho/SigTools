@@ -1,4 +1,46 @@
 /**
+ * Enumerator-like class to represent calendar event status. When an
+ * {@link CalendarEvent} is added to calendar clients, it may show as busy or
+ * free time slots.
+ *
+ * When you add an exam, you want it to show as "Busy" so that you do not
+ * schedule other apointements that colide with the exam event. On the other
+ * hand, events that are more like reminders, such as bill and library
+ * deadlines, you might prefer to set the event as "Free" as it does not
+ * consume time in your agenda.
+ *
+ * The implementation is inspired in
+ * {@link https://2ality.com/2020/01/enum-pattern.html}. Could be more robust,
+ * but I think is "enum"-ish enough :)
+ */
+class CalendarEventStatus {
+    /** @private */
+    static _allowed = ["Free", "Busy"];
+
+    static FREE = new CalendarEventStatus("Free");
+    static BUSY = new CalendarEventStatus("Busy");
+
+    constructor(name) {
+        if (!CalendarEventStatus._allowed.includes(name))
+            throw Error(`Unknown value '${name}'. Supported values are: ${CalendarEventStatus._allowed.join(",")}`);
+        this.name = name;
+    }
+
+    static fromValue(val) {
+        if (val == "Free") return CalendarEventStatus.FREE;
+        else if (val == "Busy") return CalendarEventStatus.BUSY;
+    }
+
+    value() {
+        return this.name;
+    }
+
+    toString() {
+        return `CalendarEventStatus.${this.name}`;
+    }
+}
+
+/**
  * Represents a calendar event instance, e.g. an exam, a recurring class or
  * a bill deadline
  *
@@ -42,6 +84,8 @@ class CalendarEvent {
         this.recurStart = null;
         /** @type {Date?} */
         this.recurEnd = null;
+        /** @type {CalendarEventStatus} */
+        this.status = CalendarEventStatus.BUSY;
     }
 
     /**
