@@ -223,7 +223,7 @@ function eventToYahooCalendar(extractor, event, repeat) {
 class CalendarUrlGenerator {
     /**
      *
-     * @param {CalEvent} event
+     * @param {CalendarEvent} event
      */
     constructor(event) {
         this.event = event;

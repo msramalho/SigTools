@@ -74,7 +74,7 @@ class ExamSupervisions extends EventExtractor {
     /**
      * Parses all scheduled exam supervisions, if any
      *
-     * @returns {CalEvent[]}
+     * @returns {CalendarEvent[]}
      */
     parseAllSupervisions() {
         const events = [];
@@ -95,7 +95,7 @@ class ExamSupervisions extends EventExtractor {
             const info = this.parseSupervisionEvent($tr);
 
             // create a new calendar event
-            const event = new CalEvent(
+            const event = new CalendarEvent(
                 this.getTitle(info), // apply string-format in title
                 this.getDescription(info), // apply string-format in description
                 this.isHTML,
