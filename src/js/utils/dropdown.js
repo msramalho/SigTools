@@ -143,7 +143,7 @@ window.onclick = function (event) {
  * - automatically close all dropdowns when clicking outside the dropdown in
  * the page
  * 
- * @param {CalEvent} event 
+ * @param {CalendarEvent} event 
  * @param {Object?} style 
  * @param {String?} style.divClass Class for the dropdown's container div
  * @param {String?} style.divStyle Inline styles for the dropdown's container

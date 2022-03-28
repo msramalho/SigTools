@@ -13,7 +13,7 @@
  * with the defined period. See {@link getRecurRule} to get the recurring rule
  * for ical calendar formats.
  */
-class CalEvent {
+class CalendarEvent {
     /**
      *
      * @param {String} title The event title
@@ -61,7 +61,7 @@ class CalEvent {
      *
      * @see {@link https://icalendar.org/iCalendar-RFC-5545/3-8-5-3-recurrence-rule.html}
      *
-     * @param {CalEvent} event
+     * @param {CalendarEvent} event
      * @param {Date} recurStart
      * @param {Date} recurEnd
      *
@@ -79,11 +79,11 @@ class CalEvent {
     }
 
     /**
-     * @see {CalEvent.getRecurRule}
+     * @see {CalendarEvent.getRecurRule}
      * @returns
      */
     get recurRule() {
-        return CalEvent.getRecurRule(this.recurStart, this.recurEnd);
+        return CalendarEvent.getRecurRule(this.recurStart, this.recurEnd);
     }
 
     /**

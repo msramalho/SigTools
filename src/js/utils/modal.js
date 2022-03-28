@@ -88,7 +88,7 @@ function createModal(extractor, events, repeat, from, to) {
 
 /**
  * @deprecated
- * @see CalEvent.recurRule
+ * @see CalendarEvent.recurRule
  */
 function getRepeat(from, to) {
     let repeat = undefined
@@ -126,7 +126,7 @@ function updateEvents(modal, events) {
  * See the parameters {@link from} and {@link to} to define an initial
  * recurrence period.
  * 
- * @param {CalEvent[]} events A list of events available for download
+ * @param {CalendarEvent[]} events A list of events available for download
  * @param {Date?} from The starting date of the recurrence period 
  * @param {Date?} to The ending date of the recurrence period
  */
