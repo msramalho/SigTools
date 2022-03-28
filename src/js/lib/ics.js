@@ -202,6 +202,22 @@ var ics = function(uidDomain, prodId) {
     },
 
     /**
+     * Add event to the calendar from an instance of {@link CalendarEvent}
+     * @param {CalendarEvent} event 
+     */
+    'addCalendarEvent': function(event) {
+      return this.addEvent(
+          event.title,
+          event.description,
+          event.location == null ? "" : event.location,
+          event.start.toString(),
+          event.end.toString(),
+          event.recurRule,
+          event.status
+      );
+    },
+
+    /**
      * Download calendar using the saveAs function from filesave.js
      * @param  {string} filename Filename
      * @param  {string} ext      Extention
