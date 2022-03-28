@@ -177,7 +177,6 @@ var ics = function(uidDomain, prodId) {
       var calendarEvent = [
         'BEGIN:VEVENT',
         'UID:' + now + "-" + calendarEvents.length + "@" + uidDomain,
-        'CLASS:PUBLIC',
         'DESCRIPTION:' + description,
         'DTSTAMP;VALUE=DATE-TIME:' + now,
         'DTSTART;VALUE=DATE-TIME:' + start,
