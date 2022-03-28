@@ -3,10 +3,6 @@
     --nav-hover: rgb(0, 123, 255, 1);
 }
 
-#nav-tab-list {
-    padding-left: 15px;
-}
-
 #nav-tab-list a {
     color: white;
     background-image: linear-gradient(to left, transparent, transparent 50%, var(--nav-hover) 50%, var(--nav-hover) 100%);

@@ -6,41 +6,44 @@
     <script src="js/lib/jquery-3.4.1.js"></script>
     <script src="js/lib/mustache.min.js"></script>
     <script src="js/utils/global.js"></script>
+    <script src="js/utils/event.js"></script>
     <script src="js/extractors/extractor.js"></script>
     <script src="js/extractors/exams.js"></script>
+    <script src="js/extractors/single_exam.js"></script>
+    <script src="js/extractors/supervisions.js"></script>
     <script src="js/extractors/moodle.js"></script>
     <script src="js/extractors/timetable.js"></script>
     <script src="js/extractors/grades.js"></script>
-    <script src="js/extractors/single_exam.js"></script>
     <script src="js/extractors/infinite_scroll.js"></script>
     <script src="js/extractors/datatable.js"></script>
     <script src="js/extractors/library.js"></script>
     <script src="js/extractors/bills.js"></script>
     <script src="js/extractors/mailto.js"></script>
-    <script src="js/extractors/supervisions.js"></script>
     <script src="js/scripts/options.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
     <script src="js/lib/sweetalert.min.js"></script>
 </head>
 
-<body style="overflow-x: hidden;">
+<body>
+    <div class="container-fluid">
     <!-- Nav tabs -->
-    <div class="row h-100">
-        <div class="col-auto col-sm-3 col-lg-2 bg-dark p-0" id="sidebar">
+    <div class="row" style="height:100vh">
+        <div id="sidebar" class="col-auto col-sm-3 col-lg-2 bg-dark p-0">
             <h1 class="text-white mt-1 mb-3 text-center">Options</h1>
-            <div class="nav flex-column h-100" id="nav-tab-list" role="tablist" aria-orientation="vertical"></div>
+            <div class="nav flex-column" id="nav-tab-list" role="tablist" aria-orientation="vertical"></div>
         </div>
-        <div class="col col-sm-9 col-lg-10">
-            <span class="options-help text-center text-info">If you feel that a different format for events would be better, go ahead and set it 😄
-                <br>
-                <span><span style="color:red">WARNING</span>: Do not copy paste external JS code, unless you are sure of what it does, since an attacker could use it to exploit your system.</span>
-                <br>
-                <small class="text-sm">Pros, you can use JS inside the format options like <code>${location.toUpperCase()}</code></small>
-            </span>
-            <div class="tab-content" id="nav-tab-content"></div>
-            <button class="btn mt-3 align" id="btn_save" disabled>Save all</button>
-            <button class="btn mt-3 align" disabled>Reset all</button>
-            <button class="btn mt-3 align" disabled>Reset all {{extractor}}</button>
+        <div class="col col-sm-9 col-lg-10 p-0">
+            <div class="py-3 px-4">
+                <span class="options-help text-center text-info">If you feel that a different format for events would be better, go ahead and set it 😄
+                    <br>
+                    <span><span style="color:red">WARNING</span>: Do not copy paste external JS code, unless you are sure of what it does, since an attacker could use it to exploit your system.</span>
+                    <br>
+                    <small class="text-sm">Pros, you can use JS inside the format options like <code>${location.toUpperCase()}</code></small>
+                </span>
+                <div class="tab-content" id="nav-tab-content"></div>
+                <button class="btn btn-primary mt-3 align" id="btn_save" disabled>Save</button>
+            </div>
         </div>
+    </div>
     </div>
 </body>
