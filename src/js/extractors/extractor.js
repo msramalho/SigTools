@@ -143,12 +143,71 @@ class EventExtractor extends Extractor {
      * calendars.
      */
     isHTML = null;
+    /**
+     * A flag indicating if events created by this extractor should appear as
+     * "BUSY" or "FREE" in the calendar
+     * @type {CalendarEventStatus}
+     */
+    status = null;
 
     /**
      *
      */
     constructor() {
         super();
+    }
+
+    init() {
+        return super.init().then(() => {
+            // the event's status setting is stored as String in storage
+            // this "casts" the value to CalendarEventStatus before is used
+            this.status = CalendarEventStatus.fromValue(this.status);
+        });
+    }
+
+    /**
+     * To be called by EventExtractor implementations as all instances have
+     * a common structure properties. However, each implementation will have
+     * its own default values, which are configured via parameters
+     *
+     * @param {Object} childStructure
+     * @param {string} title Default title format-string
+     * @param {string} description Default description format-string
+     * @param {boolean} isHTML If the default format-strings are HTML
+     * @param {CalendarEventStatus} status Default availability for the events,
+     * i.e. show as 'Busy', or show as 'Free' in calendar clients
+     */
+    structure(childStructure, title, description, isHTML, status) {
+        return {
+            ...childStructure,
+            storage: {
+                text: [
+                    {
+                        name: "title",
+                        default: title,
+                    },
+                ],
+                textarea: [
+                    {
+                        name: "description",
+                        default: description,
+                    },
+                ],
+                select: [
+                    {
+                        name: "status", // should be stored as string in storage
+                        options: [CalendarEventStatus.BUSY.value(), CalendarEventStatus.FREE.value()],
+                        default: status.value(),
+                    },
+                ],
+                boolean: [
+                    {
+                        name: "isHTML",
+                        default: isHTML,
+                    },
+                ],
+            },
+        };
     }
 
     /**
