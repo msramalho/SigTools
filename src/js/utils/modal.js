@@ -204,14 +204,7 @@ function createEventsModal(events, from, to) {
                 continue;
             
             // Add event to ICS
-            cal.addEvent(
-                event.title,
-                event.description,
-                event.location || "",
-                event.start.toString(),
-                event.end.toString(),
-                event.recurRule,
-            );            
+            cal.addCalendarEvent(event);
         }
 
         // Downloads the .ics file
