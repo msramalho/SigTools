@@ -5,48 +5,34 @@ class ExamSupervisions extends EventExtractor {
     }
 
     structure() {
-        return {
-            extractor: "supervisions", // must be unique among extractors
-            description: "Extractor for exam supervisions",
-            parameters: [
-                {
-                    name: "name",
-                    description: "eg: Programação em Lógica",
-                },
-                {
-                    name: "acronym",
-                    description: "eg: PLOG",
-                },
-                {
-                    name: "url",
-                    description: "The URL for the exam's information page",
-                },
-                {
-                    name: "location",
-                    description: "The list of rooms assigned to the exam, if available",
-                },
-            ],
-            storage: {
-                text: [
+        return super.structure(
+            {
+                extractor: "supervisions",
+                description: "Extractor for exam supervisions",
+                parameters: [
                     {
-                        name: "title",
-                        default: "Exam Supervision - ${acronym} - ${location}",
+                        name: "name",
+                        description: "eg: Programação em Lógica",
                     },
-                ],
-                textarea: [
                     {
-                        name: "description",
-                        default: "Exam Link: <a href=\"${url}\">${name}</a>",
+                        name: "acronym",
+                        description: "eg: PLOG",
                     },
-                ],
-                boolean: [
                     {
-                        name: "isHTML",
-                        default: true,
+                        name: "url",
+                        description: "The URL for the exam's information page",
+                    },
+                    {
+                        name: "location",
+                        description: "The list of rooms assigned to the exam, if available",
                     },
                 ],
             },
-        };
+            "Exam Supervision - ${acronym} - ${location}",
+            'Exam Link: <a href="${url}">${name}</a>',
+            true,
+            CalendarEventStatus.BUSY
+        );
     }
 
     attachIfPossible() {
@@ -103,6 +89,7 @@ class ExamSupervisions extends EventExtractor {
                 info.endTime,
                 info.location
             );
+            event.status = this.status;
             events.push(event);
         }
 
