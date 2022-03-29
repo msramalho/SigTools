@@ -184,7 +184,7 @@ function createEventDropdown(event, style) {
 
     // add click action for the ICS download button
     $dropdown.querySelector(".donwloadSingleIcs").addEventListener("click", (e) => {
-        const cal = ics("sigtools"); //creat ics instance
+        const cal = ics("sigtools"); //create ics instance
         cal.addEvent(event.title, event.description, event.location, event.start, event.end, event.recurRule);
         cal.download();
     });

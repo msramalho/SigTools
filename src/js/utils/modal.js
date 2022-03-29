@@ -133,8 +133,9 @@ function updateEvents(modal, events) {
 function createEventsModal(events, from, to) {
     // If pre-defined recurrence period is set, mark all events as recurrent
     if (from && to) {
-        for (const event of events)
+        for (const event of events) {
             event.setRecur(from, to);
+        }
     }
 
     // Create the Modal's HTML element
