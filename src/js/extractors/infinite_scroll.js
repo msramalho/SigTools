@@ -15,7 +15,9 @@ class InfiniteScroll extends Extractor {
     structure() {
         return {
             extractor: "infinite_scroll",
+            name: "Infinite Scroll",
             description: "Makes annoying pagination in sigarra tables be in infinite scroll mode",
+            icon: "infinite-scroll.png",
             parameters: [],
             storage: {}
         }

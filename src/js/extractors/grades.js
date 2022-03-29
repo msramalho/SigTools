@@ -12,7 +12,9 @@ class Grades extends Extractor {
     structure() {
         return {
             extractor: "grades",
+            name: "Grades Statistics",
             description: "Produces a histogram and some statistics on the global grades page",
+            icon: "grades.png",
             parameters: [],
             storage: {
                 text: [{

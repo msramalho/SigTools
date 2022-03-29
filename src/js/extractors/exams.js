@@ -12,7 +12,9 @@ class Exams extends Extractor {
     structure() {
         return {
             extractor: "exams",
+            name: "Exams",
             description: "Extracts exams events from sigarra",
+            icon: "exam.png",
             parameters: [{
                     name: "subject.name",
                     description: "eg: Programação em Lógica"

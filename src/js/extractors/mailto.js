@@ -32,7 +32,9 @@ class MailTo extends Extractor {
     structure() {
         return {
             extractor: "mailto",
-            description: "Things",
+            name: "Emails",
+            description: "Makes it easier to send email to one or more persons in Sigarra pages",
+            icon: "batch-email.png",
             storage: {
                 text: [
                     {

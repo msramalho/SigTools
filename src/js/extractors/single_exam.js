@@ -10,7 +10,9 @@ class SingleExam extends Extractor {
     structure() {
         return {
             extractor: "single_exam",
-            description: "calendar event from a single exam page",
+            name: "Single Exam",
+            description: "Calendar event from a single exam page",
+            icon: "exam.png",
             parameters: [{
                     name: "subject.name",
                     description: "eg: Programação em Lógica"

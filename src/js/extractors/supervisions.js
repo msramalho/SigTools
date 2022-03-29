@@ -8,7 +8,9 @@ class ExamSupervisions extends EventExtractor {
         return super.structure(
             {
                 extractor: "supervisions",
-                description: "Extractor for exam supervisions",
+                name: "Exam Supervisions",
+                description: "Extractor for teacher's exam supervisions",
+                icon: "supervision.png",
                 parameters: [
                     {
                         name: "name",

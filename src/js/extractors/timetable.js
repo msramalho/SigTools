@@ -12,7 +12,9 @@ class Timetable extends Extractor {
     structure() {
         return {
             extractor: "timetable",
+            name: "Timetables",
             description: "Extracts timetables from sigarra",
+            icon: "timetable.png",
             parameters: [{
                     name: "name",
                     description: "eg: Programação em Lógica"
