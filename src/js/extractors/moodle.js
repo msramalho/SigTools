@@ -15,7 +15,9 @@ class Moodle extends Extractor {
     structure() {
         return {
             extractor: "moodle",
+            name: "Moodle",
             description: "Extracts moodle calendar events",
+            icon: "moodle.png",
             parameters: [{
                 name: "name",
                 description: "eg: Minitest Compilers"

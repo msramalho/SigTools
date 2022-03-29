@@ -2,7 +2,11 @@
 //https://developer.chrome.com/extensions/content_scripts#run_at
 
 let nav_tab_list_template = `
-<a class="nav-link rounded-0" id="nav-tab-{{extractor}}" href="#nav-tab-content-{{extractor}}" role="tab" aria-controls="nav-tab-content-{{extractor}}" aria-selected="false">{{extractor}}</a>
+<a class="nav-link rounded-0" id="nav-tab-{{extractor}}" href="#nav-tab-content-{{extractor}}" role="tab" aria-controls="nav-tab-content-{{extractor}}" aria-selected="false">
+    {{#icon}}<img style="width:32px;" src="${chrome.extension.getURL("icons/extractors/{{icon}}")}">{{/icon}}
+    {{^icon}}<img style="width:32px;" src="${chrome.extension.getURL("icons/extractors/default.png")}">{{/icon}}
+    <span style="vertical-align:middle;">{{name}}</span>
+</a>
 `
 
 let nav_tab_content_template = `

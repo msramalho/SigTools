@@ -106,7 +106,9 @@ class DataTable extends Extractor {
     structure() {
         return {
             extractor: "datatable",
+            name: "Datatable",
             description: "Makes tables that are typically static become sortable, searchable and exportable in copy-paste, csv, excel and print mode",
+            icon: "datatable.png",
             parameters: [],
             storage: {
                 boolean: [{

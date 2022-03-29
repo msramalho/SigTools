@@ -10,7 +10,9 @@ class LibraryExtractor extends Extractor {
     structure() {
         return {
             extractor: "library",
+            name: "Library",
             description: "Allows users to save book renewal events to their calendars",
+            icon: "library.png",
             parameters: [{
                 name: "book",
                 description: "eg: Os Maias"

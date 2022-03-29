@@ -8,7 +8,9 @@ class Bill extends Extractor {
     structure() {
         return {
             extractor: "bills",
+            name: "Pending Bills",
             description: "Extracts all pending bills from sigarra",
+            icon: "bill.png",
             parameters: [{
                 name: "description",
                 description: "eg: Propinas - Mestrado Integrado em Engenharia Informática e Computação - Prestação 1"
