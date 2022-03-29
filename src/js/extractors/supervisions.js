@@ -23,13 +23,14 @@ class ExamSupervisions extends EventExtractor {
                         description: "The URL for the exam's information page",
                     },
                     {
-                        name: "location",
+                        name: "rooms",
                         description: "The list of rooms assigned to the exam, if available",
                     },
                 ],
             },
-            "Exam Supervision - ${acronym} - ${location}",
+            "Exam Supervision - ${acronym} - ${rooms}",
             'Exam Link: <a href="${url}">${name}</a>',
+            "FEUP: ${rooms}",
             true,
             CalendarEventStatus.BUSY
         );
@@ -87,7 +88,7 @@ class ExamSupervisions extends EventExtractor {
                 this.isHTML,
                 info.startTime,
                 info.endTime,
-                info.location
+                this.getLocation(info)
             );
             event.status = this.status;
             events.push(event);
@@ -106,7 +107,7 @@ class ExamSupervisions extends EventExtractor {
      *  name: string,
      *  acronym: string,
      *  url: string,
-     *  location: string?,
+     *  rooms: string?,
      * }}
      */
     parseSupervisionEvent($tr) {
@@ -137,7 +138,7 @@ class ExamSupervisions extends EventExtractor {
         const url = $td[2].querySelector("a").href;
 
         // Parse rooms, if available
-        const location = $td[3].innerText || null;
+        const rooms = $td[3].innerText || null;
 
         return {
             startTime: new Date(`${date} ${startTime}`),
@@ -145,7 +146,7 @@ class ExamSupervisions extends EventExtractor {
             name,
             acronym,
             url,
-            location,
+            rooms,
         };
     }
 }

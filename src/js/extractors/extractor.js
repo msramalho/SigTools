@@ -130,15 +130,22 @@ class EventExtractor extends Extractor {
      * A format-string that sets calendar event's title for this extractor.
      * The format-string is set by the user in the options page and the default
      * is set in {@link structure} method.
+     * @type {string}
      */
     title = null;
     /**
      * A format-string that sets calendar event's description. Similar to
      * {@link title}
+     * @type {string}
      */
     description = null;
     /**
-     * A flag indicating wether the title and description format-strings are
+     * A format-string for the calendar event's location
+     * @type {string}
+     */
+    location = null;
+    /**
+     * A flag indicating whether the title and description format-strings are
      * plain text or HTML. It is necessary to handle encoding in specific
      * calendars.
      */
@@ -173,11 +180,12 @@ class EventExtractor extends Extractor {
      * @param {Object} childStructure
      * @param {string} title Default title format-string
      * @param {string} description Default description format-string
+     * @param {string} location Default location format-string
      * @param {boolean} isHTML If the default format-strings are HTML
      * @param {CalendarEventStatus} status Default availability for the events,
      * i.e. show as 'Busy', or show as 'Free' in calendar clients
      */
-    structure(childStructure, title, description, isHTML, status) {
+    structure(childStructure, title, description, location, isHTML, status) {
         return {
             ...childStructure,
             storage: {
@@ -185,6 +193,10 @@ class EventExtractor extends Extractor {
                     {
                         name: "title",
                         default: title,
+                    },
+                    {
+                        name: "location",
+                        default: location,
                     },
                 ],
                 textarea: [
@@ -221,7 +233,6 @@ class EventExtractor extends Extractor {
      * depending on user settings
      */
     getTitle(params) {
-        this._validateEventParams(params);
         return this._evalFormatString(this.title, params);
     }
 
@@ -236,8 +247,21 @@ class EventExtractor extends Extractor {
      * depending on user settings
      */
     getDescription(params) {
-        this._validateEventParams(params);
         return this._evalFormatString(this.description, params);
+    }
+
+    /**
+     * Build the event's location using the format set by the user in the
+     * options page.
+     *
+     * @param {Object} params An object that sets the value for all parameters
+     * available in this extractor, as declared in the {@link structure} method.
+     *
+     * @returns {String} The formatted string, which may be HTML or plaintext
+     * depending on user settings
+     */
+    getLocation(params) {
+        return this._evalFormatString(this.location, params);
     }
 
     /**
@@ -275,6 +299,10 @@ class EventExtractor extends Extractor {
      * @returns
      */
     _evalFormatString(formatStr, params) {
+        // ensure the metadata object, params, has all the properties
+        // declated in this extractor's structure
+        this._validateEventParams(params);
+
         // prepare the format string to be evaluated
         let str = "`" + formatStr + "`";
         if (this.isHTML) str = str.replace("\n", "<br/>");
