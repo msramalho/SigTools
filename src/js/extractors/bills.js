@@ -41,7 +41,7 @@ class Bills extends EventExtractor {
      * @returns {HTMLElement | null}
      */
     $pendingBillsTable() {
-        const $tables = document.querySelectorAll("#tab0 > table");
+        const $tables = Sig.doc.querySelectorAll("#tab0 > table");
         return $tables.length > 0 ? $tables[0] : null;
     }
 

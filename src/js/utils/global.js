@@ -1,6 +1,19 @@
 // README: DO NOT "use strict"; because the eval used in parseStrFormat must use the `var` to have a scope out of the for-loop so that the eval inside the try-catch can access the variables without appending event.X to the str (which would limit the code inside ${} not to use ${})
 
 /**
+ * Store a reference for the global 'document' object
+ * Our own code should use `Sig.doc` rather than `document`
+ * This allows to change the `document` context, necessary for for unit testing
+ * purposes. However, the global `window` and `document` are write protected
+ * objects. This is a ugly workaround, but gets the job done for the time being
+ * See https://github.com/msramalho/SigTools/issues/90 for complete discussion
+ */
+const Sig = {
+    doc: document,
+};
+Object.seal(Sig);
+
+/**
  * Parses a string that represents a format for event's title and description
  * @param {object} event this variable is used in eval so DO NOT remove because of unused warning
  * @param {String} str The string to be parsed

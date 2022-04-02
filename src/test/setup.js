@@ -14,7 +14,9 @@ function updatejQueryContext(url) {
             };
             $.fn = $.prototype = jQuery.fn;
             jQuery.extend($, jQuery);
-			resolve();
+
+            Sig.doc = dom;
+            resolve();
         })
     });
 }
