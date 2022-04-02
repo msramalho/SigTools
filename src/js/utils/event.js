@@ -67,7 +67,7 @@ class CalendarEvent {
      * event has no duration
      * @param {String?} location The event's location
      */
-    constructor(title, description, isHTML, start, end, location) {
+    constructor(title, description, isHTML, start, end) {
         /** @type {String} */
         this.title = title;
         /** @type {String} */
@@ -79,13 +79,51 @@ class CalendarEvent {
         /** @type {Date} @private */
         this._end = end || start;
         /** @type {String?} */
-        this.location = location || null;
+        this.location = null;
+        /** @type {CalendarEventStatus} */
+        this.status = CalendarEventStatus.BUSY;
+        /** @type {Boolean} */
+        this._allDay = false;
         /** @type {Date?} */
         this.recurStart = null;
         /** @type {Date?} */
         this.recurEnd = null;
-        /** @type {CalendarEventStatus} */
-        this.status = CalendarEventStatus.BUSY;
+    }
+
+    /**
+     *
+     * @param {string} title
+     * @param {string} description
+     * @param {boolean} isHTML
+     * @param {string | Date} start
+     * @param {string | Date | null} end
+     */
+    static initAllDayEvent(title, description, isHTML, start, end) {
+        const startDate = new Date(start);
+        startDate.setHours(0, 0, 0, 0);
+
+        let endDate;
+        if (end) {
+            endDate = new Date(end);
+            endDate.setHours(0, 0, 0, 0);
+            endDate = endDate.addDays(1);
+        } else {
+            endDate = new Date(startDate).addDays(1);
+        }
+
+        const ev = new CalendarEvent(title, description, isHTML, startDate, endDate);
+        ev._allDay = true;
+        return ev;
+    }
+
+    setLocation(loc) {
+        this.location = loc;
+        return this;
+    }
+
+    setStatus(s) {
+        this.status = s;
+        return this;
     }
 
     /**
@@ -97,6 +135,8 @@ class CalendarEvent {
     setRecur(recurStart, recurEnd) {
         this.recurStart = recurStart;
         this.recurEnd = recurEnd;
+
+        return this;
     }
 
     /**
