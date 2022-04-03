@@ -280,13 +280,26 @@ class EventExtractor extends Extractor {
      * @param {Object} params
      */
     _validateEventParams(params) {
+        // for each parameter declared in the extractors structure
         for (const { name: paramName } of this.structure.parameters) {
-            if (!(paramName in params))
-                throw Error(
-                    `Missing parameter '${paramName}' declared in the Extractor's structure. Received ${JSON.stringify(
-                        params
-                    )}`
-                );
+            // Some properties are declared as `a.b.c`
+            // meaning that `a` and `b` are objects
+            // That syntax works when using `eval`, it is valid JS syntax
+            // To statically validate nested objects, we break the parameter
+            // name by dots and iteratively check the entire chain
+            const properties = paramName.split(".");
+            let curr = params; // the current object in the chain
+
+            for (const prop of properties) {
+                if (!(prop in curr))
+                    throw Error(
+                        `Missing parameter '${paramName}' declared in the Extractor's structure. Received ${JSON.stringify(
+                            params
+                        )}`
+                    );
+                // move forward in the chain
+                curr = curr[prop];
+            }
         }
     }
 
