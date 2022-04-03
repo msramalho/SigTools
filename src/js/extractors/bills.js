@@ -1,7 +1,6 @@
 class Bills extends EventExtractor {
     constructor() {
         super();
-        this.tableSelector = "#tab0 > table > tbody > tr";
         this.ready();
     }
 
@@ -16,15 +15,15 @@ class Bills extends EventExtractor {
                     {
                         name: "description",
                         description:
-                            "eg: Propinas - Mestrado Integrado em Engenharia Informática e Computação - Prestação 1",
+                            "e.g. Propinas - Mestrado Integrado em Engenharia Informática e Computação - Prestação 1",
                     },
                     {
                         name: "deadline",
-                        description: "The payment deadline eg: 2019-03-31",
+                        description: "The payment deadline, e.g. 2019-03-31",
                     },
                     {
                         name: "amount",
-                        description: "The amount to pay e.g. 99,90€",
+                        description: "The amount to pay, e.g. 99,90 €",
                     },
                 ],
             },
@@ -34,24 +33,6 @@ class Bills extends EventExtractor {
             false,
             CalendarEventStatus.FREE
         );
-    }
-
-    /**
-     *
-     * @returns {HTMLElement | null}
-     */
-    $pendingBillsTable() {
-        const $tables = Sig.doc.querySelectorAll("#tab0 > table");
-        return $tables.length > 0 ? $tables[0] : null;
-    }
-
-    /**
-     *
-     * @returns
-     */
-    $pendingBillsTableRows() {
-        const $table = this.$pendingBillsTable();
-        return $table ? $table.querySelectorAll("tbody > tr") : null;
     }
 
     attachIfPossible() {
@@ -74,9 +55,27 @@ class Bills extends EventExtractor {
     }
 
     /**
+     * The DOM element for the table that lists the pending bills
+     * @returns {HTMLElement | null}
+     */
+    $pendingBillsTable() {
+        const $tables = Sig.doc.querySelectorAll("#tab0 > table");
+        return $tables.length > 0 ? $tables[0] : null;
+    }
+
+    /**
+     * All table rows for pending bills. Each row corresponds to a bill
+     * @returns
+     */
+    $pendingBillsTableRows() {
+        const $table = this.$pendingBillsTable();
+        return $table ? $table.querySelectorAll("tbody > tr") : null;
+    }
+
+    /**
      * Creates calendar events for all pending bills, as long as they have
      * a deadline
-     * 
+     *
      * @returns {CalendarEvent[]}
      */
     getEvents() {
@@ -102,7 +101,7 @@ class Bills extends EventExtractor {
 
     /**
      * Parses all pending bills found in the table
-     * 
+     *
      * @returns {{
      *  description: string,
      *  amount: string,
@@ -116,14 +115,14 @@ class Bills extends EventExtractor {
          */
         const getColumnAsText = ($tr, index) => {
             const $td = $tr.querySelector(`td:nth-child(${index})`);
-            return $td ? $td.innerText : null;
+            return $td ? $td.innerText.trim() : null;
         };
 
         /**
          * @param {number} index The column index, starting at 1
          * @returns {Number | null}
          */
-        const getColumnAsNumber = ($tr, index) => {
+        const getColumnAsCurrency = ($tr, index) => {
             const value = getColumnAsText($tr, index).replace("€", "").trim();
             // note that parseFloat only supports decimal literals,
             // https://262.ecma-international.org/5.1/#sec-A.2
@@ -134,6 +133,7 @@ class Bills extends EventExtractor {
 
         // get all <tr> for the pendings bills
         const $bills = this.$pendingBillsTableRows();
+        if (!$bills) return [];
 
         // iterate over the table rows, each row => a bill
         // skip first row, it is a table header, inside tbody :)
@@ -143,12 +143,12 @@ class Bills extends EventExtractor {
             const $bill = $bills[i];
 
             // parse the initial bill amount
-            const initialAmount = getColumnAsNumber($bill, 8);
+            const initialAmount = getColumnAsCurrency($bill, 8);
             // parse the fees value if it exists
-            const fees = getColumnAsNumber($bill, 10) || 0;
-
+            const fees = getColumnAsCurrency($bill, 10) || 0;
+            // append new bill information
             pendingBills.push({
-                description: getColumnAsText($bill, 3).trim(),
+                description: getColumnAsText($bill, 3),
                 amount: Intl.NumberFormat("pt-PT", { style: "currency", currency: "EUR" }).format(initialAmount + fees),
                 deadline: getColumnAsText($bill, 5) || null,
             });
