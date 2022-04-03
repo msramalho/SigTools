@@ -316,9 +316,11 @@ class EventExtractor extends Extractor {
         // declated in this extractor's structure
         this._validateEventParams(params);
 
-        // prepare the format string to be evaluated
+        // escape newlines
+        if (this.isHTML) formatStr = formatStr.replace(/\n/g, "<br/>");
+        else formatStr = formatStr.replace(/\n/g, "\\n");
+
         let str = "`" + formatStr + "`";
-        if (this.isHTML) str = str.replace("\n", "<br/>");
 
         // In strict mode, the 'eval' has its own context
         // therefore we prepare a list of commands to be evaluated constructing
@@ -347,4 +349,5 @@ class EventExtractor extends Extractor {
     }
 }
 
+/** @type {Extractor[]} */
 let EXTRACTORS = []; //each new extractor shall add an instance of itself to this variable
