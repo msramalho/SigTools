@@ -43,8 +43,8 @@ class Bills extends EventExtractor {
         // create button for opening the modal
         const $calendarBtn = createElementFromString(
             `<a class="calendarBtn"
-                style="display: inline-block; margin-left: 0.25em;"
-                title="Save exams to your Calendar">
+                style="display: inline-block;"
+                title="Save bills deadlines to your Calendar">
                 <img src="${chrome.extension.getURL("icons/calendar.svg")}"/>
             </a>`
         );
