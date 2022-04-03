@@ -91,7 +91,7 @@
                 "https://*.up.pt/*gpag_ccorrente_geral.conta_corrente_view*",
                 "https://*.up.pt/*GPAG_CCORRENTE_GERAL.CONTA_CORRENTE_VIEW*"
             ],
-            "js": ["js/extractors/bills.js"],
+            "js": ["js/extractors/bills.js", "js/extractors/bills_payment_refs.js"],
             "run_at": "document_end"
         },
         {
