@@ -186,8 +186,7 @@ class EventExtractor extends Extractor {
      * i.e. show as 'Busy', or show as 'Free' in calendar clients
      */
     structure(childStructure, title, description, location, isHTML, status) {
-        return {
-            ...childStructure,
+        return mergeDeep(childStructure, {
             storage: {
                 text: [
                     {
@@ -219,7 +218,7 @@ class EventExtractor extends Extractor {
                     },
                 ],
             },
-        };
+        });
     }
 
     /**
