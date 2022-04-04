@@ -194,6 +194,10 @@ class CalendarEvent {
         return encodeURIComponent(this.description);
     }
 
+    get isAllDay() {
+        return this._allDay;
+    }
+
     /**
      * @private
      * Calculates the start/end datetimes accordingly with the recurrence

@@ -87,7 +87,7 @@ describe("Bill extractor", function () {
         const bills = this.bills;
         const events = bills.getEvents();
         for (const e of events) {
-            chai.assert.isTrue(e._allDay);
+            chai.assert.isTrue(e.isAllDay);
         }
         done();
     });
