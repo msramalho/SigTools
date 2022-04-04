@@ -1,4 +1,7 @@
 class Bills extends EventExtractor {
+    /** @type {boolean} */
+    ignoreHasPaymentRefs = null;
+
     constructor() {
         super();
         this.ready();
@@ -26,6 +29,14 @@ class Bills extends EventExtractor {
                         description: "The amount to pay, e.g. 99,90 €",
                     },
                 ],
+                storage: {
+                    boolean: [
+                        {
+                            name: "ignoreHasPaymentRefs",
+                            default: true,
+                        },
+                    ],
+                },
             },
             "${description}",
             "Amount: ${amount}",
@@ -82,8 +93,15 @@ class Bills extends EventExtractor {
         const eventsLst = [];
 
         for (const bill of this.parsePendingBills()) {
-            // if the bill has a deadline, create an event for it, otherwise skip
-            if (bill.deadline) {
+            // If the bill has a deadline, create an event for it, otherwise skip
+            //
+            // Also consider the 'ignore if has payment ref' user option
+            // The reasoning is if the ATM button does not exist for a pending
+            // bill has an ATM, the same bill is listed in another table with
+            // the ATM reference. See BillsPaymentRefs extractor. If the user
+            // wants, it can be skipped.
+
+            if (bill.deadline && (!this.ignoreHasPaymentRefs || bill.hasATMBtn)) {
                 const ev = CalendarEvent.initAllDayEvent(
                     this.getTitle(bill),
                     this.getDescription(bill),
@@ -151,6 +169,7 @@ class Bills extends EventExtractor {
                 description: getColumnAsText($bill, 3),
                 amount: Intl.NumberFormat("pt-PT", { style: "currency", currency: "EUR" }).format(initialAmount + fees),
                 deadline: getColumnAsText($bill, 5) || null,
+                hasATMBtn: $bill.querySelector(`td:nth-child(9)`).childElementCount !== 0,
             });
         }
 
