@@ -46,57 +46,110 @@ class CalendarEventStatus {
  *
  * A calendar event is characterised by:
  * - a title and description that is shown in the calendar client
- * - a start and an end date-time, e.g. starts a 2nd March 8:00 am, and ends
+ * - a start and an end date-time, e.g., starts a 2nd March 8:00 am, and ends
  * by 2nd March 10:00 am
- * - a optional location
+ * - an optional location
  *
  * The event may be weekly recurrent. See {@link setRecur} to set the
  * recurrence time period. The start/end date-times are calculated accordingly
  * with the defined period. See {@link getRecurRule} to get the recurring rule
  * for ical calendar formats.
+ *
+ * Events can be created as "All Day" events, recommended for for reminder-like
+ * events. See {@link initAllDayEvent}.
+ *
+ * Finally, events have a status. If the status is "FREE" it means the event
+ * does not take time in the agenda. If it is "BUSY" it does.
+ * The status is used by calendar clients to detect conflicts between
+ * overlapping events, in case the events consume time. Or may be used when
+ * schedulling a meeting, to find free time slots. In Sigtools, events default
+ * to BUSY, except reminder-like events, e.g., bills, library book deadlines,
+ * etc. Note: Some calendar clients support additional status,
+ * such as "Out of Office", "Tentative", etc. These are not standardized and
+ * are not supported.
  */
 class CalendarEvent {
     /**
      *
      * @param {String} title The event title
      * @param {String} description The event description
-     * @param {Boolean} isHTML If true, the title and description are HTML,
-     * otherwise it is plaintext
+     * @param {Boolean} isHTML If true, the description is HTML, otherwise it
+     * is plaintext
      * @param {Date} start The event's starting date-time
      * @param {Date?} end The event's ending date-time. If null/undefined, the
      * event has no duration
-     * @param {String?} location The event's location
      */
     constructor(title, description, isHTML, start, end) {
         /** @type {String} */
         this.title = title;
         /** @type {String} */
         this.description = description;
-        /** @type {Boolean} */
+        /**
+         * Flag indicating if the description is in HTML format
+         * @type {Boolean}
+         */
         this.isHTML = isHTML;
-        /** @type {Date} @private */
+        /**
+         * @private
+         * The start date-time
+         * @type {Date}
+         */
         this._start = start;
-        /** @type {Date} @private */
+        /**
+         * @private
+         * The end date-time
+         * @type {Date}
+         */
         this._end = end || start;
         /** @type {String?} */
         this.location = null;
-        /** @type {CalendarEventStatus} */
+        /**
+         * The event status. If the status is "FREE" it means the event
+         * does not take time in the agenda, if it is "BUSY" it does.
+         * @type {CalendarEventStatus}
+         */
         this.status = CalendarEventStatus.BUSY;
-        /** @type {Boolean} */
+        /**
+         * @private
+         * Whether the event is "All Day". This property should not be used
+         * directly, instead see {@link initAllDayEvent}. It automatically
+         * calculates the correct start and end times to ensure calendar
+         * clients mark the event as "All Day".
+         * @type {Boolean}
+         */
         this._allDay = false;
-        /** @type {Date?} */
-        this.recurStart = null;
-        /** @type {Date?} */
-        this.recurEnd = null;
+        /**
+         * @private
+         * If the event is recurrent, this property indicates the recurrence
+         * starting date (time is ignored). See {@link setRecur} for setting
+         * a recurrence period.
+         *
+         * Note that it does not necessarially
+         * match {@link _start}. It can be <, =, or > than the provided start
+         * date. Hence, the getter {@link start} must re-calculate the starting
+         * date accordingly with the recurrence period.
+         * @type {Date?} */
+        this._recurStart = null;
+        /**
+         * @private
+         * Similar to {@link _recurStart}, but sets the end of recurrence
+         * period
+         * @type {Date?}
+         */
+        this._recurEnd = null;
     }
 
     /**
+     * Creates an "All Day" event
      *
-     * @param {string} title
-     * @param {string} description
-     * @param {boolean} isHTML
-     * @param {string | Date} start
-     * @param {string | Date | null} end
+     * @param {string} title Event title
+     * @param {string} description Event description
+     * @param {boolean} isHTML If true, the description is HTML, otherwise it
+     * is plaintext
+     * @param {string | Date} start The event date. Note: As an "All Day" event
+     * , the time is ignored and is always set to midnight
+     * @param {string | Date | null} end The event end date if it lasts multiple
+     * days. For single day events, you may ommit this parameter
      */
     static initAllDayEvent(title, description, isHTML, start, end) {
         const startDate = new Date(start);
@@ -116,11 +169,21 @@ class CalendarEvent {
         return ev;
     }
 
+    /**
+     * Set a location for the event
+     * @param {string} loc
+     * @returns {CalendarEvent}
+     */
     setLocation(loc) {
         this.location = loc;
         return this;
     }
 
+    /**
+     * Set the event status
+     * @param {CalendarEventStatus} s
+     * @returns {CalendarEvent}
+     */
     setStatus(s) {
         this.status = s;
         return this;
@@ -128,13 +191,13 @@ class CalendarEvent {
 
     /**
      * Set the event as a recurrent event and define the recurrence period
-     *
      * @param {Date} recurStart
      * @param {Date} recurEnd
+     * @returns {CalendarEvent}
      */
     setRecur(recurStart, recurEnd) {
-        this.recurStart = recurStart;
-        this.recurEnd = recurEnd;
+        this._recurStart = recurStart;
+        this._recurEnd = recurEnd;
 
         return this;
     }
@@ -164,36 +227,54 @@ class CalendarEvent {
 
     /**
      * @see {CalendarEvent.getRecurRule}
-     * @returns
+     * @returns {{freq: "WEEKLY", until: Date}|null}
      */
     get recurRule() {
-        return CalendarEvent.getRecurRule(this.recurStart, this.recurEnd);
+        return CalendarEvent.getRecurRule(this._recurStart, this._recurEnd);
     }
 
     /**
+     * The event starting date-time. If the event is recurrent, the date-time
+     * is re-calculated accordingly to ensure the start date-time is within the
+     * recurrence period
      * @returns {Date}
      */
     get start() {
-        if (this.recurStart && this.recurEnd) return this._calculateDateTime(this._start);
+        if (this._recurStart && this._recurEnd) return this._calculateDateTime(this._start);
         else return this._start;
     }
 
     /**
+     * The event ending date-time. If the event is recurrent, the date-time
+     * is re-calculated accordingly to ensure the end date-time is within the
+     * recurrence period
      * @returns {Date}
      */
     get end() {
-        if (this.recurStart && this.recurEnd) return this._calculateDateTime(this._end);
+        if (this._recurStart && this._recurEnd) return this._calculateDateTime(this._end);
         else return this._end;
     }
 
+    /**
+     * Get the event title as an encoded string
+     * @returns {string}
+     */
     get titleEncoded() {
         return encodeURIComponent(this.title);
     }
 
+    /**
+     * Get the event description as an encoded string
+     * @returns {string}
+     */
     get descriptionEncoded() {
         return encodeURIComponent(this.description);
     }
 
+    /**
+     * Whether the event is "All Day" or not
+     * @returns {boolean}
+     */
     get isAllDay() {
         return this._allDay;
     }
@@ -208,7 +289,7 @@ class CalendarEvent {
      */
     _calculateDateTime(datetime) {
         // convert Date to luxon' DateTime
-        const _recur = luxon.DateTime.fromJSDate(this.recurStart);
+        const _recur = luxon.DateTime.fromJSDate(this._recurStart);
         const _datetime = luxon.DateTime.fromJSDate(datetime);
 
         if (_recur > _datetime) {
