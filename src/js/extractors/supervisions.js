@@ -89,9 +89,8 @@ class ExamSupervisions extends EventExtractor {
                 this.getDescription(info), // apply string-format in description
                 this.isHTML,
                 info.startTime,
-                info.endTime,
-                this.getLocation(info)
-            );
+                info.endTime
+            ).setLocation(this.getLocation(info));
             event.status = this.status;
             events.push(event);
         }

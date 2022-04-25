@@ -242,7 +242,8 @@ class CalendarUrlGenerator {
          * Query parameters:
          * * `action`: `TEMPLATE`
          * * `dates`: `<start date>/<end date>`
-         *  * Both dates in ISO 8601 simplified (YYYYMMDDTHHmmss+Z)
+         *      * in ISO 8601 simplified (YYYYMMDDTHHmmss+Z)
+         *      * if event is allday, just remove the times
          * * `text`: The event title (string)
          * * `details`: The event description (string, with html support)
          * * `location`: Event location (string)
@@ -255,8 +256,19 @@ class CalendarUrlGenerator {
             suppressMilliseconds: true,
             includeOffset: false,
         };
-        const startDate = DateTime.fromJSDate(this.event.start).toISO(luxonSettings);
-        const endDate = DateTime.fromJSDate(this.event.end).toISO(luxonSettings);
+        
+        // If the event is "All Day", format the start and end dates as ISO
+        // dates, e.g. `20220425`, without any time or timezones offsets
+        // Otherwise, use the ISO date-time format without offset, e.g.,
+        // 20220425T173000
+        let startDate, endDate;
+        if (this.event.isAllDay) {
+            startDate = DateTime.fromJSDate(this.event.start).toISODate(luxonSettings);
+            endDate = DateTime.fromJSDate(this.event.end).toISODate(luxonSettings);
+        } else {
+            startDate = DateTime.fromJSDate(this.event.start).toISO(luxonSettings);
+            endDate = DateTime.fromJSDate(this.event.end).toISO(luxonSettings);
+        }
 
         return this._compileURL({
             baseURL: "https://calendar.google.com/calendar/render",
@@ -325,14 +337,29 @@ class CalendarUrlGenerator {
          * * `st`: Event start time in ISO 8601 simplified ({@link google})
          * * `et`: Event end time in ISO 8601 simplified
          * * `v`: `60`
+         * * `dur`: technically could replace the `et`, but we use for marking
+         * events as "All Day" events, setting `dur=allday`
          */
+        
         const luxonSettings = {
             format: "basic",
             suppressMilliseconds: true,
             includeOffset: false,
         };
-        const startDate = DateTime.fromJSDate(this.event.start).toISO(luxonSettings);
-        const endDate = DateTime.fromJSDate(this.event.end).toISO(luxonSettings);
+
+        // Similarly to Google links, if the event is "All Day", format the
+        // start and end dates as ISO dates, e.g. `20220425`, without any time
+        // or timezones offsets
+        // Otherwise, use the ISO date-time format without offset, e.g.,
+        // 20220425T173000
+        let startDate, endDate;
+        if (this.event.isAllDay) {
+            startDate = DateTime.fromJSDate(this.event.start).toISODate(luxonSettings);
+            endDate = DateTime.fromJSDate(this.event.end).toISODate(luxonSettings);
+        } else {
+            startDate = DateTime.fromJSDate(this.event.start).toISO(luxonSettings);
+            endDate = DateTime.fromJSDate(this.event.end).toISO(luxonSettings);
+        }
 
         return __compileURL({
             baseURL: "https://calendar.yahoo.com/",
@@ -343,6 +370,7 @@ class CalendarUrlGenerator {
                 st: startDate,
                 et: endDate,
                 v: "60",
+                dur: this.event.isAllDay ? "allday" : null
             },
         });
     }
@@ -384,13 +412,15 @@ class CalendarUrlGenerator {
      * * `body`: The event description (string, no html support)
      * * `location`: Event location (string)
      * * `startdt`: Event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z).
-     * Apparently, timezone offsets are not supported, convert to UTC instead
      * * `enddt`: Event start time in ISO 8601 (YYYY-mm-ddTHH:mm:ss+Z)
+     *      * Apparently, timezone offsets are not supported, convert to UTC
+     *      instead
+     * * `allday`: If true, the event is configured as "All Day"
      *
      * @see {@link https://en.wikipedia.org/wiki/ISO_8601 ISO 8601}
      *
-     * @returns {Object} Object of key/value for the supported query parameters in
-     * Microsoft calendars
+     * @returns {Object} Object of key/value for the supported query parameters
+     * in Microsoft calendars
      */
     _getMicrosoftQueryParams() {
         /**
@@ -412,14 +442,18 @@ class CalendarUrlGenerator {
             includeOffset: true,
         };
 
+        const startDate = DateTime.fromJSDate(this.event.start).toUTC().toISO(luxonSettings);
+        const endDate = DateTime.fromJSDate(this.event.end).toUTC().toISO(luxonSettings);
+
         return {
             rru: "addevent",
             subject: encodeURIComponent(customEncode(this.event.title)),
-            startdt: DateTime.fromJSDate(this.event.start).toUTC().toISO(luxonSettings),
-            enddt: DateTime.fromJSDate(this.event.end).toUTC().toISO(luxonSettings),
+            startdt: startDate,
+            enddt: endDate,
             location: encodeURIComponent(customEncode(this.event.location || "")),
             body: encodeURIComponent(customEncode(this.event.description)),
             path: "/calendar/action/compose",
+            allday: this.event.isAllDay
         };
     }
 }

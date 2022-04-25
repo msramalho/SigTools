@@ -14,7 +14,9 @@ function updatejQueryContext(url) {
             };
             $.fn = $.prototype = jQuery.fn;
             jQuery.extend($, jQuery);
-			resolve();
+
+            Sig.doc = dom;
+            resolve();
         })
     });
 }
@@ -24,8 +26,15 @@ chrome = {
     storage: {
         local: {
             set: () => {},
-            get: () => {}
+            get: function(extractor_id, callback_fn) {
+                const o = {};
+                o[extractor_id] = {};
+                callback_fn(o);
+            }
         }
+    },
+    extension: {
+        getURL: (u) => u
     }
 }
 

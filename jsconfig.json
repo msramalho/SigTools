@@ -2,5 +2,5 @@
     "compilerOptions": {
         "target": "es6"
     },
-    "include": ["src/js/**/*"]
+    "include": ["src/js/**/*", "src/test/**/*"]
 }

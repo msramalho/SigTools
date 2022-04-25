@@ -186,8 +186,7 @@ class EventExtractor extends Extractor {
      * i.e. show as 'Busy', or show as 'Free' in calendar clients
      */
     structure(childStructure, title, description, location, isHTML, status) {
-        return {
-            ...childStructure,
+        return mergeDeep(childStructure, {
             storage: {
                 text: [
                     {
@@ -219,7 +218,7 @@ class EventExtractor extends Extractor {
                     },
                 ],
             },
-        };
+        });
     }
 
     /**
@@ -280,13 +279,26 @@ class EventExtractor extends Extractor {
      * @param {Object} params
      */
     _validateEventParams(params) {
+        // for each parameter declared in the extractors structure
         for (const { name: paramName } of this.structure.parameters) {
-            if (!(paramName in params))
-                throw Error(
-                    `Missing parameter '${paramName}' declared in the Extractor's structure. Received ${JSON.stringify(
-                        params
-                    )}`
-                );
+            // Some properties are declared as `a.b.c`
+            // meaning that `a` and `b` are objects
+            // That syntax works when using `eval`, it is valid JS syntax
+            // To statically validate nested objects, we break the parameter
+            // name by dots and iteratively check the entire chain
+            const properties = paramName.split(".");
+            let curr = params; // the current object in the chain
+
+            for (const prop of properties) {
+                if (!(prop in curr))
+                    throw Error(
+                        `Missing parameter '${paramName}' declared in the Extractor's structure. Received ${JSON.stringify(
+                            params
+                        )}`
+                    );
+                // move forward in the chain
+                curr = curr[prop];
+            }
         }
     }
 
@@ -303,9 +315,11 @@ class EventExtractor extends Extractor {
         // declated in this extractor's structure
         this._validateEventParams(params);
 
-        // prepare the format string to be evaluated
+        // escape newlines
+        if (this.isHTML) formatStr = formatStr.replace(/\n/g, "<br/>");
+        else formatStr = formatStr.replace(/\n/g, "\\n");
+
         let str = "`" + formatStr + "`";
-        if (this.isHTML) str = str.replace("\n", "<br/>");
 
         // In strict mode, the 'eval' has its own context
         // therefore we prepare a list of commands to be evaluated constructing
@@ -334,4 +348,5 @@ class EventExtractor extends Extractor {
     }
 }
 
+/** @type {Extractor[]} */
 let EXTRACTORS = []; //each new extractor shall add an instance of itself to this variable
