@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div
+            id="GPAG_CCORRENTE_GERAL_CONTA_CORRENTE_VIEW"
+            class="tab_container ui-tabs ui-widget ui-widget-content ui-corner-all"
+        >
+            <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                <li
+                    class="selected ui-state-default ui-corner-top ui-tabs-active ui-state-active"
+                    role="tab"
+                    tabindex="0"
+                    aria-controls="tab0"
+                    aria-labelledby="ui-id-1"
+                    aria-selected="true"
+                    aria-expanded="true"
+                >
+                    <a href="#tab0" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1"
+                        >Despesas não saldadas</a
+                    >
+                </li>
+                <li
+                    class="ui-state-default ui-corner-top"
+                    role="tab"
+                    tabindex="-1"
+                    aria-controls="tab1"
+                    aria-labelledby="ui-id-2"
+                    aria-selected="false"
+                    aria-expanded="false"
+                >
+                    <a href="#tab1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-2"
+                        ><em>Candidaturas</em></a
+                    >
+                </li>
+                <li
+                    class="ui-state-default ui-corner-top"
+                    role="tab"
+                    tabindex="-1"
+                    aria-controls="tab2"
+                    aria-labelledby="ui-id-3"
+                    aria-selected="false"
+                    aria-expanded="false"
+                >
+                    <a href="#tab2" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-3"
+                        ><em>Certidão</em></a
+                    >
+                </li>
+                <li
+                    class="ui-state-default ui-corner-top"
+                    role="tab"
+                    tabindex="-1"
+                    aria-controls="tab3"
+                    aria-labelledby="ui-id-4"
+                    aria-selected="false"
+                    aria-expanded="false"
+                >
+                    <a href="#tab3" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-4"
+                        ><em>Juros de mora Propinas</em></a
+                    >
+                </li>
+                <li
+                    class="ui-state-default ui-corner-top"
+                    role="tab"
+                    tabindex="-1"
+                    aria-controls="tab4"
+                    aria-labelledby="ui-id-5"
+                    aria-selected="false"
+                    aria-expanded="false"
+                >
+                    <a href="#tab4" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-5"
+                        ><em>Prática de Acto fora de prazo</em></a
+                    >
+                </li>
+                <li
+                    class="ui-state-default ui-corner-top"
+                    role="tab"
+                    tabindex="-1"
+                    aria-controls="tab5"
+                    aria-labelledby="ui-id-6"
+                    aria-selected="false"
+                    aria-expanded="false"
+                >
+                    <a href="#tab5" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-6"
+                        ><em>Propinas</em></a
+                    >
+                </li>
+                <li
+                    class="ui-state-default ui-corner-top"
+                    role="tab"
+                    tabindex="-1"
+                    aria-controls="tab6"
+                    aria-labelledby="ui-id-7"
+                    aria-selected="false"
+                    aria-expanded="false"
+                >
+                    <a href="#tab6" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-7"
+                        ><em>Repetição de exame para melhoria de classificação</em></a
+                    >
+                </li>
+                <li
+                    class="ui-state-default ui-corner-top"
+                    role="tab"
+                    tabindex="-1"
+                    aria-controls="tab7"
+                    aria-labelledby="ui-id-8"
+                    aria-selected="false"
+                    aria-expanded="false"
+                >
+                    <a href="#tab7" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-8"
+                        ><em>Seguro Escolar</em></a
+                    >
+                </li>
+                <li
+                    class="ui-state-default ui-corner-top"
+                    role="tab"
+                    tabindex="-1"
+                    aria-controls="tab8"
+                    aria-labelledby="ui-id-9"
+                    aria-selected="false"
+                    aria-expanded="false"
+                >
+                    <a href="#tab8" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-9"
+                        ><em>Serviços</em></a
+                    >
+                </li>
+                <li
+                    class="selected ui-state-default ui-corner-top"
+                    role="tab"
+                    tabindex="-1"
+                    aria-controls="tab9"
+                    aria-labelledby="ui-id-10"
+                    aria-selected="false"
+                    aria-expanded="false"
+                >
+                    <a href="#tab9" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-10"
+                        >Extrato Geral</a
+                    >
+                </li>
+            </ul>
+            <div
+                id="tab0"
+                class="tab ui-tabs-panel ui-widget-content ui-corner-bottom"
+                aria-labelledby="ui-id-1"
+                role="tabpanel"
+                aria-hidden="false"
+            >
+                <table class="tabela">
+                    <tbody>
+                        <tr>
+                            <th colspan="3">Descrição</th>
+                            <th>Data</th>
+                            <th>Data Limite</th>
+                            <th>Valor</th>
+                            <th>Valor Pago</th>
+                            <th colspan="2">Valor em Falta</th>
+                            <th>Juros de Mora</th>
+                        </tr>
+                        <tr class="i">
+                            <td class="l">
+                                <img
+                                    src="/feup/pt/imagens/SemVermelho"
+                                    alt="Prazo excedido"
+                                    title="Prazo excedido"
+                                    class="border0"
+                                    width="10"
+                                    height="10"
+                                />
+                            </td>
+                            <td class="t">
+                                <abbr title="Mestrado em Engenharia Informática e Computação">M.EIC</abbr>
+                            </td>
+                            <td class="t">
+                                Propinas - Mestrado em Engenharia Informática e Computação - Prestação 7 2021/2022
+                            </td>
+                            <td class="data">2021-10-15</td>
+                            <td class="data">2022-03-31</td>
+                            <td class="n">34,85 €</td>
+                            <td class="n"> </td>
+                            <td class="n">34,85 €</td>
+                            <td class="l a"> </td>
+                            <td class="n"><i>0,10 €</i></td>
+                        </tr>
+                        <tr class="p">
+                            <td class="l">
+                                <img
+                                    src="/feup/pt/imagens/SemAmarelo"
+                                    alt="Não pago mas prazo ainda não foi excedido"
+                                    title="Não pago mas prazo ainda não foi excedido"
+                                    class="border0"
+                                    width="10"
+                                    height="10"
+                                />
+                            </td>
+                            <td class="t">
+                                <abbr title="Mestrado em Engenharia Informática e Computação">M.EIC</abbr>
+                            </td>
+                            <td class="t">
+                                Propinas - Mestrado em Engenharia Informática e Computação - Prestação 8 2021/2022
+                            </td>
+                            <td class="data">2021-10-15</td>
+                            <td class="data">2022-04-30</td>
+                            <td class="n">34,85 €</td>
+                            <td class="n"> </td>
+                            <td class="n">34,85 €</td>
+                            <td class="l a"> </td>
+                            <td class="n"></td>
+                        </tr>
+                        <tr class="i">
+                            <td class="l">
+                                <img
+                                    src="/feup/pt/imagens/SemAmarelo"
+                                    alt="Não pago mas prazo ainda não foi excedido"
+                                    title="Não pago mas prazo ainda não foi excedido"
+                                    class="border0"
+                                    width="10"
+                                    height="10"
+                                />
+                            </td>
+                            <td class="t">
+                                <abbr title="Mestrado em Engenharia Informática e Computação">M.EIC</abbr>
+                            </td>
+                            <td class="t">
+                                Propinas - Mestrado em Engenharia Informática e Computação - Prestação 9 2021/2022
+                            </td>
+                            <td class="data">2021-10-15</td>
+                            <td class="data">2022-05-31</td>
+                            <td class="n">34,85 €</td>
+                            <td class="n"> </td>
+                            <td class="n">34,85 €</td>
+                            <td class="l a"> </td>
+                            <td class="n"></td>
+                        </tr>
+                        <tr class="p">
+                            <td class="l">
+                                <img
+                                    src="/feup/pt/imagens/SemAmarelo"
+                                    alt="Não pago mas prazo ainda não foi excedido"
+                                    title="Não pago mas prazo ainda não foi excedido"
+                                    class="border0"
+                                    width="10"
+                                    height="10"
+                                />
+                            </td>
+                            <td class="t">
+                                <abbr title="Mestrado em Engenharia Informática e Computação">M.EIC</abbr>
+                            </td>
+                            <td class="t">
+                                Propinas - Mestrado em Engenharia Informática e Computação - Prestação 10 2021/2022
+                            </td>
+                            <td class="data">2021-10-15</td>
+                            <td class="data">2022-06-30</td>
+                            <td class="n">34,85 €</td>
+                            <td class="n"> </td>
+                            <td class="n">34,85 €</td>
+                            <td class="l a">
+                                <a href="gpag_ccorrente_geral.mb?pct_cod=&amp;parr_id="
+                                    ><img
+                                        src="/feup/pt/imagens/GPAG-MB"
+                                        alt="Criar referência Multibanco para pagamento"
+                                        title="Criar referência Multibanco para pagamento"
+                                        class="border0"
+                                /></a>
+                            </td>
+                            <td class="n"></td>
+                        </tr>
+                        <tr class="i">
+                            <td class="l">
+                                <img
+                                    src="/feup/pt/imagens/SemAmarelo"
+                                    alt="Não pago mas prazo ainda não foi excedido"
+                                    title="Não pago mas prazo ainda não foi excedido"
+                                    class="border0"
+                                    width="10"
+                                    height="10"
+                                />
+                            </td>
+                            <td class="t"><abbr title=""></abbr></td>
+                            <td class="t">
+                                Juros de mora Propinas - Mestrado - Mestrado em Engenharia Informática e Computação -
+                                Prestação 7 2021/2022 - Juros de Mora
+                            </td>
+                            <td class="data">2022-04-02</td>
+                            <td class="data"></td>
+                            <td class="n">0,01 €</td>
+                            <td class="n"> </td>
+                            <td class="n">0,01 €</td>
+                            <td class="l a"> </td>
+                            <td class="n"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="informa">
+                    Pode efetuar o pagamento via Multibanco usando os dados Referência/Entidade indicados ou na
+                    Tesouraria desta Instituição, no horário de abertura ao público.
+                </div>
+                <h3>Referências a Pagamento</h3>
+                <div class="flutuador">
+                    <img
+                        src="/feup/pt/imagens/GPAG-Multibanco"
+                        alt="Logótipo do Multibanco"
+                        title=""
+                        class="border0"
+                        width="80"
+                    />
+                </div>
+                <ul>
+                    <li>
+                        Para efectuar os pagamentos utilize a Rede de Caixas Automáticos Multibanco ou um serviço de
+                        <i>netbanking</i> e <br />seleccione a opção PAGAMENTOS &gt; PAGAMENTOS DE SERVIÇOS;
+                    </li>
+                    <li>
+                        Note que as referências indicadas são para o <b>pagamento exclusivo</b> dos débitos associados
+                        ao cliente acima identificado,<br />e somente válidas para pagamento no periodo indicado;
+                    </li>
+                </ul>
+                <div class="limpar"></div>
+                <table class="dadossz">
+                    <tbody>
+                        <tr>
+                            <th colspan="2">Referente a</th>
+                            <th>Data Limite</th>
+                            <th>Entidade</th>
+                            <th>Referência</th>
+                            <th>Montante</th>
+                        </tr>
+                        <tr class="i">
+                            <td>Propinas - Mestrado em Engenharia Informática e Computação Prestação 7 2021/2022</td>
+                            <td class="n sem-quebra">34,85 €</td>
+                            <td rowspan="3" class="data"><b>2022-04-02</b></td>
+                            <td rowspan="3"><b>10316</b></td>
+                            <td rowspan="3" class="sem-quebra"><b>272053250</b></td>
+                            <td class="n" rowspan="3"><b>69,80 €</b></td>
+                        </tr>
+                        <tr class="i">
+                            <td>Propinas - Mestrado em Engenharia Informática e Computação Prestação 6 2021/2022</td>
+                            <td class="n sem-quebra">34,85 €</td>
+                        </tr>
+                        <tr class="i">
+                            <td>
+                                Juros de mora Propinas - Mestrado - Mestrado em Engenharia Informática e Computação
+                                Prestação 7 2021/2022 - Juros de Mora
+                            </td>
+                            <td class="n sem-quebra">0,10 €</td>
+                        </tr>
+                        <tr class="p">
+                            <td>Propinas - Mestrado em Engenharia Informática e Computação Prestação 8 2021/2022</td>
+                            <td class="n sem-quebra">34,85 €</td>
+                            <td rowspan="2" class="data"><b>2022-04-30</b></td>
+                            <td rowspan="2"><b>10316</b></td>
+                            <td rowspan="2" class="sem-quebra"><b>273471066</b></td>
+                            <td class="n" rowspan="2"><b>69,70 €</b></td>
+                        </tr>
+                        <tr class="p">
+                            <td>Propinas - Mestrado em Engenharia Informática e Computação Prestação 9 2021/2022</td>
+                            <td class="n sem-quebra">34,85 €</td>
+                        </tr>
+                        <tr class="i">
+                            <td>Serviço de Impressão Serviço de Impressão</td>
+                            <td class="n sem-quebra">5,00 €</td>
+                            <td rowspan="1" class="data"><b>2022-04-11</b></td>
+                            <td rowspan="1"><b>10316</b></td>
+                            <td rowspan="1" class="sem-quebra"><b>272494361</b></td>
+                            <td class="n" rowspan="1"><b>5,00 €</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

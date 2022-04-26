@@ -17,49 +17,93 @@
         "scripts": ["js/scripts/background.js"],
         "persistent": false
     },
-    "content_scripts": [{
-        "matches": ["https://*.up.pt/*"],
-        "css": ["css/content_style.css"],
-        "js": ["js/lib/jquery-3.4.1.js", "js/lib/ics.deps.min.js", "js/lib/ics.js", "js/lib/sweetalert.min.js", "js/lib/luxon.min.js", "js/utils/calendar.js", "js/utils/global.js", "js/utils/dropdown.js", "js/utils/modal.js", "js/utils/time.js", "js/lib/datatables.min.js", "js/extractors/extractor.js"],
-        "run_at": "document_end"
-    }, {
-        "matches": ["https://sigarra.up.pt/*"],
-        "css": ["css/datatables.min.css"],
-        "js": ["js/extractors/infinite_scroll.js", "js/extractors/datatable.js"],
-        "run_at": "document_end"
-    }, {
-        "matches": ["https://*.up.pt/*hor_geral*", "https://*.up.pt/*HOR_GERAL*"],
-        "js": ["js/extractors/timetable.js"],
-        "run_at": "document_end"
-    }, {
-        "matches": ["https://*.up.pt/*exa_geral*", "https://*.up.pt/*EXA_GERAL*"],
-        "js": ["js/extractors/exams.js"],
-        "run_at": "document_end"
-    }, {
-        "matches": ["https://moodle.up.pt/*"],
-        "js": ["js/extractors/moodle.js"],
-        "run_at": "document_end"
-    }, {
-        "matches": ["https://*.up.pt/*show_pauta_resul*", "https://*.up.pt/*SHOW_PAUTA_RESUL*"],
-        "js": ["js/lib/chart.min.js", "js/lib/math.min.js", "js/lib/mustache.min.js", "js/extractors/grades.js"],
-        "run_at": "document_end"
-    }, {
-        "matches": ["https://*.up.pt/*exa_geral.exame_view*", "https://*.up.pt/*EXA_GERAL.EXAME_VIEW*"],
-        "js": ["js/extractors/single_exam.js"],
-        "run_at": "document_end"
-    }, {
-        "matches": ["https://catalogo.up.pt/F/?func=bor-loan*", "https://catalogo.up.pt/F/?func=BOR-LOAN*"],
-        "js": ["js/extractors/library.js"],
-        "run_at": "document_end"
-    }, {
-        "matches": ["https://*.up.pt/*gpag_ccorrente_geral.conta_corrente_view*", "https://*.up.pt/*GPAG_CCORRENTE_GERAL.CONTA_CORRENTE_VIEW*"],
-        "js": ["js/extractors/bills.js"],
-        "run_at": "document_end"
-    }],
-    "permissions": [
-        "https://*.up.pt/*",
-        "storage"
+    "content_scripts": [
+        {
+            "matches": ["https://*.up.pt/*"],
+            "css": ["css/content_style.css"],
+            "js": [
+                "js/lib/jquery-3.4.1.js",
+                "js/lib/datatables.min.js",
+                "js/lib/ics.deps.min.js",
+                "js/lib/ics.js",
+                "js/lib/sweetalert.min.js",
+                "js/lib/luxon.min.js",
+                "js/utils/event.js",
+                "js/utils/calendar.js",
+                "js/utils/global.js",
+                "js/utils/dropdown.js",
+                "js/utils/modal.js",
+                "js/utils/time.js",
+                "js/utils/logger.js",
+                "js/utils/userParser.js",
+                "js/utils/sidebar.js",
+                "js/extractors/extractor.js",
+                "js/extractors/mailto.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["https://sigarra.up.pt/*"],
+            "exclude_globs": [
+                "*hor_geral*",
+                "*HOR_GERAL*",
+                "*exa_geral*",
+                "*EXA_GERAL*",
+                "*gpag_ccorrente_geral.conta_corrente_view*",
+                "*GPAG_CCORRENTE_GERAL.CONTA_CORRENTE_VIEW*"
+            ],
+            "css": ["css/datatables.min.css"],
+            "js": ["js/extractors/datatable.js", "js/extractors/infinite_scroll.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["https://*.up.pt/*hor_geral*", "https://*.up.pt/*HOR_GERAL*"],
+            "js": ["js/extractors/timetable.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["https://*.up.pt/*exa_geral*", "https://*.up.pt/*EXA_GERAL*"],
+            "js": ["js/extractors/exams.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["https://moodle.up.pt/*"],
+            "js": ["js/extractors/moodle.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["https://*.up.pt/*show_pauta_resul*", "https://*.up.pt/*SHOW_PAUTA_RESUL*"],
+            "js": ["js/lib/chart.min.js", "js/lib/math.min.js", "js/lib/mustache.min.js", "js/extractors/grades.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["https://*.up.pt/*exa_geral.exame_view*", "https://*.up.pt/*EXA_GERAL.EXAME_VIEW*"],
+            "js": ["js/extractors/single_exam.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["https://catalogo.up.pt/F/?func=bor-loan*", "https://catalogo.up.pt/F/?func=BOR-LOAN*"],
+            "js": ["js/extractors/library.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "https://*.up.pt/*gpag_ccorrente_geral.conta_corrente_view*",
+                "https://*.up.pt/*GPAG_CCORRENTE_GERAL.CONTA_CORRENTE_VIEW*"
+            ],
+            "js": ["js/extractors/bills.js", "js/extractors/bills_payment_refs.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "https://*.up.pt/*vig_geral.docentes_vigilancias_list*",
+                "https://*.up.pt/*VIG_GERAL.DOCENTES_VIGILANCIAS_LIST*"
+            ],
+            "js": ["js/extractors/supervisions.js"],
+            "run_at": "document_end"
+        }
     ],
+    "permissions": ["https://*.up.pt/*", "storage"],
     "web_accessible_resources": ["icons/*"],
     "content_security_policy": "script-src 'self'; object-src 'self'",
     "homepage_url": "https://github.com/msramalho/SigTools",

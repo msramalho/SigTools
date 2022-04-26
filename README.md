@@ -343,3 +343,33 @@ Credits to [Icons8](https://icons8.com/) for services icons such as Office 365, 
    - Handle weird Microsoft encoding problem [#83](https://github.com/msramalho/SigTools/issues/83)
    - Update the link for Outlook.com events [#84](https://github.com/msramalho/SigTools/issues/84)
    - Fix URI encoding bug [#85](https://github.com/msramalho/SigTools/issues/85)
+- V4.2.0
+    - Improve the development environment
+        - Disable the changelog so that the page is not shown everytime the extension is reloaded [#87](https://github.com/msramalho/SigTools/issues/87)
+        - Fix some bugs in gulp.js configuration [#76](https://github.com/msramalho/SigTools/issues/76), [#87](https://github.com/msramalho/SigTools/issues/77)
+        - Fix browsers blocking HTTP requests due to CORS in unit tests [#93](https://github.com/msramalho/SigTools/issues/93)
+        - Adding a logging mechanism that only works in development mode [#102](https://github.com/msramalho/SigTools/issues/102)
+        - Better mocking for extensions Storage API in unit tests
+        - Add `document` mocking in unit tests [#90](https://github.com/msramalho/SigTools/issues/90)
+    - Fixes Outlook 'one-click' URLs (again) [#111](https://github.com/msramalho/SigTools/issues/111)
+    - Fixes custom recurring periods not affecting the event's start date [#110](https://github.com/msramalho/SigTools/issues/110)
+    - Enhance the DataTable extractor
+        - Fix missing sorting arrows [#79](https://github.com/msramalho/SigTools/issues/79)
+        - Fix duplicated table headers [#78](https://github.com/msramalho/SigTools/issues/78)
+        - Support more tables by fixing their layout conservatively [#93](https://github.com/msramalho/SigTools/issues/93)
+    - New email extractor [#99](https://github.com/msramalho/SigTools/issues/99)
+        - It adds 'one-click' `mailto` links near all profiles find within current page
+        - Supports 'batch email', where you can select multiple recipients
+    - New extractor for exam supervisions [#104](https://github.com/msramalho/SigTools/issues/104)
+    - New extractor for pending bills with ATM details [#118](https://github.com/msramalho/SigTools/pull/118)
+    - Improve calendar events generation
+        - Recurrence rules now also apply to 'one-click' events
+        - Support custom locations (WIP) [#51](https://github.com/msramalho/SigTools/issues/51), [#48](https://github.com/msramalho/SigTools/issues/48)
+        - Support calendar status, i.e., show as _Free_ vs _Busy_, in `.ics` [#113](https://github.com/msramalho/SigTools/issues/113)
+            - Deadline related extractors create events that show as _Free_ by default (customisable!)
+        - Support 'All Day' events on `.ics` and 'one-click'
+            - Also useful for deadline/reminder events with no specific time
+    - Revamp options page
+        - Human readable extractors names
+        - Add icons
+        - Fix UI glitches

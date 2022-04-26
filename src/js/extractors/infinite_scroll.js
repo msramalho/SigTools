@@ -4,8 +4,10 @@ class InfiniteScroll extends Extractor {
 
     constructor() {
         super();
-        this.table = $(this.selector = "table.dados");
-        if (!this.table) this.table = $(this.selector = "table.dadossz");
+        // a loading gif to show when fetching new pages
+        this.loadingGif = $(
+            `<img class="sigLoading" src="${chrome.extension.getURL("icons/loading.gif")}">`
+        );
         this.loading = false // indicates when there is an ongoing ajax request
         this.ready();
     }
@@ -13,7 +15,9 @@ class InfiniteScroll extends Extractor {
     structure() {
         return {
             extractor: "infinite_scroll",
+            name: "Infinite Scroll",
             description: "Makes annoying pagination in sigarra tables be in infinite scroll mode",
+            icon: "infinite-scroll.png",
             parameters: [],
             storage: {}
         }
@@ -21,10 +25,20 @@ class InfiniteScroll extends Extractor {
 
 
     attachIfPossible() {
+        // Note: perform query here instead of constructor to ensure this is
+        // executed only after the DataTable extractor finishes manipulating the dom
+        // That is ensured as long content scripts are loaded in this sequence:
+        // Datatable, Infinite Scroll, others ...
+        // Recall that all Extractor constructors invoke 'this.ready()' which
+        // will enqueue jobs in the Promisses Queue Job, which eventually will
+        // invoke attachIfPossible. Thus, DataTable promisse jobs execute before
+        // infinite scroll, as desired
+        this.table = $(this.selector = "table.dados");
+        if (!this.table) this.table = $(this.selector = "table.dadossz");
+
         // return if table not found or not applied
         if (!this.table.length || !this.validTable()) return
 
-        this.setUpLoading()
         this.readPagination()
         this.setScrollListener()
     }
@@ -39,18 +53,10 @@ class InfiniteScroll extends Extractor {
     }
 
     /**
-     * inject the loading gif and load into own object
-     */
-    setUpLoading() {
-        this.loadingGif = $(`<img class="sigLoading" src="${chrome.extension.getURL("icons/loading.gif")}">`)
-        this.table.after(this.loadingGif)
-        this.hideLoading()
-    }
-
-    /**
      * logic and ui starting loading process
      */
     showLoading() {
+        this.table.after(this.loadingGif)
         this.loading = true
         this.loadingGif.show()
     }
@@ -75,7 +81,7 @@ class InfiniteScroll extends Extractor {
             let page = $(".paginar-paginas-posteriores a").toArray()[0].href // get the url of page 2
             let startPage = /pv_num_pag=(\d+)/gm.exec(page)[1]
             for (let i = startPage; i <= npages; i++) this.pages.push(page.replace(/(.*pv_num_pag=)\d+(.*)/gm, `$1${i}$2`))
-        } catch (error) {}
+        } catch (error) { }
         $(".paginar").remove()
     }
 
@@ -99,14 +105,14 @@ class InfiniteScroll extends Extractor {
             url: this.pages.shift(),
             type: 'GET',
             success: (res) => {
-                let callback = removeDatatableIfExists(this.selector)
-                // read the important rows from the result and append to current table
-                let rows = $(res).find(`${this.selector} tr.i, ${this.selector} tr.p`).toArray().map(x => x.outerHTML).join("")
-                this.table.find("tbody").append(rows)
-                this.hideLoading()
-
-                // apply the callback, will only execute anything if there was a table
-                callback($(this.selector))
+                // gather all <tr> nodes                
+                const rows = $(res).find(`${this.selector} tr.i, ${this.selector} tr.p`).toArray();
+                // get the instantiated data table and append the new rows
+                // note: you can pass <tr> directly
+                // note: 'draw' is necessary to update the DOM
+                $(this.selector).dataTable().api().rows.add(rows).draw();
+                // hide the loading gif
+                this.hideLoading();
             },
             fail: () => this.hideLoading()
         });

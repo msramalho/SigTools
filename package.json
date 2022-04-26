@@ -1,14 +1,13 @@
 {
   "name": "sigtools",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "An extension that makes the information system of the University of Porto slightly better.",
   "main": "gulpfile.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "google-chrome ./src/tests.html",
-    "zip": "cross-env TARGET=chrome gulp zip && cross-env TARGET=opera gulp zip && cross-env TARGET=firefox gulp zip",
+    "test": "./node_modules/http-server/bin/http-server ./src/ -p 3000 -c-1 --cors -o tests.html",
     "chrome-build": "cross-env TARGET=chrome gulp",
     "opera-build": "cross-env TARGET=opera gulp",
     "firefox-build": "cross-env TARGET=firefox gulp",
@@ -19,7 +18,8 @@
     "chrome-dist": "cross-env NODE_ENV=production cross-env TARGET=chrome gulp dist",
     "opera-dist": "cross-env NODE_ENV=production cross-env TARGET=opera gulp dist",
     "firefox-dist": "cross-env NODE_ENV=production cross-env TARGET=firefox gulp dist",
-    "dist": "npm run chrome-dist && npm run opera-dist && npm run firefox-dist"
+    "dist": "npm run chrome-dist && npm run opera-dist && npm run firefox-dist",
+    "clean": "gulp cleanAll"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,8 @@
     "gulp-livereload": "^4.0.2",
     "gulp-load-plugins": "^2.0.4",
     "gulp-merge-json": "^2.1.1",
-    "gulp-zip": "^5.0.2"
+    "gulp-preprocess": "^4.0.2",
+    "gulp-zip": "^5.0.2",
+    "http-server": "^14.0.0"
   }
 }

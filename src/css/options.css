@@ -1,10 +1,6 @@
 :root {
     --nav-active: rgb(0, 99, 206);
-    --nav-hover: rgb(0, 123, 255, 1);
-}
-
-#nav-tab-list {
-    padding-left: 15px;
+    --nav-hover: #585b5e;
 }
 
 #nav-tab-list a {

@@ -2,7 +2,11 @@
 //https://developer.chrome.com/extensions/content_scripts#run_at
 
 let nav_tab_list_template = `
-<a class="nav-link rounded-0" id="nav-tab-{{extractor}}" href="#nav-tab-content-{{extractor}}" role="tab" aria-controls="nav-tab-content-{{extractor}}" aria-selected="false">{{extractor}}</a>
+<a class="nav-link rounded-0" id="nav-tab-{{extractor}}" href="#nav-tab-content-{{extractor}}" role="tab" aria-controls="nav-tab-content-{{extractor}}" aria-selected="false">
+    {{#icon}}<img style="width:32px;" src="${chrome.extension.getURL("icons/extractors/{{icon}}")}">{{/icon}}
+    {{^icon}}<img style="width:32px;" src="${chrome.extension.getURL("icons/extractors/default.png")}">{{/icon}}
+    <span style="vertical-align:middle;">{{name}}</span>
+</a>
 `
 
 let nav_tab_content_template = `
@@ -41,6 +45,19 @@ let nav_tab_content_template = `
             <button class="btn btn-outline-secondary btn-sm" type="button" title="Reset to default color" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button>
         </label>
     {{/storage.color}}
+    {{#storage.select}}
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="{{extractor}}_{{name}}">{{name}}</label>
+            </div>
+            <select id="{{extractor}}_{{name}}" class="custom-select custom-select-sm" value="{{value}}">
+                {{#options}}
+                    <option value="{{.}}">{{.}}</option>
+                {{/options}}
+            </select>
+            <div class="input-group-append"><button class="btn btn-outline-secondary" type="button" title="Reset to default value" data-extractor="{{extractor}}" data-name="{{name}}" data-default-btn>↺</button></div>
+        </div>
+    {{/storage.select}}
     {{#storage.boolean}}
         <div class="custom-control custom-checkbox">
             <input class="custom-control-input {{name}}" id="{{extractor}}_{{name}}" type="checkbox" value="{{value}}">
@@ -169,6 +186,11 @@ $(document).ready(function() {
     // make checkboxes with value="true" be checked
     $("input[type='checkbox'][value='true']").each(function() {
         $(this).prop('checked', true)
+    });
+
+    // initialise all selects input elements
+    $("select").each(function() {
+        $(this).val($(this).attr('value'));
     });
 
     // add onclick event for 'Save' button

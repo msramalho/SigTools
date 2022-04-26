@@ -46,8 +46,9 @@ var ics = function(uidDomain, prodId) {
      * @param  {string} location    Location of event
      * @param  {string} begin       Beginning date of event
      * @param  {string} stop        Ending date of event
+     * @param  {CalendarEventStatus?} status The event status
      */
-    'addEvent': function(subject, description, location, begin, stop, rrule) {
+    'addEvent': function(subject, description, location, begin, stop, rrule, status) {
       // I'm not in the mood to make these optional... So they are all required
       if (typeof subject === 'undefined' ||
         typeof description === 'undefined' ||
@@ -57,6 +58,9 @@ var ics = function(uidDomain, prodId) {
       ) {
         return false;
       }
+
+      // if status is null/undefined, default to "busy"
+      status = status || CalendarEventStatus.BUSY;
 
       // validate rrule
       if (rrule) {
@@ -177,14 +181,13 @@ var ics = function(uidDomain, prodId) {
       var calendarEvent = [
         'BEGIN:VEVENT',
         'UID:' + now + "-" + calendarEvents.length + "@" + uidDomain,
-        'CLASS:PUBLIC',
         'DESCRIPTION:' + description,
         'DTSTAMP;VALUE=DATE-TIME:' + now,
         'DTSTART;VALUE=DATE-TIME:' + start,
         'DTEND;VALUE=DATE-TIME:' + end,
         'LOCATION:' + location,
         'SUMMARY;LANGUAGE=en-us:' + subject,
-        'TRANSP:TRANSPARENT',
+        `TRANSP:${status === CalendarEventStatus.BUSY ? "OPAQUE" : "TRANSPARENT"}`, // See https://icalendar.org/iCalendar-RFC-5545/3-8-2-7-time-transparency.html
         'END:VEVENT'
       ];
 
@@ -196,6 +199,22 @@ var ics = function(uidDomain, prodId) {
 
       calendarEvents.push(calendarEvent);
       return calendarEvent;
+    },
+
+    /**
+     * Add event to the calendar from an instance of {@link CalendarEvent}
+     * @param {CalendarEvent} event 
+     */
+    'addCalendarEvent': function(event) {
+      return this.addEvent(
+          event.title,
+          event.description,
+          event.location == null ? "" : event.location,
+          event.start.toString(),
+          event.end.toString(),
+          event.recurRule,
+          event.status
+      );
     },
 
     /**

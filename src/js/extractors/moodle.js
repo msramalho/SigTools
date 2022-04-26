@@ -15,7 +15,9 @@ class Moodle extends Extractor {
     structure() {
         return {
             extractor: "moodle",
+            name: "Moodle",
             description: "Extracts moodle calendar events",
+            icon: "moodle.png",
             parameters: [{
                 name: "name",
                 description: "eg: Minitest Compilers"
@@ -91,12 +93,6 @@ class Moodle extends Extractor {
         $(".hasevent").each((_, e) => {
             this.events = [...this.events, ...Moodle.getDayEvents($(e))]
         })
-    }
-
-
-    convertToURI(event) {
-        event.url = encodeURIComponent(event.url);
-        return event;
     }
 
     /**

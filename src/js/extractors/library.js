@@ -10,7 +10,9 @@ class LibraryExtractor extends Extractor {
     structure() {
         return {
             extractor: "library",
+            name: "Library",
             description: "Allows users to save book renewal events to their calendars",
+            icon: "library.png",
             parameters: [{
                 name: "book",
                 description: "eg: Os Maias"
@@ -86,15 +88,6 @@ class LibraryExtractor extends Extractor {
         }
         setDropdownListeners();
 
-    }
-
-    convertToURI(event) {
-        event.book = encodeURIComponent(event.book);
-        event.library = encodeURIComponent(event.library);
-        event.shelf = encodeURIComponent(event.shelf);
-        event.fine = encodeURIComponent(event.fine);
-        event.renew_link = encodeURIComponent(event.renew_link);
-        return event;
     }
 
 }

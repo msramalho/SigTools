@@ -10,7 +10,9 @@ class SingleExam extends Extractor {
     structure() {
         return {
             extractor: "single_exam",
-            description: "calendar event from a single exam page",
+            name: "Single Exam",
+            description: "Calendar event from a single exam page",
+            icon: "exam.png",
             parameters: [{
                     name: "subject.name",
                     description: "eg: Programação em Lógica"
@@ -55,22 +57,6 @@ class SingleExam extends Extractor {
     attachIfPossible() {
         $("table").before(getDropdown(this.getEvent(), this))
         setDropdownListeners();
-    }
-
-    convertToURI(event) {
-        event.subject.name = encodeURIComponent(event.subject.name);
-        event.info = encodeURIComponent(event.info);
-        event.subject.url = encodeURIComponent(event.subject.url);
-        event.rooms = event.rooms.map(x => {
-            x.url = encodeURIComponent(x.url);
-            return x;
-        })
-        event.teachers = event.teachers.map(x => {
-            x.url = encodeURIComponent(x.url);
-            x.name = encodeURIComponent(x.name);
-            return x;
-        })
-        return event;
     }
 
     getEvent() {

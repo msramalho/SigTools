@@ -12,7 +12,9 @@ class Timetable extends Extractor {
     structure() {
         return {
             extractor: "timetable",
+            name: "Timetables",
             description: "Extracts timetables from sigarra",
+            icon: "timetable.png",
             parameters: [{
                     name: "name",
                     description: "eg: Programação em Lógica"
@@ -107,15 +109,6 @@ class Timetable extends Extractor {
             to: lifetimeTo,
             events: events
         };
-    }
-
-    convertToURI(event) {
-        event.name = encodeURIComponent(event.name);
-        event.teacher.name = encodeURIComponent(event.teacher.name);
-        event.teacher.url = encodeURIComponent(event.teacher.url);
-        event.room.url = encodeURIComponent(event.room.url);
-        event.klass.url = encodeURIComponent(event.klass.url);
-        return event;
     }
 
 }

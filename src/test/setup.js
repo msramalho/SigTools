@@ -1,17 +1,22 @@
 /**
  * maps the HTML from the given url into the current context of jquery selectors $("...")
- * @param {URI} url
+ * @param {URI} url Relative URL to `src/test/pages/`. Ensure you do not add the first `/`,
+ * e.g. `conta_corrente.html` is correct, but `/conta_corrente.html` is not
  */
 function updatejQueryContext(url) {
+    url = `http://0.0.0.0:3000/test/pages/${url}`;
     return new Promise((resolve) => {
         $.get(url, function(html) {
             jQuery.noConflict();
+            const dom = new DOMParser().parseFromString(html, 'text/html');
             $ = function(selector, context) {
-                return new jQuery.fn.init(selector, context || new DOMParser().parseFromString(html, 'text/html'));
+                return new jQuery.fn.init(selector, context || dom);
             };
             $.fn = $.prototype = jQuery.fn;
             jQuery.extend($, jQuery);
-			resolve();
+
+            Sig.doc = dom;
+            resolve();
         })
     });
 }
@@ -21,8 +26,15 @@ chrome = {
     storage: {
         local: {
             set: () => {},
-            get: () => {}
+            get: function(extractor_id, callback_fn) {
+                const o = {};
+                o[extractor_id] = {};
+                callback_fn(o);
+            }
         }
+    },
+    extension: {
+        getURL: (u) => u
     }
 }
 

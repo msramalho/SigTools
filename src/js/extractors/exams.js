@@ -12,7 +12,9 @@ class Exams extends Extractor {
     structure() {
         return {
             extractor: "exams",
+            name: "Exams",
             description: "Extracts exams events from sigarra",
+            icon: "exam.png",
             parameters: [{
                     name: "subject.name",
                     description: "eg: Programação em Lógica"
@@ -86,13 +88,6 @@ class Exams extends Extractor {
                 "Exam"),
             events: this.table.eq(index).parseExamTable()
         };
-    }
-
-    convertToURI(event) {
-        event.subject.name = encodeURIComponent(event.subject.name);
-        event.info = encodeURIComponent(event.info);
-        event.subject.url = encodeURIComponent(event.subject.url);
-        return event;
     }
 
     static getEvent(day, exameTd) {

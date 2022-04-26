@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Mocha Tests</title>
-    <link href="https://unpkg.com/mocha@4.0.1/mocha.css" rel="stylesheet" />
+    <link href="https://unpkg.com/mocha@9.1/mocha.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -11,8 +11,8 @@
     <div id="mocha"></div>
 
     <!-- Testing framework setup must come first -->
-    <script src="https://unpkg.com/chai@4.1.2/chai.js"></script>
-    <script src="https://unpkg.com/mocha@4.0.1/mocha.js"></script>
+    <script src="https://unpkg.com/chai@4/chai.js"></script>
+    <script src="https://unpkg.com/mocha@9.1/mocha.js"></script>
     <script>
         mocha.setup('bdd')
     </script>
@@ -25,23 +25,29 @@
     <script src="js/lib/chart.min.js"></script>
     <script src="js/lib/math.min.js"></script>
     <script src="js/lib/mustache.min.js"></script>
+    <script src="js/lib/datatables.min.js"></script>
+    <script src="js/lib/luxon.min.js"></script>
 
     <!-- Utils -->
     <script src="js/utils/global.js"></script>
+    <script src="js/utils/event.js"></script>
     <script src="js/utils/time.js"></script>
     <script src="js/utils/calendar.js"></script>
 
     <!-- Source code files -->
     <script src="js/extractors/extractor.js"></script>
     <script src="js/extractors/timetable.js"></script>
-    <!-- <script src="js/extractors/datatable.js"></script> -->
+    <script src="js/extractors/datatable.js"></script>
     <script src="js/extractors/grades.js"></script>
     <script src="js/extractors/bills.js"></script>
+    <script src="js/extractors/bills_payment_refs.js"></script>
 
     <!-- Test files -->
     <script src="test/extractors/timetable.js"></script>
     <script src="test/extractors/grades.js"></script>
     <script src="test/extractors/bills.js"></script>
+    <script src="test/extractors/datatable.js"></script>
+    <script src="test/extractors/extractor.js"></script>
 
     <script>
         mocha.checkLeaks();
