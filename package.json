@@ -1,6 +1,6 @@
 {
   "name": "sigtools",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "An extension that makes the information system of the University of Porto slightly better.",
   "main": "gulpfile.js",
   "directories": {
