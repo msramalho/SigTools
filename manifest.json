@@ -101,6 +101,16 @@
             ],
             "js": ["js/extractors/supervisions.js"],
             "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "https://*.up.pt/*res_recursos_geral.pedidos_view*",
+                "https://*.up.pt/*RES_RECURSOS_GERAL.PEDIDOS_VIEW*",
+                "https://*.up.pt/*res_recursos_geral.pedidos_list*",
+                "https://*.up.pt/*RES_RECURSOS_GERAL.PEDIDOS_LIST*"
+            ],
+            "js": ["js/extractors/reservations.js"],
+            "run_at": "document_end"
         }
     ],
     "permissions": ["https://*.up.pt/*", "storage"],
