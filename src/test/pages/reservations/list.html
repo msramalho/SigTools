@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <!-- https://sigarra.up.pt/feup/pt/res_recursos_geral.pedidos_list -->
+        <div id="conteudo">
+            <div id="conteudoinner">
+                <h1 id="seccao"></h1>
+                <a name="ancora-conteudo" class="ecra"></a>
+                <h1>Lista de Pedidos de Reserva</h1>
+                <h3>Salas</h3>
+                <table class="dados">
+                    <tbody>
+                        <tr>
+                            <th>
+                                Recurso&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=recurso&amp;pi_asc=0&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem descendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Descendente"
+                                        alt="Ordenar de forma descendente"
+                                        title="Exibir Data por ordem descendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10" /></a
+                                >&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=recurso&amp;pi_asc=1&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem ascendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Ascendente"
+                                        alt="Ordenar de forma ascendente"
+                                        title="Exibir Data por ordem ascendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10"
+                                /></a>
+                            </th>
+                            <th>Quantidade</th>
+                            <th>
+                                Data de Início&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=dinicio&amp;pi_asc=0&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem descendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Descendente"
+                                        alt="Ordenar de forma descendente"
+                                        title="Exibir Data por ordem descendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10" /></a
+                                >&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=dinicio&amp;pi_asc=1&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem ascendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Ascendente"
+                                        alt="Ordenar de forma ascendente"
+                                        title="Exibir Data por ordem ascendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10"
+                                /></a>
+                            </th>
+                            <th>
+                                Data de Fim&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=dfim&amp;pi_asc=0&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem descendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Descendente"
+                                        alt="Ordenar de forma descendente"
+                                        title="Exibir Data por ordem descendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10" /></a
+                                >&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=dfim&amp;pi_asc=1&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem ascendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Ascendente"
+                                        alt="Ordenar de forma ascendente"
+                                        title="Exibir Data por ordem ascendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10"
+                                /></a>
+                            </th>
+                            <th>Hora de Início</th>
+                            <th>Duração</th>
+                            <th>Tipo de Periodicidade</th>
+                            <th>Período</th>
+                            <th>Excepto Feriados</th>
+                            <th>
+                                Autor&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=autor&amp;pi_asc=0&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem descendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Descendente"
+                                        alt="Ordenar de forma descendente"
+                                        title="Exibir Data por ordem descendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10" /></a
+                                >&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=autor&amp;pi_asc=1&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem ascendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Ascendente"
+                                        alt="Ordenar de forma ascendente"
+                                        title="Exibir Data por ordem ascendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10"
+                                /></a>
+                            </th>
+                            <th>
+                                Beneficiário&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=benef&amp;pi_asc=0&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem descendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Descendente"
+                                        alt="Ordenar de forma descendente"
+                                        title="Exibir Data por ordem descendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10" /></a
+                                >&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=benef&amp;pi_asc=1&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem ascendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Ascendente"
+                                        alt="Ordenar de forma ascendente"
+                                        title="Exibir Data por ordem ascendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10"
+                                /></a>
+                            </th>
+                            <th>
+                                Estado&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=estado&amp;pi_asc=0&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem descendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Descendente"
+                                        alt="Ordenar de forma descendente"
+                                        title="Exibir Data por ordem descendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10" /></a
+                                >&nbsp;<a
+                                    href="res_recursos_geral.pedidos_list?pv_nome_coluna=estado&amp;pi_asc=1&amp;pct_tipo_grupo_id=&amp;pct_grupo_id=&amp;p_data_inicio=&amp;p_data_fim=&amp;p_utilizador=&amp;p_utilizador_codigo=&amp;p_estado=&amp;pct_uni_id=&amp;pi_query=0&amp;pi_uni=0&amp;pi_ver_todos=0"
+                                    title="Exibir Data por ordem ascendente"
+                                    ><img
+                                        src="/feup/pt/imagens/Ascendente"
+                                        alt="Ordenar de forma ascendente"
+                                        title="Exibir Data por ordem ascendente"
+                                        class="border0"
+                                        width="10"
+                                        height="10"
+                                /></a>
+                            </th>
+                        </tr>
+                        <tr class="d">
+                            <td class="k t" rowspan="2">
+                                Biblioteca - Gabinetes Individuais (Reservas no próprio dia não são contempladas)
+                            </td>
+                            <td class="n">1</td>
+                            <td class="l">2022-04-05</td>
+                            <td class="l">-</td>
+                            <td class="l">09:00</td>
+                            <td class="l">07:00</td>
+                            <td class="t">-</td>
+                            <td class="t">-</td>
+                            <td class="t">Não</td>
+                            <td class="t">John Doe</td>
+                            <td class="t">John Doe</td>
+                            <td class="t">
+                                <a href="res_recursos_geral.pedidos_view?pct_pedido_id=300204" title="Reservado"
+                                    >Reservado</a
+                                >
+                            </td>
+                        </tr>
+                        <tr class="d">
+                            <td colspan="11" class="l">
+                                <p class="textoc"></p>
+                                <table class="dados">
+                                    <tbody>
+                                        <tr>
+                                            <th colspan="2">Data</th>
+                                            <th>Hora de Início</th>
+                                            <th>Hora de Fim</th>
+                                            <th>Duração</th>
+                                            <th>Recurso</th>
+                                        </tr>
+                                        <tr class="d interior">
+                                            <td class="k l">2022-04-05</td>
+                                            <td class="k t"><span class="textopequeno">Terça</span></td>
+                                            <td class="l">09:00</td>
+                                            <td class="l">16:00</td>
+                                            <td class="l">07:00</td>
+                                            <td class="t">
+                                                <a href="instal_geral.espaco_view?pv_id=73580" title="C620">C620</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p></p>
+                            </td>
+                        </tr>
+                        <tr class="d">
+                            <td class="k t" rowspan="2">
+                                Biblioteca - Gabinetes Individuais (Reservas no próprio dia não são contempladas)
+                            </td>
+                            <td class="n">1</td>
+                            <td class="l">2022-04-07</td>
+                            <td class="l">-</td>
+                            <td class="l">09:00</td>
+                            <td class="l">08:00</td>
+                            <td class="t">-</td>
+                            <td class="t">-</td>
+                            <td class="t">Não</td>
+                            <td class="t">John Doe</td>
+                            <td class="t">John Doe</td>
+                            <td class="t">
+                                <a href="res_recursos_geral.pedidos_view?pct_pedido_id=300209" title="Reservado"
+                                    >Reservado</a
+                                >
+                            </td>
+                        </tr>
+                        <tr class="d">
+                            <td colspan="11" class="l">
+                                <p class="textoc"></p>
+                                <table class="dados">
+                                    <tbody>
+                                        <tr>
+                                            <th colspan="2">Data</th>
+                                            <th>Hora de Início</th>
+                                            <th>Hora de Fim</th>
+                                            <th>Duração</th>
+                                            <th>Recurso</th>
+                                        </tr>
+                                        <tr class="d interior">
+                                            <td class="k l">2022-04-07</td>
+                                            <td class="k t"><span class="textopequeno">Quinta</span></td>
+                                            <td class="l">09:00</td>
+                                            <td class="l">17:00</td>
+                                            <td class="l">08:00</td>
+                                            <td class="t">
+                                                <a href="instal_geral.espaco_view?pv_id=73581" title="C616">C616</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p></p>
+                            </td>
+                        </tr>
+                        <tr class="d">
+                            <td class="k t">Biblioteca - Gabinetes Individuais (Reservas no próprio dia não são contempladas)</td>
+                            <td class="n">1</td>
+                            <td class="l">2022-04-29</td>
+                            <td class="l">-</td>
+                            <td class="l">09:00</td>
+                            <td class="l">05:00</td>
+                            <td class="t">-</td>
+                            <td class="t">-</td>
+                            <td class="t">Não</td>
+                            <td class="t">Fábio Gaspar</td>
+                            <td class="t">Fábio Gaspar</td>
+                            <td class="t"><a href="res_recursos_geral.pedidos_view?pct_pedido_id=301617" title="Cancelado">Cancelado</a></td>
+                        </tr>
+                        <tr class="d">
+                            <td class="k t" rowspan="2">
+                                Biblioteca - Gabinetes Individuais (Reservas no próprio dia não são contempladas)
+                            </td>
+                            <td class="n">1</td>
+                            <td class="l">2022-04-08</td>
+                            <td class="l">-</td>
+                            <td class="l">09:00</td>
+                            <td class="l">05:00</td>
+                            <td class="t">-</td>
+                            <td class="t">-</td>
+                            <td class="t">Não</td>
+                            <td class="t">John Doe</td>
+                            <td class="t">John Doe</td>
+                            <td class="t">
+                                <a href="res_recursos_geral.pedidos_view?pct_pedido_id=300205" title="Reservado"
+                                    >Reservado</a
+                                >
+                            </td>
+                        </tr>
+                        <tr class="d">
+                            <td colspan="11" class="l">
+                                <p class="textoc"></p>
+                                <table class="dados">
+                                    <tbody>
+                                        <tr>
+                                            <th colspan="2">Data</th>
+                                            <th>Hora de Início</th>
+                                            <th>Hora de Fim</th>
+                                            <th>Duração</th>
+                                            <th>Recurso</th>
+                                        </tr>
+                                        <tr class="d interior">
+                                            <td class="k l">2022-04-08</td>
+                                            <td class="k t"><span class="textopequeno">Sexta</span></td>
+                                            <td class="l">09:00</td>
+                                            <td class="l">14:00</td>
+                                            <td class="l">05:00</td>
+                                            <td class="t">
+                                                <a href="instal_geral.espaco_view?pv_id=73581" title="C616">C616</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p></p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Registos: 1 a 3 de um total de 3</h4>
+                <div class="form-botoes">
+                    <table class="c">
+                        <tbody>
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- end conteudoinner-->
+        </div>
+    </body>
+</html>
