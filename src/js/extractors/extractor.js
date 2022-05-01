@@ -177,7 +177,7 @@ class EventExtractor extends Extractor {
      * a common structure properties. However, each implementation will have
      * its own default values, which are configured via parameters
      *
-     * @param {Object} childStructure
+     * @param {object} childStructure
      * @param {string} title Default title format-string
      * @param {string} description Default description format-string
      * @param {string} location Default location format-string
