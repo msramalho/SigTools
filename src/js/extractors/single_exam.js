@@ -1,6 +1,6 @@
 "use strict";
 
-class SingleExam extends Extractor {
+class SingleExam extends EventExtractor {
 
     constructor() {
         super();
@@ -8,55 +8,58 @@ class SingleExam extends Extractor {
     }
 
     structure() {
-        return {
-            extractor: "single_exam",
-            name: "Single Exam",
-            description: "Calendar event from a single exam page",
-            icon: "exam.png",
-            parameters: [{
-                    name: "subject.name",
-                    description: "eg: Programação em Lógica"
-                },
-                {
-                    name: "subject.acronym",
-                    description: "eg: PLOG"
-                }, {
-                    name: "subject.url",
-                    description: "link to the exam page on sigarra"
-                }, {
-                    name: "info",
-                    description: "eg: Normal, Recurso, ..."
-                }, {
-                    name: "location",
-                    description: "list of room names"
-                }, {
-                    name: "rooms",
-                    description: "list of rooms, if available (array of {name, url})"
-                }, {
-                    name: "teachers",
-                    description: "list of teachers present during the exam, if available (array of {name, url})"
-                }
-            ],
-            storage: { // the variables to save for this extractor (in the local storage)
-                text: [{
-                    name: "title",
-                    default: "Exam [${subject.acronym}] ${info} - ${location}"
-                }],
-                textarea: [{
-                    name: "description",
-                    default: "Exam ${info}: <a href=\"${subject.url}\">${subject.name}</a><br>Information:${info}<br>Rooms: ${rooms.map(x=>`<a href=\"${x.url}\">${x.name}</a>`)}<br>Teachers: ${teachers.map(x=>`<br><a href=\"${x.url}\">${x.name}</a>`).join(``)}"
-                }],
-                boolean: [{
-                    name: "isHTML",
-                    default: true
-                }]
-            }
-        }
+        return super.structure({
+                extractor: "single_exam",
+                name: "Single Exam",
+                description: "Calendar event from a single exam page",
+                icon: "exam.png",
+                parameters: [{
+                        name: "subject.name",
+                        description: "eg: Programação em Lógica"
+                    },
+                    {
+                        name: "subject.acronym",
+                        description: "eg: PLOG"
+                    }, {
+                        name: "subject.url",
+                        description: "link to the exam page on sigarra"
+                    }, {
+                        name: "info",
+                        description: "eg: Normal, Recurso, ..."
+                    }, {
+                        name: "roomNames",
+                        description: "list of room names"
+                    }, {
+                        name: "rooms",
+                        description: "list of rooms, if available (array of {name, url})"
+                    }, {
+                        name: "teachers",
+                        description: "list of teachers present during the exam, if available (array of {name, url})"
+                    }
+                ],
+            },
+            "Exam [${subject.acronym}] - ${roomNames}",
+            "Exam: <a href=\"${subject.url}\">${subject.name}</a><br>Information: ${info}<br>Rooms: ${rooms.map(x=>`<a href=\"${x.url}\">${x.name}</a>`).join(', ')}<br>Teachers: ${teachers.map(x=>`<br>  - <a href=\"${x.url}\">${x.name}</a>`).join(``)}",
+            "${roomNames}",
+            true,
+            CalendarEventStatus.BUSY
+        );
     }
 
     attachIfPossible() {
-        $("table").before(getDropdown(this.getEvent(), this))
-        setDropdownListeners();
+        // parse exam
+        const info = this.getEvent();
+
+        // create event
+        const event = new CalendarEvent(this.getTitle(info), this.getDescription(info), this.isHTML, info.from, info.to)
+            .setLocation(this.getLocation(info))
+            .setStatus(CalendarEventStatus.FREE);
+
+        // create the dropdown and table cell. append it on the Sigarra's table
+        const $dropdown = createEventDropdown(event);
+
+        // attach the dropdown on DOM
+        Sig.doc.querySelector("table").insertAdjacentElement("beforebegin", $dropdown);
     }
 
     getEvent() {
@@ -85,12 +88,12 @@ class SingleExam extends Extractor {
                 acronym: rows[0].text(),
                 url: rows[0].find("a")[0].href,
             },
-            info: rows[2].text().split(" - ")[0],
+            info: rows[2].text().split(" - ")[1],
             from: start,
             to: end,
             duration: rows[5].text(),
             rooms: rooms,
-            location: rooms.map(x => x.name).join(', '),
+            roomNames: rooms.map(x => x.name).join(', '),
             teachers: rows[7].find("a").toArray().map(a => {
                 return {
                     name: $(a).text(),
