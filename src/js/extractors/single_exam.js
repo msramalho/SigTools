@@ -63,44 +63,54 @@ class SingleExam extends EventExtractor {
     }
 
     getEvent() {
-        // get array of rows
-        let rows = $("table tr td:nth-child(2)").toArray()
-        rows = rows.map(r => $(r))
+        const $table = Sig.doc.querySelector("table");
+
+        // auxiliar to get the content from the table (second col) from label
+        // the search by label is because some fields are optional, thus the
+        // indexes are not constant
+        const $getContent = (label) => {
+            const $tr = $(tableTryFindRow($table, label + ":"));
+            return $tr && $tr.find('td:nth-child(2)');
+        }
 
         // date calculations
         let h, m, dh, dm;
-        [h, m] = rows[4].text().split(":").map(x => parseInt(x))
-        let start = new Date((new Date(rows[3].text())).setHours(h, m));
-        [dh, dm] = rows[5].text().split(":").map(x => parseInt(x))
+        [h, m] = $getContent("Hora Início").text().split(":").map(x => parseInt(x))
+        let start = new Date((new Date($getContent("Data").text())).setHours(h, m));
+        [dh, dm] = $getContent("Duração").text().split(":").map(x => parseInt(x))
         let end = new Date((new Date(start)).setHours(h + dh, m + dm));
 
         //get the rooms
-        let rooms = rows[6].find("a").toArray().map(a => {
+        let rooms = $getContent("Salas").find("a").toArray().map(a => {
             return {
                 name: $(a).text(),
                 url: $(a)[0].href
             }
         })
 
+        // get teachers (optional)
+        // if not present, array will be empty
+        let teachers = $getContent("Vigilantes").find("a").toArray().map(a => {
+            return {
+                name: $(a).text(),
+                url: $(a)[0].href
+            }
+        });
+
         return {
             subject: {
                 name: this._getSubjectName(),
-                acronym: rows[0].text(),
-                url: rows[0].find("a")[0].href,
+                acronym: $getContent("Código").text(),
+                url: $getContent("Código").find("a")[0].href,
             },
-            info: rows[2].text().split(" - ")[1],
+            info: $getContent("Época").text().split(" - ")[1],
             from: start,
             to: end,
-            duration: rows[5].text(),
+            duration: $getContent("Duração").text(),
             rooms: rooms,
             roomNames: rooms.map(x => x.name).join(', '),
-            teachers: rows[7].find("a").toArray().map(a => {
-                return {
-                    name: $(a).text(),
-                    url: $(a)[0].href
-                }
-            })
-        }
+            teachers: teachers,
+        };
     }
 
     /**
