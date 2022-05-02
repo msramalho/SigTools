@@ -157,3 +157,26 @@ function createElementFromString(htmlString) {
         return prev;
     }, {});
 }
+
+/**
+ * Given a table where the first columns consists of plaintext
+ * labels/legends, it tries to find the row with a specific label and returns
+ * the entire row
+ * ```
+ * | Label1 | <whatever> |
+ * | Label2 | example    |
+ * ```
+ *
+ * @param {HTMLElement} $table The table
+ * @param {string} label The label/legend to search for
+ * @returns {HTMLElement | null} The table row that matched the search, or null
+ */
+function tableTryFindRow($table, label) {
+    const $tr = Array.from($table.querySelectorAll("tr")).find(
+        (e) => {
+            const $tdLabel = e.children[0];
+            return $tdLabel.textContent === label;
+        }
+    );
+    return $tr || null;
+}
