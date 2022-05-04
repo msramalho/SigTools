@@ -1,6 +1,6 @@
 "use strict";
 
-class Timetable extends Extractor {
+class Timetable extends EventExtractor {
 
     constructor() {
         super();
@@ -10,62 +10,51 @@ class Timetable extends Extractor {
     }
 
     structure() {
-        return {
-            extractor: "timetable",
-            name: "Timetables",
-            description: "Extracts timetables from sigarra",
-            icon: "timetable.png",
-            parameters: [{
-                    name: "name",
-                    description: "eg: Programação em Lógica"
-                },
-                {
-                    name: "acronym",
-                    description: "eg: PLOG"
-                },{
-                    name: "type",
-                    description: "eg: T, TP, PL"
-                },{
-                    name: "room.name",
-                    description: "eg: B001"
-                },{
-                    name: "room.url",
-                    description: "link to the room on sigarra"
-                },{
-                    name: "klass.name",
-                    description: "eg: 5MIEIC01"
-                },{
-                    name: "klass.url",
-                    description: "link to the class information"
-                },{
-                    name: "teacher.name",
-                    description: "eg: Raul Moreira Vidal"
-                },{
-                    name: "teacher.acronym",
-                    description: "eg: RMV"
-                },{
-                    name: "teacher.url",
-                    description: "link to the teacher page on sigarra"
-                }
-            ],
-            storage: {
-                text: [{
-                        name: "title",
-                        default: "[${acronym}] - ${type} - ${room.name}"
-                    }
-                ],
-                textarea: [
+        return super.structure({
+                extractor: "timetable",
+                name: "Timetables",
+                description: "Extracts timetables from sigarra",
+                icon: "timetable.png",
+                parameters: [{
+                        name: "name",
+                        description: "eg: Programação em Lógica"
+                    },
                     {
-                        name: "description",
-                        default: "Type: ${type}\nClass: <a href=\"${klass.url}\">${klass.name}</a>\nTeacher: <a href=\"${teacher.url}\">${teacher.name} (${teacher.acronym})</a>\nRoom: <a href=\"${room.url}\">${room.name}</a>"
+                        name: "acronym",
+                        description: "eg: PLOG"
+                    },{
+                        name: "type",
+                        description: "eg: T, TP, PL"
+                    },{
+                        name: "room.name",
+                        description: "eg: B001"
+                    },{
+                        name: "room.url",
+                        description: "link to the room on sigarra"
+                    },{
+                        name: "klass.name",
+                        description: "eg: 5MIEIC01"
+                    },{
+                        name: "klass.url",
+                        description: "link to the class information"
+                    },{
+                        name: "teacher.name",
+                        description: "eg: Raul Moreira Vidal"
+                    },{
+                        name: "teacher.acronym",
+                        description: "eg: RMV"
+                    },{
+                        name: "teacher.url",
+                        description: "link to the teacher page on sigarra"
                     }
                 ],
-                boolean: [{
-                    name: "isHTML",
-                    default: true
-                }]
-            }
-        }
+            },
+            "[${acronym}] - ${type} - ${room.name}",
+            "Type: ${type}\nClass: <a href=\"${klass.url}\">${klass.name}</a>\nTeacher: <a href=\"${teacher.url}\">${teacher.name} (${teacher.acronym})</a>\nRoom: <a href=\"${room.url}\">${room.name}</a>",
+            "${room.name}",
+            true,
+            CalendarEventStatus.BUSY,
+        );
     }
 
     attachIfPossible() {
@@ -76,7 +65,7 @@ class Timetable extends Extractor {
             else this.table.before(saveBtn);
             saveBtn.click((e) => {
                 this.timetable = this.timetable.events == undefined ? this.getEvents() : this.timetable;
-                handleEvents(this, this.timetable.events, this.timetable.from, this.timetable.to);
+                createEventsModal(this.timetable.events, this.timetable.from, this.timetable.to);
             });
         }
     }
@@ -97,17 +86,30 @@ class Timetable extends Extractor {
                 }
             });
         }
-        let events = $(table).tableToEvents(lifetimeFrom);
+        // parse the events
+        let eventsInfo = $(table).tableToEvents(lifetimeFrom);
         if (this.table.parent("div").next("div").find("table.dados th[colspan=6]")[0] != undefined) {
             //if there is a table for overlaping classes
             this.table.parent("div").next("div").find("table.dados tr.d").each((trIndex, tr) => {
-                events.push(getOverlappingClass(tr.innerHTML, lifetimeFrom)); //could send only events prior to this if, but no real impact
+                eventsInfo.push(getOverlappingClass(tr.innerHTML, lifetimeFrom)); //could send only events prior to this if, but no real impact
             });
         }
+        // create calendar events
+        const calEvents = eventsInfo.map((e) => new CalendarEvent(
+                this.getTitle(e),
+                this.getDescription(e),
+                this.isHTML,
+                e.from,
+                e.to
+            )
+            .setLocation(this.getLocation(e))
+            .setStatus(CalendarEventStatus.FREE)
+        );
+
         return {
             from: lifetimeFrom,
             to: lifetimeTo,
-            events: events
+            events: calEvents
         };
     }
 
