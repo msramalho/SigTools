@@ -1,6 +1,6 @@
 "use strict";
 
-class Exams extends Extractor {
+class Exams extends EventExtractor {
 
     constructor() {
         super();
@@ -10,40 +10,36 @@ class Exams extends Extractor {
     }
 
     structure() {
-        return {
+        return super.structure({
             extractor: "exams",
             name: "Exams",
             description: "Extracts exams events from sigarra",
             icon: "exam.png",
             parameters: [{
-                    name: "subject.name",
-                    description: "eg: Programação em Lógica"
-                },
-                {
-                    name: "subject.acronym",
-                    description: "eg: PLOG"
-                }, {
-                    name: "subject.url",
-                    description: "link to the exam page on sigarra"
-                }, {
-                    name: "info",
-                    description: "eg: Normal, Recurso, ..."
-                }, {
-                    name: "location",
-                    description: "list of rooms, if available"
-                }
-            ],
-            storage: {
-                text: [{
-                    name: "title",
-                    default: "Exam [${subject.acronym}] - ${location}"
-                }],
-                textarea: [{
-                    name: "description",
-                    default: "Exam: ${subject.name} [${subject.acronym}]\nExam page: <a href=\"${subject.url}\">${subject.name}</a>\nInformation:${info}"
-                }]
+                name: "subject.name",
+                description: "eg: Programação em Lógica"
+            },
+            {
+                name: "subject.acronym",
+                description: "eg: PLOG"
+            }, {
+                name: "subject.url",
+                description: "link to the exam page on sigarra"
+            }, {
+                name: "info",
+                description: "eg: Normal, Recurso, ..."
+            }, {
+                name: "rooms",
+                description: "list of rooms, if available"
             }
-        }
+            ],
+        },
+            "Exam [${subject.acronym}] - ${rooms}",
+            "Exam: ${subject.name} [${subject.acronym}]\nExam page: <a href=\"${subject.url}\">${subject.name}</a>\nInformation: ${info}",
+            "${rooms}",
+            true,
+            CalendarEventStatus.BUSY
+        );
     }
 
 
@@ -54,8 +50,13 @@ class Exams extends Extractor {
                 this.exams[index] = this.exams[index] == undefined ? this.getEvents(index) : this.exams[index];
                 this.attachButtonEvents(this.exams[index].events, table);
             });
-            this.attachAllByType("Especial", "Época Especial");
-            this.attachAllByType("Exames", "Épocal Normal");
+
+            // attach a button per type of exam, creating a modal that aggregates all exams of that type
+            // type of exam is like 'mini teste', 'recurso', 'epoca especial', etc.
+            $("h3").each((_, e) => {
+                const examType = $(e).text().split(" - ")[1];
+                this.attachAllByType(examType);
+            });
         }
     }
 
@@ -75,18 +76,18 @@ class Exams extends Extractor {
     attachButtonEvents(events, beforeElement, btnText) {
         btnText = btnText || ""
         if (!events.length) return
-        let saveBtn = $(`<a class="calendarBtn" title="Save exams to your Calendar">${btnText} (${events.length})<img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>`);
+        let saveBtn = $(`<a class="calendarBtn" title="Save exams to your Calendar"><b>${btnText}</b> (${events.length})<img src="${chrome.extension.getURL("icons/calendar.svg")}"/></a>`);
         beforeElement.before(saveBtn);
-        saveBtn.click(() => handleEvents(this, events));
+        saveBtn.click(() => createEventsModal(events));
     }
 
     getEvents(index) {
         return {
             info: jTry(() => {
-                    return $(this.table.eq(index).parents("table")[0]).prev("h3").html().split(" ")[0];
-                },
+                return $(this.table.eq(index).parents("table")[0]).prev("h3").html().split(" - ")[1];
+            },
                 "Exam"),
-            events: this.table.eq(index).parseExamTable()
+            events: this.table.eq(index).parseExamTable(this)
         };
     }
 
@@ -102,7 +103,7 @@ class Exams extends Extractor {
         return {
             from: start,
             to: end,
-            location: jTry(() => {
+            rooms: jTry(() => {
                 return exameTd.find("span.exame-sala").text();
             }, "(No Room)"),
             download: false,
@@ -117,8 +118,12 @@ class Exams extends Extractor {
         };
     }
 }
-
-$.prototype.parseExamTable = function() {
+/**
+ *
+ * @param {Exams} extractor
+ * @returns {CalendarEvent[]}
+ */
+$.prototype.parseExamTable = function (extractor) {
     let exams = [];
 
     this.find("> tbody > tr > th").each((rowIndex, row) => { //iterate each th
@@ -127,7 +132,20 @@ $.prototype.parseExamTable = function() {
         let correspTable = correspTr.find("table.dados.mapa");
         if (correspTable != undefined) {
             correspTable.find("td.exame").each((exameIndex, exameTd) => {
-                exams.push(Exams.getEvent(date, $(exameTd)));
+                // parse the exam information
+                const exam = Exams.getEvent(date, $(exameTd));
+                // create calendar event
+                const event = new CalendarEvent(
+                    extractor.getTitle(exam),
+                    extractor.getDescription(exam),
+                    extractor.isHTML,
+                    exam.from,
+                    exam.to
+                )
+                    .setLocation(extractor.getLocation(exam))
+                    .setStatus(CalendarEventStatus.FREE);
+                // push to array
+                exams.push(event);
             });
         }
     });
